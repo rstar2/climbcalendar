@@ -1,0 +1,10 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#4C0E61",
+        "titleBar.activeBackground": "#6A1487",
+        "titleBar.activeForeground": "#FDF9FE"
+    },
+    "cSpell.words": [
+        "fullcalendar"
+    ]
+}

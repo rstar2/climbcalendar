@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "climbcalendar-13b0d"
-  }
+  },
+  "targets": {
+    "climbcalendar-13b0d": {
+      "hosting": {
+        "main": [
+          "climbcalendar"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

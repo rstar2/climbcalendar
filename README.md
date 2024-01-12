@@ -1,11 +1,32 @@
-# React + TypeScript + Vite
+# Climb Calendar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Setup with `Vite+React+TypeScript` 
+- `Firebase` "backend"
+  - `Firestore` - as DB
+  - `Authentication` -for login/auth
+  - `Functions` - when a auth user is created to add custom claims - in this case role ADMIN to `neshev.rumenn@gmail.com` user
+- `Google Calendar API` - to add the events to authorized user
+  - Load the GAPI lib `https://apis.google.com/js/api.js` globally in `index.html`
+  - For this `Firebase Auth` is not enough, the `Google Identity Services (GIS)` has to be used. Load the `https://accounts.google.com/gsi/client` lib again globally in `index.html`
+  - A OAuth app has to be created in the Google Console and use it's CLIENT_ID
+  - Then to authorize with the "implicit token flow" (the client only way - it only gives short-lived access token)
+  - Connect the GoogleLogin to Firebase - use the `signInWithCredential(...)`
 
-Currently, two official plugins are available:
+## Configure a Firebase hosting
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Configure a "better" looking firebase hosting site
+    > Create a site `climbcalendar` either from the web-console or from the firebase CLI
+    > Add a `target` (named main `here`) in ```firebase.json:hosing``` and apply it to the newly created site
+       (e.g. exec ``firebase target:apply hosting main climbcalendar```)
+    > Now the app will be accessible on https://climbcalendar.web.app not on the "uglier" https://climbcalendar-13b0d.web.app (the project ID main site)
+
+## Local development
+
+```npm run dev```
+
+## Deploy
+
+```npm run deploy```
 
 ## Expanding the ESLint configuration
 
