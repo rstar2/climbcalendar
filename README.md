@@ -1,6 +1,6 @@
 # Climb Calendar
 
-- Setup with `Vite+React+TypeScript` 
+- Setup with `Vite+React+TypeScript`
 - `Firebase` "backend"
   - `Firestore` - as DB
   - `Authentication` -for login/auth
@@ -11,6 +11,7 @@
   - A OAuth app has to be created in the Google Console and use it's CLIENT_ID
   - Then to authorize with the "implicit token flow" (the client only way - it only gives short-lived access token)
   - Connect the GoogleLogin to Firebase - use the `signInWithCredential(...)`
+- Client routing with `TanStack Router`
 
 ## Configure a Firebase hosting
 

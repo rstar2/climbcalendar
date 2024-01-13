@@ -20,15 +20,15 @@ firebase.onSnapshot(collection, (snapshot: QuerySnapshot) => {
  * Query for the Competitions state.
  */
 export function useCompetitions() {
-  const {
-    data: { authUser },
-  } = useAuthUser();
+  const authUser = useAuthUser();
 
   const { data, refetch } = useQuery({
     queryKey: ["competitions"],
     queryFn: async () => {
       console.log(`Query competitions, ${authUser}`);
-      if (!authUser) return null;
+      
+      // the DB is not read-protected only for auth users, so don't "hide" the competitions
+      // if (!authUser.user) return null;
 
       const snapshot = await firebase.getDocs(collection);
       const competitions = parseDocs(snapshot) as Competition[];
@@ -40,10 +40,10 @@ export function useCompetitions() {
     initialData: undefined as Competition[] | undefined,
   });
 
-  // on change of auth state get the competitions
+  // on change of auth state refetch the competitions again
   useEffect(() => {
     refetch();
-  }, [authUser]);
+  }, [authUser.user, refetch]);  // refetch is stable, but to make ESLINT happy
 
   return data;
 }

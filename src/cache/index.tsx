@@ -1,5 +1,3 @@
-import React, { PropsWithChildren } from "react";
-
 import {
   MutationCache,
   QueryCache,
@@ -95,7 +93,9 @@ const showNotification = (meta: CacheMeta, error?: Error | null) => {
  * The cache react-query provider component.
  * Any component that will use any of the cache hooks must be wrapped in such a provider component.
  */
-export const CacheProvider: React.FC<PropsWithChildren> = ({ children }) => (
+export const CacheProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => (
   <QueryClientProvider client={queryClient}>
     {children}
     <ReactQueryDevtools initialIsOpen={false} />

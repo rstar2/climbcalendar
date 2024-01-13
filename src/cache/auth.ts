@@ -5,31 +5,51 @@ import { queryClient } from "./index";
 import { User } from "firebase/auth";
 
 firebase.onAuthStateChanged((user) => {
-  queryClient.setQueryData(["authUser"], {
+  queryClient.setQueryData<AuthUser>(["authUser"], {
     isKnown: true,
-    authUser: user,
+    user: user ?? undefined,
   });
 });
 
 type AuthUser = {
   isKnown: boolean;
-  authUser?: User;
+  user?: User;
 };
+
+/**
+ * Return if there's authorized user
+ */
+export function isAuth() {
+  return !!queryClient.getQueryData<AuthUser>(["authUser"])?.user;
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const user = queryClient.getQueryData<AuthUser>(["authUser"])?.user;
+
+  // "role" is a custom claim
+  return (
+    !!user &&
+    user
+      .getIdTokenResult()
+      .then((idTokenResult) => idTokenResult.claims.role === "admin")
+  );
+}
 
 /**
  * Query for the auth state.
  */
 export function useAuthUser() {
-  return useQuery({
+  const { data } = useQuery({
     queryKey: ["authUser"],
     queryFn: () => Promise.reject(new Error("Not used")),
     enabled: false,
     staleTime: Infinity,
     initialData: {
       isKnown: false,
-      authUser: undefined,
+      user: undefined,
     } as AuthUser,
   });
+  return data;
 }
 
 /**
