@@ -1,17 +1,18 @@
+import { CompetitionNew } from "./../types/index";
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { type QuerySnapshot } from "firebase/firestore";
 
 import type { Competition } from "../types";
 import firebase, { parseDocs } from "../firebase";
 import { queryClient } from "./index";
-import { useAuthUser } from "./auth";
+import { useAuthUser, isAuthAdmin } from "./auth";
 
-const collection = firebase.collection(
+const competitionsCol = firebase.collection(
   import.meta.env.VITE_FIREBASE_COLL_COMPETITIONS!
 );
 
-firebase.onSnapshot(collection, (snapshot: QuerySnapshot) => {
+firebase.onSnapshot(competitionsCol, (snapshot: QuerySnapshot) => {
   const competitions = parseDocs(snapshot) as Competition[];
   queryClient.setQueryData(["competitions"], competitions);
 });
@@ -26,11 +27,11 @@ export function useCompetitions() {
     queryKey: ["competitions"],
     queryFn: async () => {
       console.log(`Query competitions, ${authUser}`);
-      
+
       // the DB is not read-protected only for auth users, so don't "hide" the competitions
       // if (!authUser.user) return null;
 
-      const snapshot = await firebase.getDocs(collection);
+      const snapshot = await firebase.getDocs(competitionsCol);
       const competitions = parseDocs(snapshot) as Competition[];
       return competitions;
     },
@@ -43,7 +44,48 @@ export function useCompetitions() {
   // on change of auth state refetch the competitions again
   useEffect(() => {
     refetch();
-  }, [authUser.user, refetch]);  // refetch is stable, but to make ESLINT happy
+  }, [authUser.user, refetch]); // refetch is stable, but to make ESLINT happy
 
   return data;
 }
+
+/**
+ * Mutation for "incrementing" an Activity.
+ */
+export function useCompetitionAdd() {
+  const mutation = useMutation({
+    mutationFn: async (competitionNew: CompetitionNew) => {
+      const isAdmin = await isAuthAdmin();
+      if (!isAdmin) throw new Error("Sorry, only admin can add competitions");
+      return firebase.addDoc(competitionsCol, competitionNew);
+    },
+    // meta is used for success/failed notification on mutation result
+    meta: {
+      action: ["Competition", "Add"],
+    },
+  });
+
+  // if needed can return the whole mutation, like loading, and error state
+  return mutation.mutateAsync;
+}
+
+/**
+ * Mutation for "deleting " a Competition.
+ */
+export function useCompetitionDelete() {
+    const mutation = useMutation({
+      mutationFn: async (competitionId: string) => {
+        const isAdmin = await isAuthAdmin();
+        if (!isAdmin) throw new Error("Sorry, only admin can delete competitions");
+        return firebase.deleteDoc(competitionsCol, competitionId);
+      },
+      // meta is used for success/failed notification on mutation result
+      meta: {
+        action: ["Competition", "Delete"],
+      },
+    });
+  
+    // if needed can return the whole mutation, like loading, and error state
+    return mutation.mutateAsync;
+  }
+  

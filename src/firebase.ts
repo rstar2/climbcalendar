@@ -4,12 +4,18 @@ import {
   getFirestore,
   collection,
   getDocs,
+  doc,
+  addDoc,
+  deleteDoc,
   onSnapshot,
   Firestore,
   CollectionReference,
   Query,
   QuerySnapshot,
   Unsubscribe,
+  WithFieldValue,
+  DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -73,8 +79,8 @@ class Firebase {
         fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList", {
           method: "GET",
           headers: {
-            "Authorization" : `Bearer ${accessToken}`
-          }
+            Authorization: `Bearer ${accessToken}`,
+          },
         })
           .then((response) => response.json())
           .then((data) => console.log("???", data))
@@ -104,7 +110,7 @@ class Firebase {
 
   setGoogleCredential(idToken: string, accessToken?: string): void {
     const credential = GoogleAuthProvider.credential(idToken, accessToken);
-    signInWithCredential(this.auth, credential)
+    signInWithCredential(this.auth, credential);
   }
 
   // ---------- Firestore ------------
@@ -115,6 +121,17 @@ class Firebase {
 
   async getDocs(query: Query): Promise<QuerySnapshot> {
     return getDocs(query);
+  }
+
+  async addDoc<AppModelType, DbModelType extends DocumentData>(
+    collectionRef: CollectionReference<AppModelType, DbModelType>,
+    data: WithFieldValue<AppModelType>
+  ) {
+    return addDoc(collectionRef, data);
+  }
+
+  async deleteDoc(collectionRef: CollectionReference, docId: string) {
+    return deleteDoc(doc(collectionRef, docId));
   }
 
   onSnapshot(
@@ -149,7 +166,18 @@ export type Doc = Readonly<{
 export const parseDocs = (snapshot: QuerySnapshot): Doc[] => {
   const docs: Doc[] = [];
   snapshot.forEach((doc) => {
-    docs.push({ id: doc.id, ...doc.data() });
+    docs.push({ id: doc.id, ...toJS(doc.data()) });
   });
   return docs;
+};
+
+/**
+ * Convert "Firestore" types to plain JS types (like Timestamp to Date)
+ */
+const toJS = (data: DocumentData) => {
+  return Object.keys(data).reduce((res, key) => {
+    const value = data[key];
+    res[key] = value instanceof Timestamp ? value.toDate() : value;
+    return res;
+  }, {} as DocumentData);
 };

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Select } from "chakra-react-select";
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import { Formik, Form, Field } from "formik";
 import { ZodError } from "zod";
 
-import { useAuthUser, isAdmin } from "../cache/auth";
+import { useAuthUser, isAuthAdmin } from "../cache/auth";
 import {
   Box,
   Button,
@@ -23,20 +23,21 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
-import { arrayRange, mapObject, enumValues } from "../utils";
+import { arrayRange, mapObject } from "../utils";
 import {
   CompetitionNew,
   CompetitionNewSchema,
   DATE_DURATION_MIN,
   DATE_DURATION_MAX,
-  CompetitionTypeSchema,
-  CompetitionCategorySchema,
+  TYPE_OPTIONS,
+  CATEGORY_OPTIONS
 } from "../types";
+import { useCompetitionAdd } from "../cache/competitions";
 
 /**
  * Extract the logic that handles if admin user is logged-out
  */
-function useAuthAdmin() {
+function useAuthAdminChange() {
   // Some hooks require context from the *entire* router, not just the current route. To achieve type-safety here,
   // we must pass the `from` param to tell the hook our relative position in the route hierarchy.
   const navigate = useNavigate();
@@ -45,24 +46,16 @@ function useAuthAdmin() {
     if (!authUser) {
       navigate({ to: "/admin" });
     } else {
-      isAdmin().then((isAdmin) => !isAdmin && void navigate({ to: "/" }));
+      isAuthAdmin().then((isAdmin) => !isAdmin && void navigate({ to: "/" }));
     }
   }, [authUser, navigate]); // navigate is stable, but to make ESLINT happy
 }
 
-const types = enumValues(CompetitionTypeSchema.enum).map((val) => ({
-  value: val,
-  label: val,
-}));
-
-const categories = enumValues(CompetitionCategorySchema.enum).map((val) => ({
-  value: val,
-  label: val,
-}));
-
 export default function Admin() {
   // react to "admin" changes and navigate away if not authorized (not an admin) any more
-  useAuthAdmin();
+  useAuthAdminChange();
+
+  const competitionAddFn = useCompetitionAdd();
 
   return (
     <Flex align="center" justify="center" h="100vh">
@@ -85,7 +78,7 @@ export default function Admin() {
             balkan: false,
             international: false,
             type: undefined,
-            categories: undefined,
+            category: undefined,
           }}
           validate={(values) => {
             try {
@@ -103,11 +96,21 @@ export default function Admin() {
               }
             }
           }}
-          onSubmit={(values) => {
-            alert(JSON.stringify(values, null, 2));
+          onSubmit={async (values, formikHelpers) => {
+            // alert(JSON.stringify(values, null, 2));
+
+            // it should be already validated
+            try {
+              await competitionAddFn(values as CompetitionNew);
+              // reset it to initial state
+              formikHelpers.resetForm();
+            } finally {
+              // use the Formik built-in "isSubmitting" functionality
+              formikHelpers.setSubmitting(false);
+            }
           }}
         >
-          {({ /* values,  */ errors, touched, isValid }) => (
+          {({ /* values,  */ errors, touched, isValid, isSubmitting, s }) => (
             <Form>
               <VStack spacing={4} align="flex-start">
                 <FormControl isInvalid={!!errors.name && touched.name}>
@@ -128,7 +131,7 @@ export default function Admin() {
                       <FormLabel>Date</FormLabel>
                       <SingleDatepicker
                         name="date"
-                        date={field.value}  
+                        date={field.value}
                         onDateChange={(val) =>
                           form.setFieldValue(field.name, val)
                         }
@@ -191,14 +194,15 @@ export default function Admin() {
                 <Field name="type">
                   {({ field, form, meta }) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <FormLabel>Type(s)</FormLabel>
+                      <FormLabel>Types</FormLabel>
                       <Select
                         name="type"
                         useBasicStyles
                         isMulti
-                        options={types}
-                        value={types.filter((option) =>
-                          field.value?.includes(option.value) || false
+                        options={TYPE_OPTIONS}
+                        value={TYPE_OPTIONS.filter(
+                          (option) =>
+                            field.value?.includes(option.value) || false
                         )}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
@@ -214,17 +218,17 @@ export default function Admin() {
                   )}
                 </Field>
 
-                <Field name="categories">
+                <Field name="category">
                   {({ field, form, meta }) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>Categories</FormLabel>
                       <Select
-                        name="categories"
                         useBasicStyles
                         isMulti
-                        options={categories}
-                        value={categories.filter((option) =>
-                          field.value?.includes(option.value) || false
+                        options={CATEGORY_OPTIONS}
+                        value={CATEGORY_OPTIONS.filter(
+                          (option) =>
+                            field.value?.includes(option.value) || false
                         )}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
@@ -240,11 +244,40 @@ export default function Admin() {
                   )}
                 </Field>
 
-                <Field as={Checkbox} name="balkan">
+                {/* there's problem with formikHelpert.resetForm()  - it doesn't reset the chakra-ui Checkbox*/}
+                {/* <Field as={Checkbox} name="balkan">
                   Balkan
+                </Field> */}
+                <Field name="balkan">
+                  {({ field, form, meta }) => (
+                    <FormControl isInvalid={!!meta.error && meta.touched}>
+                      <Checkbox
+                        isChecked={field.value}
+                        onChange={(e) =>
+                          form.setFieldValue(field.name, e.target.checked)
+                        }
+                      >
+                        Balkan
+                      </Checkbox>
+                      <FormErrorMessage>{meta.error}</FormErrorMessage>
+                    </FormControl>
+                  )}
                 </Field>
-                <Field as={Checkbox} name="international">
-                  International
+
+                <Field name="international">
+                  {({ field, form, meta }) => (
+                    <FormControl isInvalid={!!meta.error && meta.touched}>
+                      <Checkbox
+                        isChecked={field.value}
+                        onChange={(e) =>
+                          form.setFieldValue(field.name, e.target.checked)
+                        }
+                      >
+                        International
+                      </Checkbox>
+                      <FormErrorMessage>{meta.error}</FormErrorMessage>
+                    </FormControl>
+                  )}
                 </Field>
 
                 <Button
@@ -252,7 +285,9 @@ export default function Admin() {
                   variant="solid"
                   width="full"
                   colorScheme="blue"
-                  isDisabled={!isValid || !Object.keys(touched).length}
+                  isDisabled={
+                    isSubmitting || !isValid || !Object.keys(touched).length
+                  }
                 >
                   Create Competition
                 </Button>

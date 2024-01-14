@@ -23,7 +23,7 @@ export function isAuth() {
   return !!queryClient.getQueryData<AuthUser>(["authUser"])?.user;
 }
 
-export async function isAdmin(): Promise<boolean> {
+export async function isAuthAdmin(): Promise<boolean> {
   const user = queryClient.getQueryData<AuthUser>(["authUser"])?.user;
 
   // "role" is a custom claim

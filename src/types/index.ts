@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { enumValues } from "../utils";
 
 export enum CompetitionType {
   Boulder = "Boulder",
@@ -25,7 +26,7 @@ export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
 //   name: string;
 //   type: CompetitionType | CompetitionType[];
 //   date: Date;
-//   categories: Category[];
+//   category: Category[];
 //   dateDuration?: number;
 //   balkan?: boolean;
 //   international?: boolean;
@@ -45,8 +46,9 @@ export const CompetitionNewSchema = z.object({
     .max(DATE_DURATION_MAX, `Max allowed is ${DATE_DURATION_MAX}`),
   balkan: z.boolean().optional(),
   international: z.boolean().optional(),
-  type: z.union([CompetitionTypeSchema, CompetitionTypeSchema.array().nonempty()]),
-  categories: CompetitionCategorySchema.array().nonempty(),
+  //type: z.union([CompetitionTypeSchema, CompetitionTypeSchema.array().nonempty()]),
+  type: CompetitionTypeSchema.array().nonempty(),
+  category: CompetitionCategorySchema.array().nonempty(),
 });
 
 export type CompetitionNew = z.infer<typeof CompetitionNewSchema>;
@@ -55,12 +57,26 @@ export type Competition = CompetitionNew & {
   id: string;
 };
 
+export const TYPE_OPTIONS = enumValues(CompetitionTypeSchema.enum).map(
+  (val) => ({
+    value: val,
+    label: val,
+  })
+);
+
+export const CATEGORY_OPTIONS = enumValues(CompetitionCategorySchema.enum).map(
+  (val) => ({
+    value: val,
+    label: val,
+  })
+);
+
 // const example: Competition = {
 //   id: "123456789",
 //   name: "Bonsist",
 //   type: [CompetitionType.Boulder],
 //   date: new Date(),
-//   categories: ["U12", "YouthA"],
+//   category: ["U12", "YouthA"],
 // };
 
 export type Func = () => void;
