@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useSetState } from "react-use";
-import { Text, Checkbox, HStack } from "@chakra-ui/react";
+import { Box, Checkbox, HStack } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, useFormikContext } from "formik";
 
@@ -23,7 +23,7 @@ type CompetitionFilter = Partial<{
 
 const TYPE_OPTIONS_WITH_NO_OPTION = [
   {
-    value:  undefined,
+    value: undefined,
     label: "Any",
   },
   ...TYPE_OPTIONS,
@@ -38,19 +38,19 @@ const CATEGORY_OPTIONS_WITH_NO_OPTION = [
 ];
 
 const initialFilter: CompetitionFilter = {
-    balkan: undefined,
-    international: undefined,
-    type: undefined,
-    category: undefined,
-  };
+  balkan: undefined,
+  international: undefined,
+  type: undefined,
+  category: undefined,
+};
 
 export default function Home() {
-  const competitions = useCompetitions() ?? [];
+  const competitions = useCompetitions();
 
   const [filter, setFilter] = useSetState(initialFilter);
 
   const competitionsFiltered = useMemo(() => {
-    let compsFiltered = competitions;
+    let compsFiltered = competitions ?? [];
     // use 'balkan' and 'international' flags as only filters for "checked", e.g. unchecked means ANY
     if (filter.balkan) {
       compsFiltered = compsFiltered.filter(
@@ -77,27 +77,30 @@ export default function Home() {
 
   return (
     <>
-      <Filter filter={filter} setFilter={setFilter} />
-      {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
-      <Text as="sub" mb={2}>Competitions : {competitionsFiltered.length}</Text>
+      <Box mb={2}>
+        <Filter filter={filter} setFilter={setFilter} />
+        {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
+      </Box>
 
-      {/* <Calendar /> */}
+      <Calendar competitions={competitionsFiltered} />
     </>
   );
 }
 
-function Filter({
-  filter,
-  setFilter,
-}: {
+type FilterProps = {
   filter: CompetitionFilter;
   setFilter: (v: CompetitionFilter) => void;
-}) {
+};
+
+function Filter({ filter, setFilter }: FilterProps) {
   return (
-    <Formik<CompetitionFilter> initialValues={filter} onSubmit={values => {
+    <Formik<CompetitionFilter>
+      initialValues={filter}
+      onSubmit={(values) => {
         // keep the undefined values
-        setFilter({...initialFilter, ...values});
-    }}>
+        setFilter({ ...initialFilter, ...values });
+      }}
+    >
       <Form>
         <HStack>
           <Field name="type">

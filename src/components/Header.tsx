@@ -80,7 +80,7 @@ export default function Header() {
   // divs/elements inherit it implicitly 
   const theme = useTheme();
   return (
-    <VStack mb={2} position="sticky" top={0} bg={theme.styles.global.body.bg}>
+    <VStack mb={2} position="sticky" top={0} zIndex={2} bg={theme.styles.global.body.bg}>
       <HStack w="100%" mt={2}>
         <HeaderLink linkProps={{ to: "/" }} label="Home" />
         {!!authUser.user && (
