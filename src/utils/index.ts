@@ -26,3 +26,16 @@ export function enumKeys<O extends object, K extends keyof O>(obj: O): K[] {
 export function enumValues<O extends Record<string, string>>(obj: O): string[] {
   return Object.values(obj);
 }
+
+export function enumForEach<O extends object, K extends keyof O>(
+  obj: O,
+  callback: (item: O[K]) => void
+): void {
+  for (const key of enumKeys(obj)) {
+    callback(obj[key as K]);
+  }
+}
+
+export function missingHandling(value: never): never {
+  throw new Error(`Not handled value ${value}`);
+}

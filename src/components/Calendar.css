@@ -1,0 +1,22 @@
+.fc-event {
+    color: red;
+}
+
+.fc-day {
+    --fc-bg-event-opacity: 0.7;
+}
+
+.fc .fc-daygrid-body {
+    z-index: unset;
+}
+.fc .fc-daygrid-day-bg .fc-bg-event {
+    z-index: unset;
+}
+
+.fc .fc-daygrid-day-number {
+    z-index: 1;
+}
+
+/* the days on the top-right corner  */
+.fc-daygrid-day-top {}
+.fc-daygrid-day-number {}

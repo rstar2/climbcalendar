@@ -13,6 +13,7 @@ import {
   TYPE_OPTIONS,
   CATEGORY_OPTIONS,
 } from "../types";
+import { getColor, getColorCompetitionType } from "../utils/styles";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;
@@ -82,7 +83,11 @@ export default function Home() {
         {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
       </Box>
 
-      <Calendar competitions={competitionsFiltered} />
+      <Calendar
+        competitions={competitionsFiltered}
+        mainType={filter.type}
+        mainCategory={filter.category}
+      />
     </>
   );
 }
@@ -114,6 +119,14 @@ function Filter({ filter, setFilter }: FilterProps) {
                 onChange={(option) => {
                   form.setFieldValue(field.name, option.value);
                 }}
+                chakraStyles={{
+                  option: (provided, state) => ({
+                    ...provided,
+                    color: getColorCompetitionType(state.value),
+                  }),
+                }}
+                // useful for testing CSS styles in order to make it always open
+                // menuIsOpen
               />
             )}
           </Field>

@@ -8,7 +8,10 @@ import {
   Text,
   Divider,
   useTheme,
+  useColorMode,
+  IconButton,
 } from "@chakra-ui/react";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 import {
   useAuthUser,
@@ -77,10 +80,18 @@ export default function Header() {
   // get the default/global background and set it as solid color to the header,
   // because it's sticky and when scroll-down it seems "transparent",
   // this is "normal" (expected) because only the body has set this background-color and all other
-  // divs/elements inherit it implicitly 
+  // divs/elements inherit it implicitly
   const theme = useTheme();
+  const { colorMode, toggleColorMode } = useColorMode();
+  theme;
   return (
-    <VStack mb={2} position="sticky" top={0} zIndex={2} bg={theme.styles.global.body.bg}>
+    <VStack
+      mb={2}
+      position="sticky"
+      top={0}
+      zIndex={2}
+      bg={theme.styles.global.body.bg}
+    >
       <HStack w="100%" mt={2}>
         <HeaderLink linkProps={{ to: "/" }} label="Home" />
         {!!authUser.user && (
@@ -101,6 +112,12 @@ export default function Header() {
           ) : (
             <Button onClick={() => logout()}>Logout</Button>
           ))}
+
+        <IconButton
+          onClick={() => toggleColorMode()}
+          icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+          aria-label="Toggle dark mode"
+        ></IconButton>
       </HStack>
       <Divider />
     </VStack>
