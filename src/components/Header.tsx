@@ -32,6 +32,7 @@ import {
 
 import { GoogleIcon } from "./ProviderIcons";
 
+
 export default function Header() {
   const authUser = useAuthUser();
 
@@ -103,7 +104,7 @@ function DrawerLogin() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">Login</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Login for Admins</DrawerHeader>
 
           <DrawerBody>
             <LoginLinks />

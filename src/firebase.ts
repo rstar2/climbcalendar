@@ -172,7 +172,7 @@ export type Doc = Readonly<{
 }>;
 
 /**
- * Parse all users/activities
+ * Parse any documents
  */
 export const parseDocs = (snapshot: QuerySnapshot): Doc[] => {
   const docs: Doc[] = [];
