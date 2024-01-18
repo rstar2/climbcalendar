@@ -9,6 +9,13 @@ firebase.onAuthStateChanged((user) => {
     isKnown: true,
     user: user ?? undefined,
   });
+
+  const isAdminPromise: Promise<boolean> = !user
+    ? Promise.resolve(false)
+    : isAuthAdmin();
+  isAdminPromise.then((isAdmin) =>
+    queryClient.setQueryData<boolean>(["authUser", "admin"], isAdmin)
+  );
 });
 
 type AuthUser = {
@@ -48,6 +55,20 @@ export function useAuthUser() {
       isKnown: false,
       user: undefined,
     } as AuthUser,
+  });
+  return data;
+}
+
+/**
+ * Query for whether the auth user is admin one
+ */
+export function useAuthAdmin() {
+  const { data } = useQuery({
+    queryKey: ["authUser", "admin"],
+    queryFn: () => Promise.reject(new Error("Not used")),
+    enabled: false,
+    staleTime: Infinity,
+    initialData: false,
   });
   return data;
 }

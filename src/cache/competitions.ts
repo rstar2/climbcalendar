@@ -70,22 +70,44 @@ export function useCompetitionAdd() {
 }
 
 /**
- * Mutation for "deleting " a Competition.
+ * Mutation for "deleting" a Competition.
  */
 export function useCompetitionDelete() {
+  const mutation = useMutation({
+    mutationFn: async (competitionId: string) => {
+      const isAdmin = await isAuthAdmin();
+      if (!isAdmin)
+        throw new Error("Sorry, only admin can delete competitions");
+      return firebase.deleteDoc(competitionsCol, competitionId);
+    },
+    // meta is used for success/failed notification on mutation result
+    meta: {
+      action: ["Competition", "Delete"],
+    },
+  });
+
+  // if needed can return the whole mutation, like loading, and error state
+  return mutation.mutateAsync;
+}
+
+/**
+ * Mutation for "editing" a Competition.
+ */
+export function useCompetitionEdit() {
     const mutation = useMutation({
-      mutationFn: async (competitionId: string) => {
+      mutationFn: async ({id: competitionId, competition} : {id: string, competition: CompetitionNew}) => {
         const isAdmin = await isAuthAdmin();
-        if (!isAdmin) throw new Error("Sorry, only admin can delete competitions");
-        return firebase.deleteDoc(competitionsCol, competitionId);
+        if (!isAdmin)
+          throw new Error("Sorry, only admin can delete competitions");
+        
+        return firebase.updateDoc(competitionsCol, competitionId, competition);
       },
       // meta is used for success/failed notification on mutation result
       meta: {
-        action: ["Competition", "Delete"],
+        action: ["Competition", "Edit"],
       },
     });
   
     // if needed can return the whole mutation, like loading, and error state
     return mutation.mutateAsync;
   }
-  

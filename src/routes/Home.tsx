@@ -1,10 +1,34 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSetState } from "react-use";
-import { Box, Checkbox, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Checkbox,
+  HStack,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  AlertDialogCloseButton,
+} from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, useFormikContext } from "formik";
 
-import { useCompetitions } from "../cache/competitions";
+import {
+  useCompetitions,
+  useCompetitionDelete,
+  useCompetitionEdit,
+} from "../cache/competitions";
 
 import Calendar from "../components/Calendar";
 import {
@@ -12,8 +36,11 @@ import {
   CompetitionType,
   TYPE_OPTIONS,
   CATEGORY_OPTIONS,
+  Competition,
+  CompetitionNew,
 } from "../types";
-import { getColor, getColorCompetitionType } from "../utils/styles";
+import { getColorCompetitionType } from "../utils/styles";
+import CompetitionAddEdit from "../components/CompetitionAddEdit";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;
@@ -47,6 +74,8 @@ const initialFilter: CompetitionFilter = {
 
 export default function Home() {
   const competitions = useCompetitions();
+  const editCompetition = useCompetitionEdit();
+  const deleteCompetition = useCompetitionDelete();
 
   const [filter, setFilter] = useSetState(initialFilter);
 
@@ -76,10 +105,26 @@ export default function Home() {
     return compsFiltered;
   }, [competitions, filter]);
 
+  // controls the Edit dialog
+  const [competitionEdit, setCompetitionEdit] = useState<
+    Competition | undefined
+  >();
+
+  // controls the DeleteConfirm dialog
+  const [competitionIdDelete, setCompetitionIdDelete] = useState<
+    string | undefined
+  >();
+
+  const handleEditCompetition = (id: string) => {
+    // open a new modal and on OK call edit
+    const competition = competitions?.find((comp) => comp.id === id);
+    if (competition) setCompetitionEdit(competition);
+  };
+
   return (
     <>
       <Box mb={2}>
-        <Filter filter={filter} setFilter={setFilter} />
+        <FormCompetitionFilter filter={filter} setFilter={setFilter} />
         {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
       </Box>
 
@@ -87,17 +132,41 @@ export default function Home() {
         competitions={competitionsFiltered}
         mainType={filter.type}
         mainCategory={filter.category}
+        onEdit={handleEditCompetition}
+        onDelete={setCompetitionIdDelete}
+      />
+
+      <DialogCompetitionDeleteConfirm
+        id={competitionIdDelete}
+        onConfirm={(confirmed) => {
+          setCompetitionIdDelete(undefined);
+          if (confirmed) deleteCompetition(competitionIdDelete!);
+        }}
+      />
+      <DialogCompetitionEdit
+        competition={competitionEdit}
+        onConfirm={(competitionNew) => {
+          setCompetitionEdit(undefined);
+          if (competitionNew)
+            editCompetition({
+              id: competitionEdit!.id,
+              competition: competitionNew,
+            });
+        }}
       />
     </>
   );
 }
 
-type FilterProps = {
+type FormCompetitionFilterProps = {
   filter: CompetitionFilter;
   setFilter: (v: CompetitionFilter) => void;
 };
 
-function Filter({ filter, setFilter }: FilterProps) {
+function FormCompetitionFilter({
+  filter,
+  setFilter,
+}: FormCompetitionFilterProps) {
   return (
     <Formik<CompetitionFilter>
       initialValues={filter}
@@ -155,17 +224,101 @@ function Filter({ filter, setFilter }: FilterProps) {
         </HStack>
 
         {/* headless component that wraps the auto-submit functionality */}
-        <AutoSubmit />
+        <FormAutoSubmit />
       </Form>
     </Formik>
   );
 }
 
-function AutoSubmit() {
+function FormAutoSubmit() {
   const formik = useFormikContext();
   useEffect(() => {
     formik.submitForm();
   }, [formik.values]); // formik is stable
 
   return null;
+}
+
+type DialogCompetitionEditProps = {
+  competition?: Competition;
+  onConfirm: (competitionNew?: CompetitionNew) => void;
+};
+function DialogCompetitionEdit({
+  competition,
+  onConfirm,
+}: DialogCompetitionEditProps) {
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: !!competition,
+    onClose: onConfirm,  // will pass undefined e.g. onConfirm(undefined)
+  });
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={"4xl"}
+      scrollBehavior="inside"
+      isCentered
+      //   motionPreset="slideInBottom"
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Edit Competition</ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody>
+          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth/>;
+        </ModalBody>
+
+        <ModalFooter>
+          <Button onClick={onClose}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+type DialogCompetitionDeleteConfirmProps = {
+  id?: string;
+  onConfirm: (confirmed: boolean) => void;
+};
+function DialogCompetitionDeleteConfirm({
+  id,
+  onConfirm,
+}: DialogCompetitionDeleteConfirmProps) {
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: !!id,
+    onClose: () => onConfirm(false),
+  });
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <AlertDialog
+      isOpen={isOpen}
+      onClose={onClose}
+      leastDestructiveRef={cancelDeleteRef}
+      isCentered
+      //   motionPreset="slideInBottom"
+    >
+      <AlertDialogOverlay />
+      <AlertDialogContent>
+        <AlertDialogHeader>Delete Competition</AlertDialogHeader>
+
+        <AlertDialogCloseButton />
+
+        <AlertDialogBody>
+          Are you sure? You can't undo this action afterwards.
+        </AlertDialogBody>
+
+        <AlertDialogFooter>
+          <Button ref={cancelDeleteRef} onClick={() => onConfirm(false)}>
+            Cancel
+          </Button>
+          <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
+            Delete
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }

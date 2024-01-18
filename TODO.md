@@ -1,9 +1,9 @@
 # TODOs
 
-- [ ] Style the full-calendar - with plain CSS
+- [x] Style the full-calendar - with plain CSS (use the ChakraUI CSS properties)
   - [ ] Support dark theme
-- [ ] Delete a competition/event - admin only
-- [ ] Edit a competition/event - admin only, in a popup
+- [x] Delete a competition/event - admin only - with confirm
+- [x] Edit a competition/event - admin onl - with a popup
 - [ ] Mobile UI
 - [ ] Make it PWA - at least support for "standalone-app"
 - [ ] Integrate Google Calendar API - first user has to authorize un OAuth App

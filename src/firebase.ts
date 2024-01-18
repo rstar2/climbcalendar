@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   addDoc,
+  setDoc,
   deleteDoc,
   onSnapshot,
   Firestore,
@@ -131,7 +132,17 @@ class Firebase {
   }
 
   async deleteDoc(collectionRef: CollectionReference, docId: string) {
-    return deleteDoc(doc(collectionRef, docId));
+    const docRef = doc(collectionRef, docId);
+    return deleteDoc(docRef);
+  }
+
+  async updateDoc<AppModelType, DbModelType extends DocumentData>(
+    collectionRef: CollectionReference<AppModelType, DbModelType>,
+    docId: string,
+    data: WithFieldValue<AppModelType>
+  ) {
+    const docRef = doc(collectionRef, docId);
+    return setDoc(docRef, data);
   }
 
   onSnapshot(

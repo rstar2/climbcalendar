@@ -41,9 +41,11 @@ const ButtonStyle = defineStyleConfig({
   // The variants will use the color scheme, but colors can be overridden
   variants: {
     outline: {
-      border: "3px dashed",
+      border: "1px dashed",
+      // let use the default colors and allow the "colorScheme" prop to take control,
+      // if colors are set explicitly, then <Button colorScheme="blue" /> will not be able to set "blue" colors
       //   color: "red.500",
-      borderColor: "brand.500",
+      //   borderColor: "brand.500",
     },
     anything: {
       //   backgroundColor: "red",     // "red" -- just the css string

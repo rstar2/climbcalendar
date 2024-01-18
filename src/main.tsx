@@ -7,14 +7,14 @@ import { CacheProvider } from "./cache";
 // the tanstack-router provider
 import { RouterProvider } from "./routes";
 
-// import theme from "./theme";
+import theme from "./theme";
 
 import "./main.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CacheProvider>
-      <ChakraProvider resetCSS /* theme={theme} */>
+      <ChakraProvider resetCSS theme={theme}>
         <RouterProvider />
       </ChakraProvider>
     </CacheProvider>

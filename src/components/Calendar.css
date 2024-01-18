@@ -1,10 +1,17 @@
-.fc-event {
-    color: red;
-}
+/* Try to use the ChakraUI colors and etc... (e.g. use its CSS properties */
 
 .fc-day {
     --fc-bg-event-opacity: 0.7;
+    font-size: var(--chakra-fontSizes-sm);
+    color: var(--chakra-colors-chakra-text);
 }
+.chakra-ui-dark .fc-day {
+    color: var(--chakra-colors-chakra-inverse-text);
+}
+.chakra-ui-dark .fc-day.fc-col-header-cell {
+    color: var(--chakra-colors-chakra-text);
+}
+
 
 .fc .fc-daygrid-body {
     z-index: unset;
@@ -16,7 +23,3 @@
 .fc .fc-daygrid-day-number {
     z-index: 1;
 }
-
-/* the days on the top-right corner  */
-.fc-daygrid-day-top {}
-.fc-daygrid-day-number {}
