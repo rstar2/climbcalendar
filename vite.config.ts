@@ -23,8 +23,8 @@ export default defineConfig({
       // which uses the `pwa-assets-generator` node lib
       manifest: {
         name: "Activities",
-        short_name: "Calendar Activities",
-        description: "Log user's activities",
+        short_name: "Climb Calendar",
+        description: "Climbing competitions calendar",
         icons: [
           {
             src: "/pwa-192x192.png",

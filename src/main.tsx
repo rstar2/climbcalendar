@@ -11,6 +11,8 @@ import theme from "./theme";
 
 import "./main.css";
 
+import "./registerSW.ts";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CacheProvider>

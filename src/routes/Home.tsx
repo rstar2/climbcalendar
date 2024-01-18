@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ElementRef, useEffect, useMemo, useRef, useState } from "react";
 import { useSetState } from "react-use";
 import {
   Box,
@@ -294,7 +294,7 @@ function DialogCompetitionDeleteConfirm({
     isOpen: !!id,
     onClose: () => onConfirm(false),
   });
-  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
+  const cancelDeleteRef = useRef<ElementRef<"button">>(null);
 
   return (
     <AlertDialog
