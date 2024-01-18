@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -38,6 +39,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.4.2",
+    "vite-plugin-pwa": "^0.17.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -47,6 +49,7 @@
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
+    "@vite-pwa/assets-generator": "^0.2.3",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
