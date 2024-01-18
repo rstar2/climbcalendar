@@ -101,7 +101,7 @@ export default function Calendar({
 }: CalendarProps) {
   return (
     <>
-      <Heading mb={2}>
+      <Heading mb={2} textAlign={"center"}>
         {THIS_YEAR} ({competitions.length})
       </Heading>
       <FullCalendar

@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
-
 import { useAuthAdmin } from "../cache/auth";
-
 import { useCompetitionAdd } from "../cache/competitions";
 import CompetitionAddEdit from "../components/CompetitionAddEdit";
 

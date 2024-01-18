@@ -3,7 +3,7 @@ import { useSetState } from "react-use";
 import {
   Box,
   Checkbox,
-  HStack,
+  Stack,
   AlertDialog,
   AlertDialogOverlay,
   AlertDialogContent,
@@ -20,6 +20,7 @@ import {
   ModalBody,
   ModalFooter,
   AlertDialogCloseButton,
+  Divider,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
@@ -123,9 +124,10 @@ export default function Home() {
 
   return (
     <>
-      <Box mb={2}>
+      <Box my={4}>
         <FormCompetitionFilter filter={filter} setFilter={setFilter} />
         {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
+        <Divider mt={4}/>
       </Box>
 
       <Calendar
@@ -176,7 +178,8 @@ function FormCompetitionFilter({
       }}
     >
       <Form>
-        <HStack>
+        {/* responsive direction - on small use as column, on bigger as row */}
+        <Stack direction={['column', 'row']} >
           <Field name="type">
             {({ field, form } : FieldProps) => (
               <Select
@@ -222,7 +225,7 @@ function FormCompetitionFilter({
           <Field as={Checkbox} name="international">
             International
           </Field>
-        </HStack>
+        </Stack>
 
         {/* headless component that wraps the auto-submit functionality */}
         <FormAutoSubmit />

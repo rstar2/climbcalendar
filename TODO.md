@@ -4,7 +4,7 @@
   - [ ] ~~Support dark theme~~
 - [x] Delete a competition/event - admin only - with confirm
 - [x] Edit a competition/event - admin onl - with a popup
-- [ ] Mobile UI
+- [x] Mobile UI
 - [x] Make it PWA - at least support for "standalone-app"
 - [ ] Integrate Google Calendar API - first user has to authorize an OAuth App
   - [ ] Publish the OAuth app to Google otherwise only test users could use it

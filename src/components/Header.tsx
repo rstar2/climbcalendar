@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, LinkProps } from "@tanstack/react-router";
 import {
+  useDisclosure,
   HStack,
   VStack,
   Button,
@@ -10,8 +11,17 @@ import {
   useTheme,
   useColorMode,
   IconButton,
+  Spacer,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  Show,
+  Stack,
 } from "@chakra-ui/react";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import {
   useAuthUser,
@@ -21,9 +31,90 @@ import {
 } from "../cache/auth";
 
 import { GoogleIcon } from "./ProviderIcons";
-import Expander from "./Expander";
 
 export default function Header() {
+  const authUser = useAuthUser();
+
+  // get the default/global background and set it as solid color to the header,
+  // because it's sticky and when scroll-down it seems "transparent",
+  // this is "normal" (expected) because only the body has set this background-color and all other
+  // divs/elements inherit it implicitly
+  const theme = useTheme();
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  return (
+    <VStack
+      mb={2}
+      position="sticky"
+      top={0}
+      zIndex={2}
+      bg={theme.styles.global.body.bg}
+    >
+      <HStack w="100%" mt={2} gap="2">
+        <Show below="sm">
+          <DrawerLogin />
+        </Show>
+
+        <HeaderLink linkProps={{ to: "/" }} label="Home" />
+        {!!authUser.user && (
+          <HeaderLink linkProps={{ to: "/admin" }} label="Admin" />
+        )}
+
+        <Spacer />
+
+        <Show above="sm">
+          <LoginLinks />
+        </Show>
+
+        <IconButton
+          onClick={() => toggleColorMode()}
+          icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+          aria-label="Toggle dark mode"
+        ></IconButton>
+      </HStack>
+      <Divider />
+    </VStack>
+  );
+}
+
+function HeaderLink({
+  linkProps,
+  label,
+}: {
+  linkProps: LinkProps;
+  label: string;
+}) {
+  return (
+    <ChakraLink as="div">
+      <Link {...linkProps}>
+        {({ isActive }) => (isActive ? <Text as="b">{label}</Text> : label)}
+      </Link>
+    </ChakraLink>
+  );
+}
+
+function DrawerLogin() {
+  const { isOpen, onClose, onToggle } = useDisclosure();
+
+  return (
+    <>
+      <HamburgerIcon onClick={onToggle} />
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader borderBottomWidth="1px">Login</DrawerHeader>
+
+          <DrawerBody>
+            <LoginLinks />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}
+
+function LoginLinks() {
   //   // ------------------ Google Login ------------------
   //   // https://developers.google.com/identity/gsi/web/reference/js-reference
   //   useEffect(() => {
@@ -77,65 +168,21 @@ export default function Header() {
 
   // ------------------ END Firebase auth ------------------
 
-  // get the default/global background and set it as solid color to the header,
-  // because it's sticky and when scroll-down it seems "transparent",
-  // this is "normal" (expected) because only the body has set this background-color and all other
-  // divs/elements inherit it implicitly
-  const theme = useTheme();
-  const { colorMode, toggleColorMode } = useColorMode();
-  theme;
   return (
-    <VStack
-      mb={2}
-      position="sticky"
-      top={0}
-      zIndex={2}
-      bg={theme.styles.global.body.bg}
-    >
-      <HStack w="100%" mt={2}>
-        <HeaderLink linkProps={{ to: "/" }} label="Home" />
-        {!!authUser.user && (
-          <HeaderLink linkProps={{ to: "/admin" }} label="Admin" />
-        )}
+    <Stack direction={["column", "row"]}>
+      {/* the GoogleLogin button will be rendered here by GIS */}
+      {/* <Box id="g-signin-button" display="inline-block" /> */}
 
-        <Expander />
-        {/* the GoogleLogin button will be rendered here by GIS */}
-        {/* <Box id="g-signin-button" display="inline-block" /> */}
+      <Button leftIcon={<GoogleIcon />} onClick={handleLoginWithGoogle}>
+        Login with Google
+      </Button>
 
-        <Button leftIcon={<GoogleIcon />} onClick={handleLoginWithGoogle}>
-          Login with Google
-        </Button>
-
-        {authUser.isKnown &&
-          (!authUser.user ? (
-            <Button onClick={() => loginWithGoogle()}>Login</Button>
-          ) : (
-            <Button onClick={() => logout()}>Logout</Button>
-          ))}
-
-        <IconButton
-          onClick={() => toggleColorMode()}
-          icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
-          aria-label="Toggle dark mode"
-        ></IconButton>
-      </HStack>
-      <Divider />
-    </VStack>
-  );
-}
-
-function HeaderLink({
-  linkProps,
-  label,
-}: {
-  linkProps: LinkProps;
-  label: string;
-}) {
-  return (
-    <ChakraLink as="div">
-      <Link {...linkProps}>
-        {({ isActive }) => (isActive ? <Text as="b">{label}</Text> : label)}
-      </Link>
-    </ChakraLink>
+      {authUser.isKnown &&
+        (!authUser.user ? (
+          <Button onClick={() => loginWithGoogle()}>Login</Button>
+        ) : (
+          <Button onClick={() => logout()}>Logout</Button>
+        ))}
+    </Stack>
   );
 }
