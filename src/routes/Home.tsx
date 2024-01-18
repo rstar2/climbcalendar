@@ -22,7 +22,7 @@ import {
   AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
-import { Formik, Form, Field, useFormikContext } from "formik";
+import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
 import {
   useCompetitions,
@@ -94,12 +94,12 @@ export default function Home() {
     }
     if (filter.type !== undefined) {
       compsFiltered = compsFiltered.filter((comp) =>
-        comp.type.includes(filter.type)
+        comp.type.includes(filter.type!)
       );
     }
     if (filter.category !== undefined) {
       compsFiltered = compsFiltered.filter((comp) =>
-        comp.category.includes(filter.category)
+        comp.category.includes(filter.category!)
       );
     }
     return compsFiltered;
@@ -178,7 +178,7 @@ function FormCompetitionFilter({
       <Form>
         <HStack>
           <Field name="type">
-            {({ field, form }) => (
+            {({ field, form } : FieldProps) => (
               <Select
                 useBasicStyles
                 options={TYPE_OPTIONS_WITH_NO_OPTION}
@@ -186,11 +186,12 @@ function FormCompetitionFilter({
                   (option) => field.value === option.value
                 )}
                 onChange={(option) => {
-                  form.setFieldValue(field.name, option.value);
+                  form.setFieldValue(field.name, option!.value);
                 }}
                 chakraStyles={{
                   option: (provided, state) => ({
                     ...provided,
+                    // @ts-expect-error (state.value actually exists, same as getValue())
                     color: getColorCompetitionType(state.value),
                   }),
                 }}
@@ -201,7 +202,7 @@ function FormCompetitionFilter({
           </Field>
 
           <Field name="category">
-            {({ field, form }) => (
+            {({ field, form }: FieldProps) => (
               <Select
                 useBasicStyles
                 options={CATEGORY_OPTIONS_WITH_NO_OPTION}
@@ -209,7 +210,7 @@ function FormCompetitionFilter({
                   (option) => field.value === option.value
                 )}
                 onChange={(option) => {
-                  form.setFieldValue(field.name, option.value);
+                  form.setFieldValue(field.name, option!.value);
                 }}
               />
             )}

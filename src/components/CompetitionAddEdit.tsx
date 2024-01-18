@@ -1,6 +1,6 @@
 import { Select } from "chakra-react-select";
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, type FieldProps } from "formik";
 import { ZodError } from "zod";
 import {
   Box,
@@ -110,10 +110,11 @@ export default function CompetitionAddEdit({
                 </FormControl>
 
                 <Field name="date">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl
                       isInvalid={!!meta.error && meta.touched}
                       onBlur={(e) => {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (e.target as any).name = field.name;
                         field.onBlur(e);
                       }}
@@ -132,7 +133,7 @@ export default function CompetitionAddEdit({
                 </Field>
 
                 <Field name="dateDuration">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>Duration</FormLabel>
                       <Slider
@@ -146,6 +147,7 @@ export default function CompetitionAddEdit({
                         onChange={(val) => form.setFieldValue(field.name, val)}
                         // implement onBlur, so that "touched.xxx" to work properly
                         onBlur={(e) => {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           (e.target as any).name = field.name;
                           field.onBlur(e);
                         }}
@@ -182,7 +184,7 @@ export default function CompetitionAddEdit({
                 </Field>
 
                 <Field name="type">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>Types</FormLabel>
                       <Select
@@ -199,6 +201,7 @@ export default function CompetitionAddEdit({
                           form.setFieldValue(field.name, values);
                         }}
                         onBlur={(e) => {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           (e.target as any).name = field.name;
                           field.onBlur(e);
                         }}
@@ -209,7 +212,7 @@ export default function CompetitionAddEdit({
                 </Field>
 
                 <Field name="category">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>Categories</FormLabel>
                       <Select
@@ -225,6 +228,7 @@ export default function CompetitionAddEdit({
                           form.setFieldValue(field.name, values);
                         }}
                         onBlur={(e) => {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           (e.target as any).name = field.name;
                           field.onBlur(e);
                         }}
@@ -239,7 +243,7 @@ export default function CompetitionAddEdit({
                       Balkan
                     </Field> */}
                 <Field name="balkan">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <Checkbox
                         isChecked={field.value}
@@ -255,7 +259,7 @@ export default function CompetitionAddEdit({
                 </Field>
 
                 <Field name="international">
-                  {({ field, form, meta }) => (
+                  {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <Checkbox
                         isChecked={field.value}
@@ -277,7 +281,9 @@ export default function CompetitionAddEdit({
                   colorScheme="blue"
                   isDisabled={
                     // when creating let at least on touched field, on edit not such need
-                    isSubmitting || !isValid || (!competition && !Object.keys(touched).length)
+                    isSubmitting ||
+                    !isValid ||
+                    (!competition && !Object.keys(touched).length)
                   }
                 >
                   {competition ? "Edit Competition" : "Create Competition"}

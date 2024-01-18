@@ -54,7 +54,7 @@ function fcDate(competition: Competition, end = false): string | undefined {
 function mapCompetition(
   competition: Competition,
   mainType?: CompetitionType,
-  mainCategory?: CompetitionCategory
+  _mainCategory?: CompetitionCategory
 ) {
   return {
     id: competition.id,
@@ -130,10 +130,7 @@ export default function Calendar({
           mapCompetition(comp, mainType, mainCategory)
         )}
         // callback only for events click
-        eventClick={(info) => {
-          // TODO: allow edit by admin
-          //   alert("Clicked on: " + info.event.id);
-        }}
+        // eventClick={(info) => alert("Clicked on: " + info.event.id)}
         eventDisplay="background"
         displayEventTime={true}
 
