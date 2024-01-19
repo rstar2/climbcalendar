@@ -20,6 +20,9 @@ import {
   DrawerBody,
   Show,
   Stack,
+  Heading,
+  DrawerFooter,
+  Box,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
 
@@ -31,11 +34,9 @@ import {
 } from "../cache/auth";
 
 import { GoogleIcon } from "./ProviderIcons";
-
+import Copyright from "./Copyright";
 
 export default function Header() {
-  const authUser = useAuthUser();
-
   // get the default/global background and set it as solid color to the header,
   // because it's sticky and when scroll-down it seems "transparent",
   // this is "normal" (expected) because only the body has set this background-color and all other
@@ -56,15 +57,14 @@ export default function Header() {
           <DrawerLogin />
         </Show>
 
-        <HeaderLink linkProps={{ to: "/" }} label="Home" />
-        {!!authUser.user && (
-          <HeaderLink linkProps={{ to: "/admin" }} label="Admin" />
-        )}
-
-        <Spacer />
+        <Heading size={["md", "xl"]}>Climbing Calendar</Heading>
 
         <Show above="sm">
-          <LoginLinks />
+            {/* vertical Divider must have height */}
+          <Divider orientation="vertical" h={10}/>
+          <Box flexGrow={1}>
+            <NavLinks />
+          </Box>
         </Show>
 
         <IconButton
@@ -104,18 +104,22 @@ function DrawerLogin() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">Login for Admins</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
 
           <DrawerBody>
-            <LoginLinks />
+            <NavLinks isSmall />
           </DrawerBody>
+
+          <DrawerFooter>
+            <Copyright display={["block", "none"]} />
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
   );
 }
 
-function LoginLinks() {
+function NavLinks({ isSmall = false }: { isSmall?: boolean }) {
   //   // ------------------ Google Login ------------------
   //   // https://developers.google.com/identity/gsi/web/reference/js-reference
   //   useEffect(() => {
@@ -155,32 +159,48 @@ function LoginLinks() {
   const loginWithGoogle = useAuthLoginWithGoogle();
   const logout = useAuthLogout();
 
-  useEffect(() => {
-    authUser.user
-      ?.getIdToken()
-      .then((idToken) =>
-        console.log("Encoded Firebase JWT ID token: " + idToken)
-      );
-  }, [authUser]);
+  //   useEffect(() => {
+  //     authUser.user
+  //       ?.getIdToken()
+  //       .then((idToken) =>
+  //         console.log("Encoded Firebase JWT ID token: " + idToken)
+  //       );
+  //   }, [authUser]);
 
-  function handleLoginWithGoogle() {
-    alert("Login with Google");
-  }
+  //   function handleLoginWithGoogle() {
+  //     alert("Login with Google");
+  //   }
 
   // ------------------ END Firebase auth ------------------
 
   return (
-    <Stack direction={["column", "row"]}>
+    <Stack direction={["column", "row"]} alignItems={["center", "end"]}>
+      {/* show "Admin" only for admins, but then makes sense to show also "Home" only for admins as
+        there's no point if its the only route possible*/}
+      {!!authUser.user && (
+        <>
+          <HeaderLink linkProps={{ to: "/" }} label="Home" />
+          <HeaderLink linkProps={{ to: "/add" }} label="Add" />
+        </>
+      )}
+
+      <Spacer />
+
       {/* the GoogleLogin button will be rendered here by GIS */}
       {/* <Box id="g-signin-button" display="inline-block" /> */}
 
-      <Button leftIcon={<GoogleIcon />} onClick={handleLoginWithGoogle}>
-        Login with Google
-      </Button>
+      {/* --------------- */}
 
+      {/* Firebase Login(s) */}
+
+      {/* <Button leftIcon={<GoogleIcon />} onClick={handleLoginWithGoogle}>
+        Login with Google
+      </Button> */}
       {authUser.isKnown &&
         (!authUser.user ? (
-          <Button onClick={() => loginWithGoogle()}>Login</Button>
+          <Button leftIcon={<GoogleIcon />} onClick={() => loginWithGoogle()}>
+            Admin Login
+          </Button>
         ) : (
           <Button onClick={() => logout()}>Logout</Button>
         ))}

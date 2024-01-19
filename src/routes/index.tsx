@@ -10,7 +10,7 @@ import {
 
 import Root from "./Root";
 import Home from "./Home";
-import Admin from "./Admin";
+import CompetitionAdd from "./CompetitionAdd";
 import { isAuth } from "../cache/auth";
 
 // Vite (and Webpack) process the "process.env.NODE_ENV"
@@ -50,14 +50,14 @@ const homeRoute = new Route({
 });
 
 const adminRoute = new Route({
-  path: "/admin",
+  path: "/add",
   getParentRoute: () => rootRoute,
   beforeLoad: async () => {
     if (!isAuth()) {
       throw redirect({ to: "/" });
     }
   },
-  component: Admin,
+  component: CompetitionAdd,
 });
 
 const routeTree = rootRoute.addChildren([homeRoute, adminRoute]);

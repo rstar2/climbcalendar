@@ -20,7 +20,7 @@ function useAuthAdminChange() {
   }, [isAuthAdmin, navigate]); // navigate is stable, but to make ESLINT happy
 }
 
-export default function Admin() {
+export default function CompetitionAdd() {
   // react to "admin" changes and navigate away if not authorized (not an admin) any more
   useAuthAdminChange();
 

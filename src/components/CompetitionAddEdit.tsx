@@ -286,7 +286,7 @@ export default function CompetitionAddEdit({
                     (!competition && !Object.keys(touched).length)
                   }
                 >
-                  {competition ? "Edit Competition" : "Create Competition"}
+                  {competition ? "Edit Competition" : "Add Competition"}
                 </Button>
               </VStack>
             </Form>
