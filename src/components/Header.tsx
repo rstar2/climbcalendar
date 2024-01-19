@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link, LinkProps } from "@tanstack/react-router";
 import {
   useDisclosure,
@@ -60,8 +59,8 @@ export default function Header() {
         <Heading size={["md", "xl"]}>Climbing Calendar</Heading>
 
         <Show above="sm">
-            {/* vertical Divider must have height */}
-          <Divider orientation="vertical" h={10}/>
+          {/* vertical Divider must have height */}
+          <Divider orientation="vertical" h={10} />
           <Box flexGrow={1}>
             <NavLinks />
           </Box>
@@ -119,7 +118,10 @@ function DrawerLogin() {
   );
 }
 
-function NavLinks({ isSmall = false }: { isSmall?: boolean }) {
+type NavLinksProps = {
+  isSmall?: boolean;
+};
+function NavLinks({ isSmall: _isSmall = false }: NavLinksProps) {
   //   // ------------------ Google Login ------------------
   //   // https://developers.google.com/identity/gsi/web/reference/js-reference
   //   useEffect(() => {
