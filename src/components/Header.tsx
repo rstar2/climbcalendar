@@ -65,6 +65,9 @@ export default function Header() {
             <NavLinks />
           </Box>
         </Show>
+        <Show below="sm">
+          <Spacer />
+        </Show>
 
         <IconButton
           onClick={() => toggleColorMode()}
