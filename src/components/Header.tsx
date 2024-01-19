@@ -109,7 +109,7 @@ function DrawerLogin() {
           <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
 
           <DrawerBody>
-            <NavLinks isSmall />
+            <NavLinks onCloseDrawer={onClose} />
           </DrawerBody>
 
           <DrawerFooter>
@@ -122,9 +122,9 @@ function DrawerLogin() {
 }
 
 type NavLinksProps = {
-  isSmall?: boolean;
+  onCloseDrawer?: () => void;
 };
-function NavLinks({ isSmall: _isSmall = false }: NavLinksProps) {
+function NavLinks({ onCloseDrawer }: NavLinksProps) {
   //   // ------------------ Google Login ------------------
   //   // https://developers.google.com/identity/gsi/web/reference/js-reference
   //   useEffect(() => {
@@ -184,8 +184,15 @@ function NavLinks({ isSmall: _isSmall = false }: NavLinksProps) {
         there's no point if its the only route possible*/}
       {!!authUser.user && (
         <>
-          <HeaderLink linkProps={{ to: "/" }} label="Home" />
-          <HeaderLink linkProps={{ to: "/add" }} label="Add" />
+          {/* close the Drawer on navigation/click */}
+          <HeaderLink
+            linkProps={{ to: "/", onClick: onCloseDrawer }}
+            label="Home"
+          />
+          <HeaderLink
+            linkProps={{ to: "/add", onClick: onCloseDrawer }}
+            label="Add"
+          />
         </>
       )}
 
