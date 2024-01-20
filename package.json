@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@types/gapi": "^0.0.47",
+    "@types/gapi.client.calendar-v3": "^0.0.4",
     "@types/google.accounts": "^0.0.14",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

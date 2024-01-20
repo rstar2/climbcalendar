@@ -113,6 +113,6 @@ export function useAuthLogout() {
  * Set the Google credentials to be reused by Firebase
  * Just re-export 'firebase.setGoogleCredential()'
  */
-export function setGoogleCredential(idToken: string) {
-  firebase.setGoogleCredential(idToken);
+export function setGoogleCredential(idToken?: string, accessToken?: string) {
+  firebase.setGoogleCredential(idToken, accessToken);
 }

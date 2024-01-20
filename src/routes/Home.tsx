@@ -82,17 +82,17 @@ export default function Home() {
 
   const competitionsFiltered = useMemo(() => {
     let compsFiltered = competitions ?? [];
-    // use 'balkan' and 'international' flags as only filters for "checked", e.g. unchecked means ANY
-    if (filter.balkan) {
-      compsFiltered = compsFiltered.filter(
-        (comp) => filter.balkan === comp.balkan
-      );
+
+    // use 'balkan' OR 'international' flags as only filters for "checked", e.g. unchecked means ANY
+    if (filter.balkan || filter.international) {
+      compsFiltered = compsFiltered.filter((comp) => {
+        return (
+          (filter.balkan && filter.balkan === comp.balkan) ||
+          (filter.international && filter.international === comp.international)
+        );
+      });
     }
-    if (filter.international) {
-      compsFiltered = compsFiltered.filter(
-        (comp) => filter.international === comp.international
-      );
-    }
+
     if (filter.type !== undefined) {
       compsFiltered = compsFiltered.filter((comp) =>
         comp.type.includes(filter.type!)
@@ -127,7 +127,7 @@ export default function Home() {
       <Box my={4}>
         <FormCompetitionFilter filter={filter} setFilter={setFilter} />
         {/* <Text mb={2}>Filter : {JSON.stringify(filter)}</Text> */}
-        <Divider mt={4}/>
+        <Divider mt={4} />
       </Box>
 
       <Calendar
@@ -179,9 +179,9 @@ function FormCompetitionFilter({
     >
       <Form>
         {/* responsive direction - on small use as column, on bigger as row */}
-        <Stack direction={['column', 'row']} >
+        <Stack direction={["column", "row"]}>
           <Field name="type">
-            {({ field, form } : FieldProps) => (
+            {({ field, form }: FieldProps) => (
               <Select
                 useBasicStyles
                 options={TYPE_OPTIONS_WITH_NO_OPTION}
@@ -253,7 +253,7 @@ function DialogCompetitionEdit({
 }: DialogCompetitionEditProps) {
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!competition,
-    onClose: onConfirm,  // will pass undefined e.g. onConfirm(undefined)
+    onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
   });
 
   return (
@@ -271,7 +271,12 @@ function DialogCompetitionEdit({
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth/>;
+          <CompetitionAddEdit
+            competition={competition}
+            onAction={onConfirm}
+            isFullWidth
+          />
+          ;
         </ModalBody>
 
         <ModalFooter>

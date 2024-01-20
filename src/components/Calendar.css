@@ -5,7 +5,8 @@
     font-size: var(--chakra-fontSizes-sm);
     color: var(--chakra-colors-chakra-text);
 }
-.chakra-ui-dark .fc-day, .chakra-ui-dark .fc-multimonth-header {
+.chakra-ui-dark .fc-day,
+.chakra-ui-dark .fc-multimonth-singlecol {
     color: var(--chakra-colors-chakra-inverse-text);
 }
 .chakra-ui-dark .fc-day.fc-col-header-cell {

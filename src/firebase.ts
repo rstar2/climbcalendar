@@ -52,9 +52,11 @@ class Firebase {
     this.db = getFirestore(app);
 
     this.authGoogleProvider = new GoogleAuthProvider();
-    this.authGoogleProvider.addScope(
-      "https://www.googleapis.com/auth/calendar"
-    );
+    // this will work and the returned Google access_token will be able to access Calendar API,
+    // BUT the problem is that it's very short lived, so 
+    // this.authGoogleProvider.addScope(
+    //   "https://www.googleapis.com/auth/calendar"
+    // );
   }
 
   // ---------- Auth ------------
@@ -109,7 +111,11 @@ class Firebase {
     return this.auth.currentUser ?? undefined;
   }
 
-  setGoogleCredential(idToken: string, accessToken?: string): void {
+  /**
+   * Allows to auth into Firebase if user is successfully authorized int Google
+   * Only one of the tokens - ID or access has to be valid.
+   */
+  setGoogleCredential(idToken?: string, accessToken?: string): void {
     const credential = GoogleAuthProvider.credential(idToken, accessToken);
     signInWithCredential(this.auth, credential);
   }

@@ -29,7 +29,6 @@ import {
   useAuthUser,
   useAuthLoginWithGoogle,
   useAuthLogout,
-  //   setGoogleCredential,
 } from "../cache/auth";
 
 import { GoogleIcon } from "./ProviderIcons";
@@ -68,6 +67,10 @@ export default function Header() {
         <Show below="sm">
           <Spacer />
         </Show>
+
+        {/* <GoogleLogin /> */}
+        {/* or */}
+        {/* <GoogleApiAuth /> */}
 
         <IconButton
           onClick={() => toggleColorMode()}
@@ -125,39 +128,6 @@ type NavLinksProps = {
   onCloseDrawer?: () => void;
 };
 function NavLinks({ onCloseDrawer }: NavLinksProps) {
-  //   // ------------------ Google Login ------------------
-  //   // https://developers.google.com/identity/gsi/web/reference/js-reference
-  //   useEffect(() => {
-  //     google.accounts.id.initialize({
-  //       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-  //       callback: onGoogleLogin,
-  //     });
-
-  //     // show a GoogleLogin button
-  //     google.accounts.id.renderButton(
-  //       document.getElementById("g-signin-button")!,
-  //       { theme: "outline", size: "large", type: "standard" } // customization attributes
-  //     );
-
-  //     // show the auto-login prompt (the popup on the top-left corner)
-  //     google.accounts.id.prompt((notification) => {
-  //       if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-  //         // try next provider if OneTap is not displayed or skipped
-  //         //console.log("Google OneTap is skipped");
-  //       }
-  //     }); // also display the One Tap dialog
-  //   }, []);
-
-  //   function onGoogleLogin(response: google.accounts.id.CredentialResponse) {
-  //     console.log("Encoded Google JWT ID token: " + response.credential);
-  //     setGoogleCredential(response.credential);
-  //   }
-
-  //   function googleLogout() {
-  //     google.accounts.id.disableAutoSelect();
-  //   }
-  //  // ------------------ END Google Login ------------------
-
   // ------------------ Firebase auth ------------------
 
   const authUser = useAuthUser();
@@ -171,12 +141,6 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
   //         console.log("Encoded Firebase JWT ID token: " + idToken)
   //       );
   //   }, [authUser]);
-
-  //   function handleLoginWithGoogle() {
-  //     alert("Login with Google");
-  //   }
-
-  // ------------------ END Firebase auth ------------------
 
   return (
     <Stack direction={["column", "row"]} alignItems={["center", "end"]}>
@@ -198,16 +162,6 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
 
       <Spacer />
 
-      {/* the GoogleLogin button will be rendered here by GIS */}
-      {/* <Box id="g-signin-button" display="inline-block" /> */}
-
-      {/* --------------- */}
-
-      {/* Firebase Login(s) */}
-
-      {/* <Button leftIcon={<GoogleIcon />} onClick={handleLoginWithGoogle}>
-        Login with Google
-      </Button> */}
       {authUser.isKnown &&
         (!authUser.user ? (
           <Button leftIcon={<GoogleIcon />} onClick={() => loginWithGoogle()}>
