@@ -26,9 +26,7 @@ export function useCompetitions() {
   const { data, refetch } = useQuery({
     queryKey: ["competitions"],
     queryFn: async () => {
-      console.log(`Query competitions, ${authUser}`);
-
-      // the DB is not read-protected only for auth users, so don't "hide" the competitions
+      // the DB is not read-protected for not-auth users, so don't "hide" the competitions
       // if (!authUser.user) return null;
 
       const snapshot = await firebase.getDocs(competitionsCol);

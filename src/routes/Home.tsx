@@ -21,9 +21,12 @@ import {
   ModalFooter,
   AlertDialogCloseButton,
   Divider,
+  useTheme,
+  Heading,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
+import { BeatLoader } from "react-spinners";
 
 import {
   useCompetitions,
@@ -73,7 +76,11 @@ const initialFilter: CompetitionFilter = {
   category: undefined,
 };
 
+const THIS_YEAR = new Date().getFullYear();
+
 export default function Home() {
+  const theme = useTheme();
+
   const competitions = useCompetitions();
   const editCompetition = useCompetitionEdit();
   const deleteCompetition = useCompetitionDelete();
@@ -83,14 +90,17 @@ export default function Home() {
   const competitionsFiltered = useMemo(() => {
     let compsFiltered = competitions ?? [];
 
-    // use 'balkan' OR 'international' flags as only filters for "checked", e.g. unchecked means ANY
-    if (filter.balkan || filter.international) {
-      compsFiltered = compsFiltered.filter((comp) => {
-        return (
-          (filter.balkan && filter.balkan === comp.balkan) ||
-          (filter.international && filter.international === comp.international)
-        );
-      });
+    // use 'balkan' / 'international' flags as only filters for "checked", e.g. unchecked means ANY
+    if (filter.balkan) {
+      compsFiltered = compsFiltered.filter(
+        (comp) => filter.balkan === comp.balkan
+      );
+    }
+
+    if (filter.international) {
+      compsFiltered = compsFiltered.filter(
+        (comp) => filter.international === comp.international
+      );
     }
 
     if (filter.type !== undefined) {
@@ -98,6 +108,7 @@ export default function Home() {
         comp.type.includes(filter.type!)
       );
     }
+
     if (filter.category !== undefined) {
       compsFiltered = compsFiltered.filter((comp) =>
         comp.category.includes(filter.category!)
@@ -130,6 +141,22 @@ export default function Home() {
         <Divider mt={4} />
       </Box>
 
+      <Heading size="md" mb={2} textAlign={"center"}>
+        {THIS_YEAR}
+        {/* show loading until competitions is valid */}
+        {!competitions ? (
+          <>
+            &nbsp;
+            <BeatLoader
+              style={{ display: "inline" }}
+              size={8}
+              color={theme.__cssMap["colors.chakra-body-text"].value}
+            />
+          </>
+        ) : (
+          ` (${competitionsFiltered.length} competitions)`
+        )}
+      </Heading>
       <Calendar
         competitions={competitionsFiltered}
         mainType={filter.type}
@@ -219,11 +246,41 @@ function FormCompetitionFilter({
             )}
           </Field>
 
-          <Field as={Checkbox} name="balkan">
+          {/* <Field as={Checkbox} name="balkan">
             Balkan
           </Field>
           <Field as={Checkbox} name="international">
             International
+          </Field> */}
+
+          {/* make it act like radio-buttons - either balkan or international could be checked */}
+          <Field name="balkan">
+            {({ field, form }: FieldProps) => (
+              <Checkbox
+                isChecked={field.value}
+                onChange={(e) => {
+                  const isChecked = e.target.checked;
+                  form.setFieldValue(field.name, isChecked);
+                  if (isChecked) form.setFieldValue("international", false);
+                }}
+              >
+                Balkan
+              </Checkbox>
+            )}
+          </Field>
+          <Field name="international">
+            {({ field, form }: FieldProps) => (
+              <Checkbox
+                isChecked={field.value}
+                onChange={(e) => {
+                  const isChecked = e.target.checked;
+                  form.setFieldValue(field.name, isChecked);
+                  if (isChecked) form.setFieldValue("balkan", false);
+                }}
+              >
+                International
+              </Checkbox>
+            )}
           </Field>
         </Stack>
 

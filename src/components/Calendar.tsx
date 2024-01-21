@@ -1,5 +1,8 @@
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   Flex,
   Heading,
   Popover,
@@ -11,8 +14,13 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Portal,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
   Tooltip,
+  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
@@ -31,8 +39,6 @@ import {
 import "./Calendar.css";
 import { getColor, getColorCompetitionType } from "../utils/styles";
 import { useAuthAdmin } from "../cache/auth";
-
-const THIS_YEAR = new Date().getFullYear();
 
 const fcDateFormat = "yyyy-MM-dd";
 function fcDate(competition: Competition): string;
@@ -100,44 +106,39 @@ export default function Calendar({
   onDelete,
 }: CalendarProps) {
   return (
-    <>
-      <Heading mb={2} textAlign={"center"}>
-        {THIS_YEAR} ({competitions.length})
-      </Heading>
-      <FullCalendar
-        plugins={[dayGridPlugin, multiMonthYearPlugin, interactionPlugin]}
-        //   // don't show only in the center the title (e.g. from "titleFormat" so just the year)
-        //   headerToolbar={{
-        //     left: "",
-        //     center: "title",
-        //     right: "",
-        //   }}
-        //   // just the year
-        //   titleFormat={{ year: "numeric" }}
-        // hide the default header toolbar
-        headerToolbar={false}
-        // show all months
-        initialView="multiMonthYear"
-        // render-hook for rendering the event's content
-        eventContent={(eventInfo) => (
-          <CalendarEvent
-            eventInfo={eventInfo}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
-        )}
-        events={competitions.map((comp) =>
-          mapCompetition(comp, mainType, mainCategory)
-        )}
-        // callback only for events click
-        // eventClick={(info) => alert("Clicked on: " + info.event.id)}
-        eventDisplay="background"
-        displayEventTime={true}
+    <FullCalendar
+      plugins={[dayGridPlugin, multiMonthYearPlugin, interactionPlugin]}
+      //   // don't show only in the center the title (e.g. from "titleFormat" so just the year)
+      //   headerToolbar={{
+      //     left: "",
+      //     center: "title",
+      //     right: "",
+      //   }}
+      //   // just the year
+      //   titleFormat={{ year: "numeric" }}
+      // hide the default header toolbar
+      headerToolbar={false}
+      // show all months
+      initialView="multiMonthYear"
+      // render-hook for rendering the event's content
+      eventContent={(eventInfo) => (
+        <CalendarEvent
+          eventInfo={eventInfo}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      )}
+      events={competitions.map((comp) =>
+        mapCompetition(comp, mainType, mainCategory)
+      )}
+      // callback only for events click
+      // eventClick={(info) => alert("Clicked on: " + info.event.id)}
+      eventDisplay="background"
+      displayEventTime={true}
 
-        // this callback for any date clicked
-        // dateClick={(info) => {}}
-      />
-    </>
+      // this callback for any date clicked
+      // dateClick={(info) => {}}
+    />
   );
 }
 
@@ -147,7 +148,9 @@ type CalendarEventProps = {
 function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
   const isAuthAdmin = useAuthAdmin();
 
-  const { competition } = eventInfo.event.extendedProps.extraProps;
+  const { competition } = eventInfo.event.extendedProps.extraProps as {
+    competition: Competition;
+  };
 
   const {
     onOpen: onOpenPopover,
@@ -191,7 +194,58 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
           <PopoverArrow />
           <PopoverHeader>Info</PopoverHeader>
           <PopoverCloseButton />
-          <PopoverBody>{JSON.stringify(competition)}</PopoverBody>
+          <PopoverBody>
+            <Card variant="outline">
+              <CardBody>
+                <TableContainer>
+                  <Table size="sm">
+                    <Tbody>
+                      <Tr>
+                        <Td fontWeight={"bold"}>Name</Td>
+                        <Td>{competition.name}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td fontWeight={"bold"}>Date</Td>
+                        <Td>{competition.date.toDateString()}</Td>
+                      </Tr>
+                      {competition.dateDuration > 1 && (
+                        <Tr>
+                          <Td fontWeight={"bold"}>Date End</Td>
+                          <Td>
+                            {addDate(competition.date, {
+                              days: competition.dateDuration - 1,
+                            }).toDateString()}
+                          </Td>
+                        </Tr>
+                      )}
+                      <Tr>
+                        <Td fontWeight={"bold"}>Type</Td>
+                        <Td>{competition.type.join(", ")}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td fontWeight={"bold"}>Category</Td>
+                        <Td>{competition.category.join(", ")}</Td>
+                      </Tr>
+                      {competition.balkan && (
+                        <Tr>
+                          <Td colSpan={2} fontWeight={"bold"}>
+                            Balkan competition
+                          </Td>
+                        </Tr>
+                      )}
+                      {competition.international && (
+                        <Tr>
+                          <Td colSpan={2} fontWeight={"bold"}>
+                            International competition
+                          </Td>
+                        </Tr>
+                      )}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </CardBody>
+            </Card>
+          </PopoverBody>
           {isAuthAdmin && (
             <PopoverFooter display="flex" justifyContent="flex-end">
               <Button mr={2} onClick={handleEdit}>

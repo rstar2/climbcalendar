@@ -1,4 +1,5 @@
-import { useEffect, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
+import { useEffectOnce } from "react-use";
 import { Button } from "@chakra-ui/react";
 
 import firebase from "./firebase";
@@ -28,14 +29,14 @@ export function GoogleApiAuth() {
     useState<google.accounts.oauth2.TokenResponse>();
 
   // load the Google APIs only once in the beginning
-  useEffect(() => {
+  useEffectOnce(() => {
     (async () => {
       await loadGoogleAPI();
 
       // show the GAuth button
       setGoogleAPILoaded(true);
     })();
-  }, []);
+  });
 
   const onGoogleAuth = useCallback(async () => {
     // get a new token
@@ -55,7 +56,11 @@ export function GoogleApiAuth() {
   }, []);
 
   return !googleAuthToken ? (
-    <Button isLoading={!isGoogleAPILoaded} onClick={onGoogleAuth}>
+    <Button
+      isLoading={!isGoogleAPILoaded}
+      loadingText="Checking..."
+      onClick={onGoogleAuth}
+    >
       GAuth
     </Button>
   ) : (
@@ -65,7 +70,7 @@ export function GoogleApiAuth() {
 
 export function GoogleLogin() {
   // https://developers.google.com/identity/gsi/web/reference/js-reference
-  useEffect(() => {
+  useEffectOnce(() => {
     google.accounts.id.initialize({
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
       callback: (response: google.accounts.id.CredentialResponse) => {
@@ -87,7 +92,7 @@ export function GoogleLogin() {
         //console.log("Google OneTap is skipped");
       }
     });
-  }, []);
+  });
 
   //   function googleLogout() {
   //     google.accounts.id.disableAutoSelect();
@@ -161,8 +166,8 @@ async function authGoogleAPI() {
 /**
  * // TODO:  just a demo usage of the Calendar  API
  * https://blockchain.oodles.io/dev-blog/integrating-google-calendar-api-into-react-application/
- * 
- * 
+ *
+ *
  * Print the summary and start datetime/date of the next ten events in
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
