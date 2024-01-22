@@ -12,7 +12,8 @@
 
 ## Smaller bugs/tasks
 
-- [ ] Check/fix/remove the `Github Actions` - as it deploys also, but with old
+- [x] Check/fix/disable the `Github Actions` - as it deploys also, but with old
+    > There are no valid environment variables (no .env files). The solution is to add such `variables` on repository level, similar to `secrets`. But no such need, so I've disabled the workflow completely in GitHub
 - [x] Add "loading" UI when loading the competitions
 - [x] Make balkan/international checkboxes act like radio-buttons (but allow none to be checked)
 - [ ] Currently FullScreen event-click happens only on the first day of the event, but if it's longer then clicking on the other days don't call this event-handler ( I think the theres's other divs that absorb the click-event)
@@ -28,4 +29,3 @@
 - [ ] Multiple months on mobile when shown as single-month-calendar - e.g. show 12 months not one scrollable small widget
 - [ ] Remainder - Push notifications
   
-  sf
