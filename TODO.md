@@ -29,4 +29,3 @@
 - [ ] Multiple months on mobile when shown as single-month-calendar - e.g. show 12 months not one scrollable small widget
 - [ ] Remainder - Push notifications
   
-  asd
