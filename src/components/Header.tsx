@@ -31,7 +31,7 @@ import {
   useAuthLogout,
 } from "../cache/auth";
 
-import { FacebookIcon, GoogleIcon } from "./ProviderIcons";
+import { GoogleIcon } from "./ProviderIcons";
 import Copyright from "./Copyright";
 
 export default function Header() {
