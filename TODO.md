@@ -25,7 +25,7 @@
   - [x] Try to connect in the same time to Firebase if possible like if used GIS (GoogleIdentityServices)
 - [ ] Search
 - [ ] List view
-- [ ] Multiple months on mobile when shown as single-month-calendar - e.g. show 12 months not one scrollable small widget
+- [x] Multiple months on mobile when shown as single-month-calendar - use height="auto"
 - [ ] Remainder - Push notifications
 - [ ] Support dark theme for the `FullCalendar`, e.g. when Chakra dark theme then apply different styles to `FullCalendar`
-  
+- [ ] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date

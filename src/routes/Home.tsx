@@ -210,7 +210,24 @@ function FormCompetitionFilter({
           <Field name="type">
             {({ field, form }: FieldProps) => (
               <Select
+                // useful for testing CSS styles in order to make it always open
+                // menuIsOpen
                 useBasicStyles
+                chakraStyles={{
+                  option: (provided, state) => ({
+                    ...provided,
+                    // @ts-expect-error (state.value actually exists, same as getValue())
+                    color: getColorCompetitionType(state.value),
+                  }),
+                  menu: (provided) => ({
+                    ...provided,
+
+                    // make it above the FullCalendar as some of its elements have z-index:1
+                    zIndex: 3,
+                  }),
+                }}
+                // this will make the input as readonly and so on mobiles the keyboard will not be opened
+                isSearchable={false}
                 options={TYPE_OPTIONS_WITH_NO_OPTION}
                 value={TYPE_OPTIONS_WITH_NO_OPTION.find(
                   (option) => field.value === option.value
@@ -218,15 +235,6 @@ function FormCompetitionFilter({
                 onChange={(option) => {
                   form.setFieldValue(field.name, option!.value);
                 }}
-                chakraStyles={{
-                  option: (provided, state) => ({
-                    ...provided,
-                    // @ts-expect-error (state.value actually exists, same as getValue())
-                    color: getColorCompetitionType(state.value),
-                  }),
-                }}
-                // useful for testing CSS styles in order to make it always open
-                // menuIsOpen
               />
             )}
           </Field>
@@ -235,6 +243,16 @@ function FormCompetitionFilter({
             {({ field, form }: FieldProps) => (
               <Select
                 useBasicStyles
+                chakraStyles={{
+                  menu: (provided) => ({
+                    ...provided,
+
+                    // make it above the FullCalendar as some of its elements have z-index:1
+                    zIndex: 3,
+                  }),
+                }}
+                // this will make the input as readonly and so on mobiles the keyboard will not be opened
+                isSearchable={false}
                 options={CATEGORY_OPTIONS_WITH_NO_OPTION}
                 value={CATEGORY_OPTIONS_WITH_NO_OPTION.find(
                   (option) => field.value === option.value

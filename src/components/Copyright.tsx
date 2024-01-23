@@ -42,8 +42,12 @@ export default function Copyright(props: BoxProps) {
   );
 
   return (
-    <Box {...(hasScroll ? HAS_SCROLL_PROPS : NO_SCROLL_PROPS)} {...props}>
-      <Text as="sub" align="center">
+    <Box
+      align="center"
+      {...(hasScroll ? HAS_SCROLL_PROPS : NO_SCROLL_PROPS)}
+      {...props}
+    >
+      <Text as="sub">
         {"Copyright © "}
         <Link href="https://github.com/rstar2/" target="_blank">
           Rumen Neshev
@@ -53,4 +57,3 @@ export default function Copyright(props: BoxProps) {
     </Box>
   );
 }
-    

@@ -105,6 +105,8 @@ export default function Calendar({
 }: CalendarProps) {
   return (
     <FullCalendar
+      //   height="100vh"
+      height="auto"
       plugins={[dayGridPlugin, multiMonthYearPlugin, interactionPlugin]}
       //   // don't show only in the center the title (e.g. from "titleFormat" so just the year)
       //   headerToolbar={{

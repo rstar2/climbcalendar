@@ -74,4 +74,10 @@ export default defineConfig({
       },
     }),
   ],
+
+  server: {
+    // this will make it listen to all addresses like 0.0.0.0 not just the default "localhost"
+    // https://vitejs.dev/config/server-options
+    host: true
+  }
 });

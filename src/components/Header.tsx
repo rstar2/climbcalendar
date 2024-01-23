@@ -47,7 +47,8 @@ export default function Header() {
       mb={2}
       position="sticky"
       top={0}
-      zIndex={2}
+      //   make it above some FullCalendar elements so more than 2,
+      zIndex={3}
       bg={theme.styles.global.body.bg}
     >
       <HStack w="100%" mt={2} gap="2">
@@ -115,7 +116,7 @@ function DrawerLogin() {
             <NavLinks onCloseDrawer={onClose} />
           </DrawerBody>
 
-          <DrawerFooter>
+          <DrawerFooter justifyContent="center">
             <Copyright display={["block", "none"]} />
           </DrawerFooter>
         </DrawerContent>

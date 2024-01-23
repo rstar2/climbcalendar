@@ -13,14 +13,17 @@
     color: var(--chakra-colors-chakra-text);
 }
 
-
-.fc .fc-daygrid-body {
-    z-index: unset;
-}
-.fc .fc-daygrid-day-bg .fc-bg-event {
-    z-index: unset;
-}
-
 .fc .fc-daygrid-day-number {
     z-index: 1;
+}
+
+.fc .fc-multimonth {
+    border: 0;
+}
+.fc .fc-multimonth-month {
+    margin-bottom: 10px;
+}
+
+.fc .fc-bg-event {
+    opacity: unset;
 }
