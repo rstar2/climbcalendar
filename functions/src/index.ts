@@ -18,6 +18,12 @@ import { initializeApp } from "firebase-admin/app";
 // NOTE: Must be called always before using any of the Firebase services (like auth)
 initializeApp();
 
+const ADMINS = new Set<string>([
+  "neshev.rumen@gmail.com",
+  "rumenn@qnext.com",
+  "kaempilka@gmail.com",
+]);
+
 /**
  * Add custom claims (role ADMIN) to some specific users
  * https://firebase.google.com/docs/auth/admin/custom-claims
@@ -27,11 +33,8 @@ export const authUserCreated = user().onCreate(async (user) => {
     `AuthUser created: ${user.email} (${user.uid}), verified: ${user.emailVerified}`
   );
 
-  // add ADMIN role to my special accounts
-  if (
-    user.emailVerified &&
-    (user.email == "neshev.rumen@gmail.com" || user.email == "rumenn@qnext.com")
-  ) {
+  // add ADMIN role to some special accounts
+  if (user.emailVerified && user.email && ADMINS.has(user.email)) {
     const customClaims = {
       role: "admin",
     };

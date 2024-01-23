@@ -118,6 +118,8 @@ export default function Calendar({
       headerToolbar={false}
       // show all months
       initialView="multiMonthYear"
+      // start the week on Monday
+      firstDay={1}
       // render-hook for rendering the event's content
       eventContent={(eventInfo) => (
         <CalendarEvent

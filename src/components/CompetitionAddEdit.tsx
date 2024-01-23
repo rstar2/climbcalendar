@@ -218,6 +218,7 @@ export default function CompetitionAddEdit({
                       <Select
                         useBasicStyles
                         isMulti
+                        closeMenuOnSelect={false}
                         options={CATEGORY_OPTIONS}
                         value={CATEGORY_OPTIONS.filter(
                           (option) =>

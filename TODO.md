@@ -1,7 +1,6 @@
 # TODOs
 
 - [x] Style the `FullCalendar` - with plain CSS (use the ChakraUI CSS properties)
-  - [ ] ~~Support dark theme~~
 - [x] Delete a competition/event - admin only - with confirm
 - [x] Edit a competition/event - admin onl - with a popup
 - [x] Mobile UI
@@ -28,4 +27,5 @@
 - [ ] List view
 - [ ] Multiple months on mobile when shown as single-month-calendar - e.g. show 12 months not one scrollable small widget
 - [ ] Remainder - Push notifications
+- [ ] Support dark theme for the `FullCalendar`, e.g. when Chakra dark theme then apply different styles to `FullCalendar`
   

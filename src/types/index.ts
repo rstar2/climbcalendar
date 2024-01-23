@@ -38,7 +38,7 @@ export const CompetitionNewSchema = z.object({
   name: z
     .string({ invalid_type_error: "Not a string" })
     .min(1, "Name is required")
-    .min(5, "Name is too short"),
+    .min(3, "Name is too short"),
   date: z.date({ invalid_type_error: "Not a date" }),
   dateDuration: z.coerce
     .number({ invalid_type_error: "Not a number" })
