@@ -26,7 +26,7 @@ import {
 import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import {
-  useAuthUser,
+  useAuthAdmin,
   useAuthLoginWithGoogle,
   useAuthLogout,
 } from "../cache/auth";
@@ -131,7 +131,7 @@ type NavLinksProps = {
 function NavLinks({ onCloseDrawer }: NavLinksProps) {
   // ------------------ Firebase auth ------------------
 
-  const authUser = useAuthUser();
+  const authUser = useAuthAdmin();
   const loginWithGoogle = useAuthLoginWithGoogle();
   const logout = useAuthLogout();
 
@@ -145,7 +145,7 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
 
   return (
     <Stack direction={["column", "row"]} alignItems={["center", "end"]}>
-      {/* show "Admin" only for admins, but then makes sense to show also "Home" only for admins as
+      {/* show "Add" only for admins, but then makes sense to show also "Home" only for admins as
         there's no point if its the only route possible*/}
       {!!authUser.user && (
         <>
@@ -166,7 +166,7 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
       {authUser.isKnown &&
         (!authUser.user ? (
           <Button leftIcon={<GoogleIcon />} onClick={() => loginWithGoogle()}>
-            Admin Login
+            Login
           </Button>
         ) : (
           <Button onClick={() => logout()}>Logout</Button>
