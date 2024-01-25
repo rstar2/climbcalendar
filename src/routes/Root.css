@@ -13,6 +13,17 @@
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
+/* Show any element only on hover of its direct parent */
+.showOnHoverParent {
+  /* visibility: hidden; */
+  opacity: 0;
+}
+*:hover:has(>.showOnHoverParent) .showOnHoverParent {
+  /* visibility: visible; */
+  opacity: 1;
+  transition: opacity ease-in 500ms;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -27,4 +38,3 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-

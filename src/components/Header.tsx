@@ -29,6 +29,7 @@ import {
   useAuthAdmin,
   useAuthLoginWithGoogle,
   useAuthLogout,
+  useAuthUser,
 } from "../cache/auth";
 
 import { GoogleIcon } from "./ProviderIcons";
@@ -131,7 +132,8 @@ type NavLinksProps = {
 function NavLinks({ onCloseDrawer }: NavLinksProps) {
   // ------------------ Firebase auth ------------------
 
-  const authUser = useAuthAdmin();
+  const authUser = useAuthUser();
+  const isAdmin = useAuthAdmin();
   const loginWithGoogle = useAuthLoginWithGoogle();
   const logout = useAuthLogout();
 
@@ -147,7 +149,7 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
     <Stack direction={["column", "row"]} alignItems={["center", "end"]}>
       {/* show "Add" only for admins, but then makes sense to show also "Home" only for admins as
         there's no point if its the only route possible*/}
-      {!!authUser.user && (
+      {isAdmin && (
         <>
           {/* close the Drawer on navigation/click */}
           <HeaderLink

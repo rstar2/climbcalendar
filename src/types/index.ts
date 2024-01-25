@@ -5,7 +5,6 @@ export enum CompetitionType {
   Boulder = "Boulder",
   Lead = "Lead",
   Speed = "Speed",
-  Ninja = "Ninja",
 }
 
 export const CompetitionTypeSchema = z.nativeEnum(CompetitionType);
@@ -80,3 +79,6 @@ export const CATEGORY_OPTIONS = enumValues(CompetitionCategorySchema.enum).map(
 // };
 
 export type Func = () => void;
+
+export const ViewModes = ["calendar", "table", "list"] as const;
+export type ViewMode = (typeof ViewModes)[number];

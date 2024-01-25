@@ -26,7 +26,6 @@ import type { EventContentArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import multiMonthYearPlugin from "@fullcalendar/multimonth";
 import interactionPlugin from "@fullcalendar/interaction";
-import { format as formatDate, add as addDate } from "date-fns";
 
 import {
   CompetitionCategory,
@@ -37,23 +36,7 @@ import {
 import "./Calendar.css";
 import { getColor, getColorCompetitionType } from "../utils/styles";
 import { useAuthAdmin } from "../cache/auth";
-
-const fcDateFormat = "yyyy-MM-dd";
-function fcDate(competition: Competition): string;
-function fcDate(competition: Competition, end: true): string | undefined;
-function fcDate(competition: Competition, end = false): string | undefined {
-  competition.date.setHours(12);
-  // must return string of the format "2024-04-15"
-  if (!end) return formatDate(competition.date, fcDateFormat);
-
-  // single day - so no "end" date
-  if (competition.dateDuration <= 1) return undefined;
-
-  return formatDate(
-    addDate(competition.date, { days: competition.dateDuration }),
-    fcDateFormat
-  );
-}
+import { fcDate, formatDate } from "../utils/date";
 
 function mapCompetition(
   competition: Competition,
@@ -76,7 +59,7 @@ function mapCompetition(
   };
 }
 
-type CalendarProps = {
+type CompetitionsCalendarProps = {
   /**
    * The competitions to show
    */
@@ -96,13 +79,13 @@ type CalendarProps = {
   onEdit(id: string): void;
 };
 
-export default function Calendar({
+export default function CompetitionsCalendar({
   competitions,
   mainType,
   mainCategory,
   onEdit,
   onDelete,
-}: CalendarProps) {
+}: CompetitionsCalendarProps) {
   return (
     <FullCalendar
       //   height="100vh"
@@ -146,7 +129,7 @@ export default function Calendar({
 
 type CalendarEventProps = {
   eventInfo: EventContentArg;
-} & Pick<CalendarProps, "onEdit" | "onDelete">;
+} & Pick<CompetitionsCalendarProps, "onEdit" | "onDelete">;
 function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
   const isAuthAdmin = useAuthAdmin();
 
@@ -208,16 +191,12 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
                       </Tr>
                       <Tr>
                         <Td fontWeight={"bold"}>Date</Td>
-                        <Td>{competition.date.toDateString()}</Td>
+                        <Td>{formatDate(competition)}</Td>
                       </Tr>
                       {competition.dateDuration > 1 && (
                         <Tr>
                           <Td fontWeight={"bold"}>Date End</Td>
-                          <Td>
-                            {addDate(competition.date, {
-                              days: competition.dateDuration - 1,
-                            }).toDateString()}
-                          </Td>
+                          <Td>{formatDate(competition, true)}</Td>
                         </Tr>
                       )}
                       <Tr>
