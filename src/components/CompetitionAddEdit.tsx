@@ -169,6 +169,7 @@ export default function CompetitionAddEdit({ competition, onAction, isFullWidth 
                         name="type"
                         useBasicStyles
                         isMulti
+                        isSearchable={false}
                         options={TYPE_OPTIONS}
                         value={TYPE_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}
                         onChange={(options) => {
@@ -193,6 +194,7 @@ export default function CompetitionAddEdit({ competition, onAction, isFullWidth 
                       <Select
                         useBasicStyles
                         isMulti
+                        isSearchable={false}
                         closeMenuOnSelect={false}
                         options={CATEGORY_OPTIONS}
                         value={CATEGORY_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}

@@ -1,7 +1,7 @@
-import { TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text } from "@chakra-ui/react";
 import { Competition } from "../types";
 import { formatDate } from "../utils/date";
-import { getColor } from "../utils/styles";
+import { getColor, getColorCompetitionType } from "../utils/styles";
 
 type CompetitionsTableProps = {
   /**
@@ -36,7 +36,16 @@ export default function CompetitionsTable({ competitions }: CompetitionsTablePro
               <Tr key={competition.id}>
                 <Td>{competition.name}</Td>
                 <Td>{formatDates(competition)}</Td>
-                <Td color={getColor(competition)}>{competition.type.join()}</Td>
+                <Td>
+                  {competition.type.map((type, i) => {
+                    return (
+                      <Text key={type} as="span" color={getColorCompetitionType(type)}>
+                        {type}
+                        {i !== competition.type.length-1 && ", "}
+                      </Text>
+                    );
+                  })}
+                </Td>
                 <Td>{competition.category.join(",")}</Td>
               </Tr>
             );

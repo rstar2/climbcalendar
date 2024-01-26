@@ -10,7 +10,7 @@ export default function Root() {
     <Container maxW="90%" height="full" display="flex" flexDirection="column">
       <Header mb={2} flexShrink={0} />
 
-      <Box flexGrow={1} overflow="hidden" mb={2}>
+      <Box flexGrow={1} overflow="auto" mb={2}>
         <Outlet />
       </Box>
 

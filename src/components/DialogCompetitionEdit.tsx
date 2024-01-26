@@ -38,7 +38,7 @@ export default function DialogCompetitionEdit({ competition, onConfirm }: Dialog
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth />;
+          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth />
         </ModalBody>
 
         <ModalFooter>
