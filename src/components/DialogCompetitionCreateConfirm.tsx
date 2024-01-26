@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
+import { formatDate } from "../utils/date";
 
 type DialogCompetitionCreateConfirmProps = {
   date?: Date;
@@ -37,7 +38,7 @@ export default function DialogCompetitionCreateConfirm({ date, onConfirm }: Dial
 
         <AlertDialogCloseButton />
 
-        <AlertDialogBody>Create a new competition ono this date?</AlertDialogBody>
+        {date && <AlertDialogBody>Create a new competition on date: {formatDate(date)}?</AlertDialogBody>}
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>

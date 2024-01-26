@@ -16,12 +16,20 @@ export function fcDate(competition: Competition, end = false): string | undefine
   return format(add(competition.date, { days: competition.dateDuration }), fcDateFormat);
 }
 
-export function formatDate(competition: Competition, end = false) {
-  if (!end) return competition.date.toDateString();
+export function formatDate(competition: Date): string;
+export function formatDate(competition: Competition, end?: boolean): string;
+export function formatDate(dateOrCompetition: Date | Competition, end = false): string {
+  if (dateOrCompetition instanceof Date) return formatDate_(dateOrCompetition);
 
-  return add(competition.date, {
-    days: competition.dateDuration - 1,
-  }).toDateString();
+  if (!end) return formatDate_(dateOrCompetition.date);
+
+  return formatDate_(
+    add(dateOrCompetition.date, {
+      days: dateOrCompetition.dateDuration - 1,
+    })
+  );
 }
+
+const formatDate_ = (date: Date) => date.toDateString();
 
 export const THIS_YEAR = new Date().getFullYear();
