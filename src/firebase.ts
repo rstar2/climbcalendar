@@ -28,6 +28,7 @@ import {
   User,
   NextOrObserver,
   GoogleAuthProvider,
+  FacebookAuthProvider,
 } from "firebase/auth";
 
 export type FirebaseConfig = {
@@ -38,11 +39,14 @@ export type FirebaseConfig = {
   appId: string;
 };
 
+export type AuthPopupProvider = "google" | "facebook";
+
 class Firebase {
   private readonly auth: Auth;
   private readonly db: Firestore;
 
   private readonly authGoogleProvider: GoogleAuthProvider;
+  private readonly authFacebookProvider: FacebookAuthProvider;
 
   constructor(firebaseConfig: FirebaseConfig) {
     // Initialize Firebase
@@ -57,6 +61,12 @@ class Firebase {
     // this.authGoogleProvider.addScope(
     //   "https://www.googleapis.com/auth/calendar"
     // );
+
+    this.authFacebookProvider = new FacebookAuthProvider();
+    // this.authFacebookProvider.addScope("user_birthday");
+    // this.authFacebookProvider.setCustomParameters({
+    //   display: "popup",
+    // });
   }
 
   // ---------- Auth ------------
@@ -65,40 +75,44 @@ class Firebase {
     return onAuthStateChanged(this.auth, onNext);
   }
 
-  async signInWithGoogle(): Promise<void> {
+  async signInWithFacebook(): Promise<void> {
     // just try to sign-in - no matter the result is Promise<UserCredential>
-    return signInWithPopup(this.auth, this.authGoogleProvider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result)!;
-        const accessToken = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
+    return void signInWithPopup(this.auth, this.authGoogleProvider);
+  }
+  async signInWithPopup(provider: AuthPopupProvider = "google"): Promise<void> {
+    // just try to sign-in - no matter the result is Promise<UserCredential>
+    return void signInWithPopup(this.auth, provider === "google" ? this.authGoogleProvider : this.authFacebookProvider);
+    //   .then((result) => {
+    //     // This gives you a Google Access Token. You can use it to access the Google API.
+    //     const credential = GoogleAuthProvider.credentialFromResult(result)!;
+    //     const accessToken = credential.accessToken;
+    //     // The signed-in user info.
+    //     const user = result.user;
 
-        console.log(`Logged user: ${JSON.stringify(user)} , token: ${accessToken}`);
+    //     console.log(`Logged user: ${JSON.stringify(user)} , token: ${accessToken}`);
 
-        fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => console.log("???", data))
-          .catch((error) => console.error(error));
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // // The email of the user's account used.
-        // const email = error.customData.email;
-        // // The AuthCredential type that was used.
-        // const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+    //     fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList", {
+    //       method: "GET",
+    //       headers: {
+    //         Authorization: `Bearer ${accessToken}`,
+    //       },
+    //     })
+    //       .then((response) => response.json())
+    //       .then((data) => console.log("???", data))
+    //       .catch((error) => console.error(error));
+    //   })
+    //   .catch((error) => {
+    //     // Handle Errors here.
+    //     // const errorCode = error.code;
+    //     // const errorMessage = error.message;
+    //     // // The email of the user's account used.
+    //     // const email = error.customData.email;
+    //     // // The AuthCredential type that was used.
+    //     // const credential = GoogleAuthProvider.credentialFromError(error);
+    //     // ...
 
-        throw error;
-      });
+    //     throw error;
+    //   });
   }
 
   async signOut(): Promise<void> {

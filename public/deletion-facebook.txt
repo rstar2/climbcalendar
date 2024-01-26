@@ -1,0 +1,21 @@
+If you wish to request the deletion of your personal data collected through our Facebook OAuth app, please follow the steps outlined below:
+
+Submit Deletion Request: Send an email to our designated data deletion request email address at rstardev@abv.bg with the subject line "Data Deletion Request."
+
+Provide Necessary Information: In your email, please include the following details to help us identify and process your deletion request:
+
+Your full name
+The email address associated with your Facebook account
+Any additional information that may assist us in locating your data within our systems
+Verification Process: For security purposes, we may need to verify your identity before processing your deletion request. Please provide any additional information or verification steps requested by our team promptly to expedite the process.
+
+Confirmation of Deletion: Once your request has been successfully processed, you will receive a confirmation email from us confirming the deletion of your personal data from our systems. Please note that certain residual copies of your information may remain in our backup systems for a limited period as part of our standard data retention practices.
+
+Contact Us: If you have any questions, concerns, or difficulties regarding the data deletion process, please do not hesitate to contact us at rstardev@abv.bg for further assistance.
+
+Thank you for your cooperation in helping us maintain the privacy and security of your personal information.
+
+Rumen Neshev
+rstardev@abv.bg
+
+26.01.2024

@@ -1,7 +1,7 @@
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text } from "@chakra-ui/react";
 import { Competition } from "../types";
 import { formatDate } from "../utils/date";
-import { getColor, getColorCompetitionType } from "../utils/styles";
+import { getColorCompetitionType } from "../utils/styles";
 
 type CompetitionsTableProps = {
   /**

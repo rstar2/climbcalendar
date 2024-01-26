@@ -23,7 +23,7 @@ import CompetitionsCalendar from "../components/CompetitionsCalendar";
 import CompetitionsList from "../components/CompetitionsList";
 import CompetitionsTable from "../components/CompetitionsTable";
 import DialogCompetitionDeleteConfirm from "../components/DialogCompetitionDeleteConfirm";
-import DialogCompetitionEdit from "../components/DialogCompetitionEdit";
+import DialogCompetitionAddEdit from "../components/DialogCompetitionAddEdit";
 import FormFilterCompetitions, { useFormFilterCompetitions } from "../components/FormFilterCompetitions";
 import SelectViewMode from "../components/SelectViewMode";
 
@@ -115,7 +115,7 @@ export default function Home() {
           if (confirmed) deleteCompetition(competitionIdDelete!);
         }}
       />
-      <DialogCompetitionEdit
+      <DialogCompetitionAddEdit
         competition={competitionEdit}
         onConfirm={(competitionNew) => {
           setCompetitionEdit(undefined);

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -31,8 +32,11 @@ import { CompetitionCategory, type Competition, CompetitionType } from "../types
 
 import "./Calendar.css";
 import { getColor, getColorCompetitionType } from "../utils/styles";
-import { useAuthAdmin } from "../cache/auth";
 import { fcDate, formatDate } from "../utils/date";
+import { useAuthAdmin } from "../cache/auth";
+import { useCompetitionAdd } from "../cache/competitions";
+import DialogCompetitionCreateConfirm from "./DialogCompetitionCreateConfirm";
+import DialogCompetitionAddEdit from "./DialogCompetitionAddEdit";
 
 function mapCompetition(competition: Competition, mainType?: CompetitionType, _mainCategory?: CompetitionCategory) {
   return {
@@ -76,36 +80,69 @@ export default function CompetitionsCalendar({
   onEdit,
   onDelete,
 }: CompetitionsCalendarProps) {
-  return (
-    <FullCalendar
-      //   height="100vh"
-      height="auto"
-      plugins={[dayGridPlugin, multiMonthYearPlugin, interactionPlugin]}
-      //   // don't show only in the center the title (e.g. from "titleFormat" so just the year)
-      //   headerToolbar={{
-      //     left: "",
-      //     center: "title",
-      //     right: "",
-      //   }}
-      //   // just the year
-      //   titleFormat={{ year: "numeric" }}
-      // hide the default header toolbar
-      headerToolbar={false}
-      // show all months
-      initialView="multiMonthYear"
-      // start the week on Monday
-      firstDay={1}
-      // render-hook for rendering the event's content
-      eventContent={(eventInfo) => <CalendarEvent eventInfo={eventInfo} onEdit={onEdit} onDelete={onDelete} />}
-      events={competitions.map((comp) => mapCompetition(comp, mainType, mainCategory))}
-      // callback only for events click
-      // eventClick={(info) => alert("Clicked on: " + info.event.id)}
-      eventDisplay="background"
-      displayEventTime={true}
+  const isAdmin = useAuthAdmin();
 
-      // this callback for any date clicked
-      // dateClick={(info) => {}}
-    />
+  const competitionAddFn = useCompetitionAdd();
+
+  // controls the CreateConfirm dialog
+  const [competitionCreateConfirm, setCompetitionCreateConfirm] = useState<Date | undefined>();
+
+  const [competitionAdd, setCompetitionAdd] = useState<Date | undefined>();
+
+  return (
+    <>
+      <FullCalendar
+        //   height="100vh"
+        height="auto"
+        plugins={[dayGridPlugin, multiMonthYearPlugin, interactionPlugin]}
+        //   // don't show only in the center the title (e.g. from "titleFormat" so just the year)
+        //   headerToolbar={{
+        //     left: "",
+        //     center: "title",
+        //     right: "",
+        //   }}
+        //   // just the year
+        //   titleFormat={{ year: "numeric" }}
+        // hide the default header toolbar
+        headerToolbar={false}
+        // show all months
+        initialView="multiMonthYear"
+        // start the week on Monday
+        firstDay={1}
+        // render-hook for rendering the event's content
+        eventContent={(eventInfo) => <CalendarEvent eventInfo={eventInfo} onEdit={onEdit} onDelete={onDelete} />}
+        events={competitions.map((comp) => mapCompetition(comp, mainType, mainCategory))}
+        // callback only for events click
+        // eventClick={(info) => alert("Clicked on: " + info.event.id)}
+        eventDisplay="background"
+        displayEventTime={true}
+        // this callback for any date clicked
+        dateClick={(info) => {
+          if (isAdmin) {
+            setCompetitionCreateConfirm(info.date);
+          }
+        }}
+      />
+
+      <DialogCompetitionCreateConfirm
+        date={competitionCreateConfirm}
+        onConfirm={(isConfirmed) => {
+          // close dialog
+          setCompetitionCreateConfirm(undefined);
+          // open real "add" dialog
+          if (isConfirmed) setCompetitionAdd(competitionCreateConfirm!);
+        }}
+      />
+      <DialogCompetitionAddEdit
+        date={competitionAdd}
+        onConfirm={(competitionNew) => {
+          // close dialog
+          setCompetitionAdd(undefined);
+          // send event
+          if (competitionNew) competitionAddFn(competitionNew);
+        }}
+      />
+    </>
   );
 }
 

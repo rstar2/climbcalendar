@@ -1,0 +1,45 @@
+Effective Date: 26.01.2024
+
+Thank you for using "Climbing Calendar", a Facebook OAuth app developed to enhance your social experience. This Privacy Policy outlines how we collect, use, and protect your information when you interact with our app through Facebook OAuth. Your privacy is of utmost importance to us, and we are committed to safeguarding your personal data in compliance with applicable laws and regulations.
+
+Information We Collect
+When you use our app via Facebook OAuth, we may collect the following information:
+
+Basic Profile Information: We may access your public profile information provided by Facebook, including your name, profile picture, and other basic details.
+Email Address: With your consent, we may access your email address associated with your Facebook account to enhance your user experience and communicate with you.
+App Permissions: We may request access to additional information or permissions as required by our app functionality. We will always seek your explicit consent before accessing such data.
+How We Use Your Information
+We utilize the information collected via Facebook OAuth for the following purposes:
+
+Personalization: To personalize your experience within our app and tailor content based on your preferences and interactions.
+Communication: To communicate with you regarding app updates, notifications, and important announcements.
+Improvements: To analyze user trends and behavior, improve our app functionality, and enhance user satisfaction.
+Security: To protect against unauthorized access, detect and prevent fraudulent activities, and ensure the security of our platform and users.
+Information Sharing and Disclosure
+We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:
+
+Service Providers: We may engage trusted third-party service providers to assist us in app development, maintenance, or other operational tasks, provided they agree to uphold the confidentiality and security of your information.
+Legal Compliance: We may disclose your information as required by law, regulation, or legal process, or to protect our rights, property, or safety, or the rights, property, or safety of others.
+Data Security
+We implement reasonable security measures to safeguard your personal information against unauthorized access, alteration, disclosure, or destruction. However, please be aware that no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security of your data.
+
+Your Choices and Rights
+You have the right to:
+
+Access, correct, or update your personal information stored within our app.
+Withdraw consent for the collection or processing of your information at any time.
+Request deletion of your account and associated data from our systems.
+Updates to This Policy
+We reserve the right to update or modify this Privacy Policy at any time. We will notify you of any changes by posting the updated policy on our website or app and indicating the effective date of the revisions.
+
+Contact Us
+If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at rstardev@abv.bg.
+
+By using our app via Facebook OAuth, you consent to the collection, processing, and use of your information as described in this Privacy Policy.
+
+Thank you for entrusting us with your privacy.
+
+Rumen Neshev
+rstardev@abv.bg
+
+26.01.2024

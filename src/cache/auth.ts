@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-import firebase from "../firebase";
+import firebase, { AuthPopupProvider } from "../firebase";
 import { queryClient } from "./index";
 import { User } from "firebase/auth";
 
@@ -65,13 +65,13 @@ export function useAuthAdmin() {
 }
 
 /**
- * Mutation to login with Google.
+ * Mutation to login with Google or Facebook.
  * Could use directly the firebase.signInWithGoogle(), but thus all is wrapped in one place,
  * and can reuse the mutations API
  */
-export function useAuthLoginWithGoogle() {
+export function useAuthLoginWithPopup() {
   const mutation = useMutation({
-    mutationFn: async () => firebase.signInWithGoogle(),
+    mutationFn: async (provider: AuthPopupProvider) => firebase.signInWithPopup(provider),
     // meta is used for success/failed notification on mutation result
     meta: {
       action: "Login",

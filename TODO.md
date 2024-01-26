@@ -25,15 +25,16 @@
 - [ ] Print - only of the competitions view - add custom "Print" button
 - [x] Multiple months on mobile when shown as single-month-calendar - use height="auto"
 - [ ] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
-- [ ] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date
+- [x] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date
 - [ ] Localization to BG (+dates)
-- [ ] Login with Facebook
+- [x] Login with Facebook (works but with warn on the Facebook Login popup as the created Facebook oauth app is not "verified")
 
 ## Optional (if requested)
 
 - [ ] Integrate `Google Calendar API` - first user has to authorize an OAuth App
   - [ ] Publish the OAuth app to Google otherwise only test users could use it
   - [x] Try to connect in the same time to Firebase if possible like if used GIS (GoogleIdentityServices)
+- [ ] Publish the Facebook OAuth app (it requires some business verification) so that the warning t go away
 - [ ] Remainder - Push notifications  
 - [ ] Search by token in the name
 - [ ] Support dark theme for the `FullCalendar`, e.g. when Chakra dark theme then apply different styles to `FullCalendar`

@@ -26,10 +26,10 @@ import {
 import { Link, LinkProps } from "@tanstack/react-router";
 
 import { THIS_YEAR } from "../utils/date";
-import { useAuthAdmin, useAuthLoginWithGoogle, useAuthLogout, useAuthUser } from "../cache/auth";
+import { useAuthAdmin, useAuthLoginWithPopup, useAuthLogout, useAuthUser } from "../cache/auth";
 
 import Copyright from "./Copyright";
-import { GoogleIcon } from "./ProviderIcons";
+import { FacebookIcon, GoogleIcon } from "./ProviderIcons";
 
 export default function Header(props: BoxProps) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -125,7 +125,7 @@ function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
 
   const authUser = useAuthUser();
   const isAdmin = useAuthAdmin();
-  const loginWithGoogle = useAuthLoginWithGoogle();
+  const loginWithPopup = useAuthLoginWithPopup();
   const logout = useAuthLogout();
 
   //   useEffect(() => {
@@ -152,9 +152,14 @@ function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
 
       {authUser.isKnown &&
         (!authUser.user ? (
-          <Button leftIcon={<GoogleIcon />} onClick={() => loginWithGoogle()}>
-            Login
-          </Button>
+          <>
+            <Button leftIcon={<GoogleIcon />} onClick={() => loginWithPopup("google")}>
+              Login With Google
+            </Button>
+            <Button leftIcon={<FacebookIcon />} onClick={() => loginWithPopup("facebook")}>
+              Login With Facebook
+            </Button>
+          </>
         ) : (
           <Button onClick={() => logout()}>Logout</Button>
         ))}

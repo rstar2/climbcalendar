@@ -13,13 +13,24 @@ import {
 import CompetitionAddEdit from "./CompetitionAddEdit";
 import { Competition, CompetitionNew } from "../types";
 
-type DialogCompetitionEditProps = {
+type DialogCompetitionAddEditProps = {
+  /**
+   * Valid when editing a Competition
+   */
   competition?: Competition;
+  /**
+   * Valid when adding a Competition with predefined date
+   */
+  date?: Date;
+
+  /**
+   * Confirmation callback
+   */
   onConfirm: (competitionNew?: CompetitionNew) => void;
 };
-export default function DialogCompetitionEdit({ competition, onConfirm }: DialogCompetitionEditProps) {
+export default function DialogCompetitionAddEdit({ date, competition, onConfirm }: DialogCompetitionAddEditProps) {
   const { isOpen, onClose } = useDisclosure({
-    isOpen: !!competition,
+    isOpen: !!competition || !!date,
     onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
   });
 
@@ -34,11 +45,11 @@ export default function DialogCompetitionEdit({ competition, onConfirm }: Dialog
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Edit Competition</ModalHeader>
+        <ModalHeader>{competition ? "Edit" : "Add"} Competition</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth />
+          <CompetitionAddEdit competition={competition} date={date} onAction={onConfirm} isFullWidth />
         </ModalBody>
 
         <ModalFooter>

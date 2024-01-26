@@ -32,11 +32,24 @@ import {
 } from "../types";
 
 type CompetitionAddEditProps = {
+  /**
+   * Competition fields to use
+   */
   competition?: Competition;
+  /**
+   * Predefined date - will overwrite the date of the competition if such is passed
+   */
+  date?: Date;
+
   onAction(competition: CompetitionNew): void;
   isFullWidth?: boolean;
 };
-export default function CompetitionAddEdit({ competition, onAction, isFullWidth = false }: CompetitionAddEditProps) {
+export default function CompetitionAddEdit({
+  competition,
+  date,
+  onAction,
+  isFullWidth = false,
+}: CompetitionAddEditProps) {
   return (
     <Flex align="center" justify="center">
       <Box
@@ -56,15 +69,17 @@ export default function CompetitionAddEdit({ competition, onAction, isFullWidth 
       >
         <Formik<Partial<CompetitionNew>>
           initialValues={
-            competition ?? {
-              name: "",
-              date: undefined,
-              dateDuration: 2,
-              balkan: false,
-              international: false,
-              type: undefined,
-              category: undefined,
-            }
+            competition
+              ? { ...competition, date }
+              : {
+                  name: "",
+                  date: date,
+                  dateDuration: 2,
+                  balkan: false,
+                  international: false,
+                  type: undefined,
+                  category: undefined,
+                }
           }
           validate={(values) => {
             try {

@@ -11,14 +11,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-type DialogCompetitionDeleteConfirmProps = {
-  id?: string;
+type DialogCompetitionCreateConfirmProps = {
+  date?: Date;
   onConfirm: (confirmed: boolean) => void;
 };
 
-export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: DialogCompetitionDeleteConfirmProps) {
+export default function DialogCompetitionCreateConfirm({ date, onConfirm }: DialogCompetitionCreateConfirmProps) {
   const { isOpen, onClose } = useDisclosure({
-    isOpen: !!id,
+    isOpen: !!date,
     onClose: () => onConfirm(false),
   });
   const cancelRef = useRef<ElementRef<"button">>(null);
@@ -33,18 +33,18 @@ export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: Dialog
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>Delete Competition</AlertDialogHeader>
+        <AlertDialogHeader>Create Competition</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
-        <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+        <AlertDialogBody>Create a new competition ono this date?</AlertDialogBody>
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>
             Cancel
           </Button>
           <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
-            Delete
+            Create
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
