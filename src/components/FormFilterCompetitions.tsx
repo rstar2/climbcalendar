@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useLocalStorage, useSetState } from "react-use";
 import { Checkbox, Stack } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
 import { getColorCompetitionType } from "../utils/styles";
 import { CATEGORY_OPTIONS, CompetitionCategory, CompetitionType, TYPE_OPTIONS } from "../types";
-import { useSetState } from "react-use";
 import { useCompetitions } from "../cache/competitions";
 
 const TYPE_OPTIONS_WITH_NO_OPTION = [
@@ -129,7 +129,29 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
 export function useFormFilterCompetitions() {
   const competitions = useCompetitions();
 
-  const [filter, setFilter] = useSetState(initialCompetitionFilter);
+  // load the stored value from localStorage
+  const [storedFilterStr, storeFilterStr] = useLocalStorage("competitionFilter");
+
+  const [filter, setFilter] = useSetState(() => {
+    let storedFilter;
+    if (storedFilterStr) {
+      try {
+        storedFilter = JSON.parse(storedFilterStr as string);
+      } catch {
+        // do nothing
+      }
+    }
+    return { ...initialCompetitionFilter, ...storedFilter };
+  });
+  const setFilterMemo = useCallback<(_: CompetitionFilter) => void>(
+    (aFilter) => {
+      setFilter(aFilter);
+      // store also in the localStorage
+      storeFilterStr(JSON.stringify(aFilter));
+    },
+    [setFilter, storeFilterStr]
+  );
+
   const competitionsFiltered = useMemo(() => {
     let compsFiltered = competitions ?? [];
 
@@ -159,7 +181,7 @@ export function useFormFilterCompetitions() {
   return {
     competitionsFiltered,
     filter,
-    setFilter,
+    setFilter: setFilterMemo,
   };
 }
 

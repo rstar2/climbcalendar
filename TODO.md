@@ -18,16 +18,17 @@
 - [x] Make `Copyright` component be shown better - always at the normally at the bottom as last element if there is vertical scrollbar, and as fixed at the bottom otherwise
 - [x] Make the competition filter be more mobile friendly - open it as a drawer for instance
 - [x] Add a margin at the bottom - make only the "competitions view" scrollable, not the whole page
+- [ ] Make the Mobile Landscape case look better - hide some elements (header,etc...) or just make the whole page scrollable, not just the competitions-view?
 
 ## Features
 
 - [x] Calendar/List/Table views - options to select one and store it in localStorage
-- [ ] Print - only of the competitions view - add custom "Print" button
+- [x] Print - only of the competitions view - add custom "Print" button
 - [x] Multiple months on mobile when shown as single-month-calendar - use height="auto"
-- [ ] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
 - [x] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date
 - [ ] Localization to BG (+dates)
 - [x] Login with Facebook (works but with warn on the Facebook Login popup as the created Facebook oauth app is not "verified")
+- [ ] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
 
 ## Optional (if requested)
 
@@ -35,6 +36,6 @@
   - [ ] Publish the OAuth app to Google otherwise only test users could use it
   - [x] Try to connect in the same time to Firebase if possible like if used GIS (GoogleIdentityServices)
 - [ ] Publish the Facebook OAuth app (it requires some business verification) so that the warning t go away
-- [ ] Remainder - Push notifications  
+- [ ] Remainder for incoming competitions - Push notifications  
 - [ ] Search by token in the name
 - [ ] Support dark theme for the `FullCalendar`, e.g. when Chakra dark theme then apply different styles to `FullCalendar`

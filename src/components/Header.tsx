@@ -1,4 +1,3 @@
-import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
   Box,
   BoxProps,
@@ -22,7 +21,10 @@ import {
   VStack,
   useColorMode,
   useDisclosure,
+  Icon,
 } from "@chakra-ui/react";
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { PiPrinterThin } from "react-icons/pi";
 import { Link, LinkProps } from "@tanstack/react-router";
 
 import { THIS_YEAR } from "../utils/date";
@@ -30,6 +32,7 @@ import { useAuthAdmin, useAuthLoginWithPopup, useAuthLogout, useAuthUser } from 
 
 import Copyright from "./Copyright";
 import { FacebookIcon, GoogleIcon } from "./ProviderIcons";
+import { printElement } from "../utils/print";
 
 export default function Header(props: BoxProps) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -76,6 +79,16 @@ export default function Header(props: BoxProps) {
           size={["sm", "md"]}
           onClick={() => toggleColorMode()}
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+          aria-label="Toggle dark mode"
+        ></IconButton>
+        <IconButton
+          size={["sm", "md"]}
+          onClick={() => {
+            const elPrintable = document.querySelector(".printable") as HTMLElement;
+            if (!elPrintable) return;
+            printElement("Climbing Calendar", elPrintable);
+          }}
+          icon={<Icon as={PiPrinterThin} />}
           aria-label="Toggle dark mode"
         ></IconButton>
       </HStack>

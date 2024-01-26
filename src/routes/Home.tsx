@@ -81,7 +81,7 @@ export default function Home() {
           <SelectViewMode />
         </HStack>
 
-        <Box className="printable" flexGrow={1} overflow={"auto"} width="full">
+        <Box className="printable" flexGrow={1} overflow="auto" width="full">
           {viewMode === "calendar" && (
             <CompetitionsCalendar
               competitions={competitionsFiltered}

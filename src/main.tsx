@@ -13,6 +13,8 @@ import "./main.css";
 
 import "./registerSW.ts";
 
+import "./i18n.ts";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CacheProvider>
@@ -27,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 // note that the Print s still accessible form the browser's context menu
 window.addEventListener("keydown", function (e) {
   if ((e.ctrlKey || e.metaKey) && e.key == "p") {
-    alert("Please use the Print PDF button below for a better rendering on the document");
+    alert("Please use the Print button for printing just the competitions view");
     e.preventDefault();
     e.stopImmediatePropagation();
   }
