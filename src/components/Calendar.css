@@ -1,29 +1,29 @@
 /* Try to use the ChakraUI colors and etc... (e.g. use its CSS properties */
 
 .fc-day {
-    --fc-bg-event-opacity: 0.7;
-    font-size: var(--chakra-fontSizes-sm);
-    color: var(--chakra-colors-chakra-text);
+  --fc-bg-event-opacity: 0.7;
+  font-size: var(--chakra-fontSizes-sm);
+  color: var(--chakra-colors-chakra-text);
 }
 .chakra-ui-dark .fc-day,
 .chakra-ui-dark .fc-multimonth-singlecol {
-    color: var(--chakra-colors-chakra-inverse-text);
+  color: var(--chakra-colors-chakra-inverse-text);
 }
 .chakra-ui-dark .fc-day.fc-col-header-cell {
-    color: var(--chakra-colors-chakra-text);
+  color: var(--chakra-colors-chakra-text);
 }
 
 .fc .fc-daygrid-day-number {
-    z-index: 1;
+  z-index: 1;
 }
 
 .fc .fc-multimonth {
-    border: 0;
+  border: 0;
 }
 .fc .fc-multimonth-month {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .fc .fc-bg-event {
-    opacity: unset;
+  opacity: unset;
 }

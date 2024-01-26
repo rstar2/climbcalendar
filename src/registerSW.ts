@@ -6,7 +6,7 @@ import { registerSW } from "virtual:pwa-register";
     console.log("onRegisteredSW");
   },
 
-  // Prompt for update/reload 
+  // Prompt for update/reload
   //   /**
   //    * Callback called when new version of the app is ready/available.
   //    * Here we could show a special UI so user could decide whether to immediately switch to it,

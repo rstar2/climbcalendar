@@ -1,9 +1,4 @@
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createStandaloneToast } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { FirebaseError } from "firebase/app";
@@ -93,9 +88,7 @@ const showNotification = (meta: CacheMeta, error?: Error | null) => {
  * The cache react-query provider component.
  * Any component that will use any of the cache hooks must be wrapped in such a provider component.
  */
-export const CacheProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => (
+export const CacheProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
   <QueryClientProvider client={queryClient}>
     {children}
     <ReactQueryDevtools initialIsOpen={false} />

@@ -53,7 +53,7 @@ class Firebase {
 
     this.authGoogleProvider = new GoogleAuthProvider();
     // this will work and the returned Google access_token will be able to access Calendar API,
-    // BUT the problem is that it's very short lived, so 
+    // BUT the problem is that it's very short lived, so
     // this.authGoogleProvider.addScope(
     //   "https://www.googleapis.com/auth/calendar"
     // );
@@ -75,9 +75,7 @@ class Firebase {
         // The signed-in user info.
         const user = result.user;
 
-        console.log(
-          `Logged user: ${JSON.stringify(user)} , token: ${accessToken}`
-        );
+        console.log(`Logged user: ${JSON.stringify(user)} , token: ${accessToken}`);
 
         fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList", {
           method: "GET",
@@ -151,10 +149,7 @@ class Firebase {
     return setDoc(docRef, data);
   }
 
-  onSnapshot(
-    query: Query,
-    onNext: (snapshot: QuerySnapshot) => void
-  ): Unsubscribe {
+  onSnapshot(query: Query, onNext: (snapshot: QuerySnapshot) => void): Unsubscribe {
     return onSnapshot(query, onNext);
   }
 }

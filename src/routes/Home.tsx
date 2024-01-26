@@ -1,26 +1,31 @@
-import { useMemo, useState } from "react";
-import { useSetState } from "react-use";
-import { Box, useTheme, Heading, HStack, Spacer } from "@chakra-ui/react";
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerOverlay,
+  HStack,
+  Heading,
+  Show,
+  Spacer,
+  VStack,
+  useDisclosure,
+  useTheme,
+} from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
 
 import { Competition } from "../types";
-import {
-  useCompetitions,
-  useCompetitionDelete,
-  useCompetitionEdit,
-} from "../cache/competitions";
+import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
 import { useViewMode } from "../cache/ui";
-import FormFilterCompetition, {
-  initialCompetitionFilter,
-} from "../components/FormFilterCompetition";
-import DialogCompetitionDeleteConfirm from "../components/DialogCompetitionDeleteConfirm";
-import DialogCompetitionEdit from "../components/DialogCompetitionEdit";
-import SelectViewMode from "../components/SelectViewMode";
 import CompetitionsCalendar from "../components/CompetitionsCalendar";
 import CompetitionsList from "../components/CompetitionsList";
 import CompetitionsTable from "../components/CompetitionsTable";
-
-const THIS_YEAR = new Date().getFullYear();
+import DialogCompetitionDeleteConfirm from "../components/DialogCompetitionDeleteConfirm";
+import DialogCompetitionEdit from "../components/DialogCompetitionEdit";
+import FormFilterCompetitions, { useFormFilterCompetitions } from "../components/FormFilterCompetitions";
+import SelectViewMode from "../components/SelectViewMode";
 
 export default function Home() {
   const theme = useTheme();
@@ -31,49 +36,16 @@ export default function Home() {
   const editCompetition = useCompetitionEdit();
   const deleteCompetition = useCompetitionDelete();
 
-  // TODO: extract to a custom hook inside FormFilterCompetition
-  const [filter, setFilter] = useSetState(initialCompetitionFilter);
-  const competitionsFiltered = useMemo(() => {
-    let compsFiltered = competitions ?? [];
-
-    // use bg/balkan/international flags as only filters for "checked", e.g. unchecked means ANY
-    if (filter.bg) {
-      compsFiltered = compsFiltered.filter(
-        (comp) => !comp.balkan && !comp.international
-      );
-    }
-
-    if (filter.balkan) {
-      compsFiltered = compsFiltered.filter((comp) => !!comp.balkan);
-    }
-
-    if (filter.international) {
-      compsFiltered = compsFiltered.filter((comp) => !!comp.international);
-    }
-
-    if (filter.type !== undefined) {
-      compsFiltered = compsFiltered.filter((comp) =>
-        comp.type.includes(filter.type!)
-      );
-    }
-
-    if (filter.category !== undefined) {
-      compsFiltered = compsFiltered.filter((comp) =>
-        comp.category.includes(filter.category!)
-      );
-    }
-    return compsFiltered;
-  }, [competitions, filter]);
+  // useFormFilterCompetitions works together with FormFilterCompetition
+  // TODO: can think of another solution with context or render-props as now both are necessary
+  const { competitionsFiltered, filter, setFilter } = useFormFilterCompetitions();
+  const formFilterCompetition = <FormFilterCompetitions filter={filter} setFilter={setFilter} />;
 
   // controls the Edit dialog
-  const [competitionEdit, setCompetitionEdit] = useState<
-    Competition | undefined
-  >();
+  const [competitionEdit, setCompetitionEdit] = useState<Competition | undefined>();
 
   // controls the DeleteConfirm dialog
-  const [competitionIdDelete, setCompetitionIdDelete] = useState<
-    string | undefined
-  >();
+  const [competitionIdDelete, setCompetitionIdDelete] = useState<string | undefined>();
 
   const handleEditCompetition = (id: string) => {
     // open a new modal and on OK call edit
@@ -83,54 +55,58 @@ export default function Home() {
 
   return (
     <>
-      <HStack mt={4} mb={8}>
-        <FormFilterCompetition filter={filter} setFilter={setFilter} />
-        <Spacer />
-        <SelectViewMode />
-      </HStack>
+      <VStack height="full">
+        <Show above="sm">
+          <HStack my={2} flexShrink={0} width="full">
+            {formFilterCompetition}
+            <Spacer />
+          </HStack>
+        </Show>
+        <Show below="sm">
+          <MobileDrawer>{formFilterCompetition}</MobileDrawer>
+        </Show>
 
-      <Heading size="md" mb={2} textAlign={"center"}>
-        {THIS_YEAR}
-        {/* show loading until competitions is valid */}
-        {!competitions ? (
-          <>
-            &nbsp;
+        <HStack mb={2} flexShrink={0} width="full" justifyContent="space-between">
+          {/* show loading until competitions is valid */}
+          {!competitions ? (
             <BeatLoader
               style={{ display: "inline" }}
               size={8}
               color={theme.__cssMap["colors.chakra-body-text"].value}
             />
-          </>
-        ) : (
-          ` (${competitionsFiltered.length} competitions)`
-        )}
-      </Heading>
+          ) : (
+            <Heading size="md">{competitionsFiltered.length} competitions</Heading>
+          )}
 
-      <Box className="printable">
-        {viewMode === "calendar" && (
-          <CompetitionsCalendar
-            competitions={competitionsFiltered}
-            mainType={filter.type}
-            mainCategory={filter.category}
-            onEdit={handleEditCompetition}
-            onDelete={setCompetitionIdDelete}
-          />
-        )}
-        {viewMode === "list" && (
-          <CompetitionsList
-            competitions={competitionsFiltered}
-            onEdit={handleEditCompetition}
-            onDelete={setCompetitionIdDelete}
-          />
-        )}
-        {viewMode === "table" && (
-          <CompetitionsTable
-            competitions={competitionsFiltered}
-            onEdit={handleEditCompetition}
-            onDelete={setCompetitionIdDelete}
-          />
-        )}
-      </Box>
+          <SelectViewMode />
+        </HStack>
+
+        <Box className="printable" flexGrow={1} overflow={"auto"} width="full">
+          {viewMode === "calendar" && (
+            <CompetitionsCalendar
+              competitions={competitionsFiltered}
+              mainType={filter.type}
+              mainCategory={filter.category}
+              onEdit={handleEditCompetition}
+              onDelete={setCompetitionIdDelete}
+            />
+          )}
+          {viewMode === "list" && (
+            <CompetitionsList
+              competitions={competitionsFiltered}
+              onEdit={handleEditCompetition}
+              onDelete={setCompetitionIdDelete}
+            />
+          )}
+          {viewMode === "table" && (
+            <CompetitionsTable
+              competitions={competitionsFiltered}
+              onEdit={handleEditCompetition}
+              onDelete={setCompetitionIdDelete}
+            />
+          )}
+        </Box>
+      </VStack>
 
       <DialogCompetitionDeleteConfirm
         id={competitionIdDelete}
@@ -150,6 +126,24 @@ export default function Home() {
             });
         }}
       />
+    </>
+  );
+}
+
+function MobileDrawer({ children }: React.PropsWithChildren) {
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button size="sm" onClick={onToggle}>
+        Filter
+      </Button>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerBody>{children}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }

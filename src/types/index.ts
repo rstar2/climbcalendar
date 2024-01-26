@@ -9,14 +9,7 @@ export enum CompetitionType {
 
 export const CompetitionTypeSchema = z.nativeEnum(CompetitionType);
 
-export const CompetitionCategorySchema = z.enum([
-  "U8",
-  "U10",
-  "U12",
-  "U14",
-  "YouthA",
-  "YouthB",
-]);
+export const CompetitionCategorySchema = z.enum(["U8", "U10", "U12", "U14", "YouthA", "YouthB"]);
 
 export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
 
@@ -34,10 +27,7 @@ export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
 export const DATE_DURATION_MIN = 1;
 export const DATE_DURATION_MAX = 7;
 export const CompetitionNewSchema = z.object({
-  name: z
-    .string({ invalid_type_error: "Not a string" })
-    .min(1, "Name is required")
-    .min(3, "Name is too short"),
+  name: z.string({ invalid_type_error: "Not a string" }).min(1, "Name is required").min(3, "Name is too short"),
   date: z.date({ invalid_type_error: "Not a date" }),
   dateDuration: z.coerce
     .number({ invalid_type_error: "Not a number" })
@@ -56,19 +46,15 @@ export type Competition = CompetitionNew & {
   id: string;
 };
 
-export const TYPE_OPTIONS = enumValues(CompetitionTypeSchema.enum).map(
-  (val) => ({
-    value: val,
-    label: val,
-  })
-);
+export const TYPE_OPTIONS = enumValues(CompetitionTypeSchema.enum).map((val) => ({
+  value: val,
+  label: val,
+}));
 
-export const CATEGORY_OPTIONS = enumValues(CompetitionCategorySchema.enum).map(
-  (val) => ({
-    value: val,
-    label: val,
-  })
-);
+export const CATEGORY_OPTIONS = enumValues(CompetitionCategorySchema.enum).map((val) => ({
+  value: val,
+  label: val,
+}));
 
 // const example: Competition = {
 //   id: "123456789",

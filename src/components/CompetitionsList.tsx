@@ -1,12 +1,4 @@
-import {
-  List,
-  ListItem,
-  ListIcon,
-  HStack,
-  Text,
-  Spacer,
-  IconButton,
-} from "@chakra-ui/react";
+import { List, ListItem, ListIcon, HStack, Text, Spacer, IconButton } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 import { Competition } from "../types";
@@ -24,11 +16,7 @@ type CompetitionsListProps = {
   onEdit(id: string): void;
 };
 
-export default function CompetitionsList({
-  competitions,
-  onEdit,
-  onDelete,
-}: CompetitionsListProps) {
+export default function CompetitionsList({ competitions, onEdit, onDelete }: CompetitionsListProps) {
   const isAuthAdmin = useAuthAdmin();
 
   const sortedCompetitions = [...competitions].sort((c1, c2) => {
@@ -37,10 +25,10 @@ export default function CompetitionsList({
   });
 
   return (
-    <List mt={6} spacing={3}>
+    <List mt={6}>
       {sortedCompetitions.map((competition) => {
         return (
-          <ListItem>
+          <ListItem key={competition.id}>
             <HStack>
               <ListIcon as={CheckIcon} color={getColor(competition)} />
               <Text>
@@ -51,17 +39,20 @@ export default function CompetitionsList({
                 <>
                   <Spacer />
                   <IconButton
+                    size="sm"
                     className="showOnHoverParent"
                     aria-label="edit"
                     icon={<EditIcon />}
                     onClick={() => onEdit(competition.id)}
                   />
                   <IconButton
+                    size="sm"
                     className="showOnHoverParent"
                     aria-label="delete"
                     icon={<DeleteIcon />}
                     color="red"
                     onClick={() => onDelete(competition.id)}
+                    mr={2}
                   />
                 </>
               )}

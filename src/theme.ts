@@ -1,9 +1,4 @@
-import {
-  extendTheme,
-  withDefaultColorScheme,
-  defineStyleConfig,
-  theme as baseTheme,
-} from "@chakra-ui/react";
+import { extendTheme, withDefaultColorScheme, defineStyleConfig, theme as baseTheme } from "@chakra-ui/react";
 
 // 1. Extend the theme to include custom colors, fonts, etc
 const colors = {

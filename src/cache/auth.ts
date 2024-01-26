@@ -10,12 +10,8 @@ firebase.onAuthStateChanged((user) => {
     user: user ?? undefined,
   });
 
-  const isAdminPromise: Promise<boolean> = !user
-    ? Promise.resolve(false)
-    : isAuthAdmin();
-  isAdminPromise.then((isAdmin) =>
-    queryClient.setQueryData<boolean>(["authUser", "admin"], isAdmin)
-  );
+  const isAdminPromise: Promise<boolean> = !user ? Promise.resolve(false) : isAuthAdmin();
+  isAdminPromise.then((isAdmin) => queryClient.setQueryData<boolean>(["authUser", "admin"], isAdmin));
 });
 
 type AuthUser = {
@@ -34,12 +30,7 @@ export async function isAuthAdmin(): Promise<boolean> {
   const user = queryClient.getQueryData<AuthUser>(["authUser"])?.user;
 
   // "role" is a custom claim
-  return (
-    !!user &&
-    user
-      .getIdTokenResult()
-      .then((idTokenResult) => idTokenResult.claims.role === "admin")
-  );
+  return !!user && user.getIdTokenResult().then((idTokenResult) => idTokenResult.claims.role === "admin");
 }
 
 /**

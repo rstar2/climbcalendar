@@ -54,6 +54,6 @@ export const FacebookIcon = createIcon({
     ></path>
   ),
   defaultProps: {
-    boxSize: "24px"
+    boxSize: "24px",
   },
 });

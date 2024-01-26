@@ -1,11 +1,6 @@
 import { missingHandling, enumForEach } from "../utils";
 
-import {
-  type Competition,
-  CompetitionCategory,
-  CompetitionType,
-  CompetitionCategorySchema,
-} from "../types";
+import { type Competition, CompetitionCategory, CompetitionType, CompetitionCategorySchema } from "../types";
 
 export const colorMapType = (() => {
   const map = new Map<CompetitionType, string>();
@@ -20,9 +15,6 @@ export const colorMapType = (() => {
         break;
       case CompetitionType.Speed:
         color = "blue";
-        break;
-      case CompetitionType.Ninja:
-        color = "orange";
         break;
       default:
         missingHandling(type);
@@ -67,10 +59,7 @@ export const colorMapCategory = (() => {
   return map;
 })();
 
-export function getColor(
-  competition: Competition,
-  key: "type" | "category" = "type"
-): string {
+export function getColor(competition: Competition, key: "type" | "category" = "type"): string {
   // get the first "type" or category - it's asserted to be non-empty array
   const keyValue = competition[key][0];
 
@@ -83,5 +72,5 @@ export function getColorCompetitionType(type: CompetitionType) {
 }
 
 export function getColorCompetitionCategory(category: CompetitionCategory) {
-    return colorMapCategory.get(category);
-  }
+  return colorMapCategory.get(category);
+}

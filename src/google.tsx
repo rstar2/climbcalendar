@@ -25,8 +25,7 @@ export function GoogleApiAuth() {
   // Google OAuth Authorization (this include login also)
 
   const [isGoogleAPILoaded, setGoogleAPILoaded] = useState(false);
-  const [googleAuthToken, setGoogleAuthToken] =
-    useState<google.accounts.oauth2.TokenResponse>();
+  const [googleAuthToken, setGoogleAuthToken] = useState<google.accounts.oauth2.TokenResponse>();
 
   // load the Google APIs only once in the beginning
   useEffectOnce(() => {
@@ -56,11 +55,7 @@ export function GoogleApiAuth() {
   }, []);
 
   return !googleAuthToken ? (
-    <Button
-      isLoading={!isGoogleAPILoaded}
-      loadingText="Checking..."
-      onClick={onGoogleAuth}
-    >
+    <Button isLoading={!isGoogleAPILoaded} loadingText="Checking..." onClick={onGoogleAuth}>
       GAuth
     </Button>
   ) : (
@@ -121,37 +116,34 @@ async function loadGoogleAPI() {
 }
 
 async function authGoogleAPI() {
-  return new Promise<google.accounts.oauth2.TokenResponse>(
-    (resolve, reject) => {
-      // NOTE! the gapi.auth.authorize() is deprecated and not allowed for new apps, so this is the new way (GIS)
-      const tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        scope: SCOPES,
-        //   login_hint: "rumenn@qnext.com",
-        callback: async (token) => {
-          if (token.error !== undefined) return reject(new Error(token.error));
+  return new Promise<google.accounts.oauth2.TokenResponse>((resolve, reject) => {
+    // NOTE! the gapi.auth.authorize() is deprecated and not allowed for new apps, so this is the new way (GIS)
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      scope: SCOPES,
+      //   login_hint: "rumenn@qnext.com",
+      callback: async (token) => {
+        if (token.error !== undefined) return reject(new Error(token.error));
 
-          // the token is auto set in gapi.client.setToken(token);
+        // the token is auto set in gapi.client.setToken(token);
 
-          const userInfo = await fetch(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            { headers: { Authorization: `Bearer ${token.access_token}` } }
-          ).then((res) => res.json());
-          console.log(`User info ${JSON.stringify(userInfo)}`);
+        const userInfo = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${token.access_token}` },
+        }).then((res) => res.json());
+        console.log(`User info ${JSON.stringify(userInfo)}`);
 
-          // TODO: store the token and the userInfo in localStorage, so next time when opened
-          // the same app/page is opened to be able to check if user is still authorized
-          // could try to access some api and if fail to show the "Authorize" button again,
-          // and if succeeded to be assume all is OK.
+        // TODO: store the token and the userInfo in localStorage, so next time when opened
+        // the same app/page is opened to be able to check if user is still authorized
+        // could try to access some api and if fail to show the "Authorize" button again,
+        // and if succeeded to be assume all is OK.
 
-          resolve(token);
-        },
-      });
+        resolve(token);
+      },
+    });
 
-      // Skip display of account chooser and consent dialog for an existing session.
-      tokenClient.requestAccessToken({ prompt: "" });
-    }
-  );
+    // Skip display of account chooser and consent dialog for an existing session.
+    tokenClient.requestAccessToken({ prompt: "" });
+  });
 }
 
 // function revokeAuthGoogleAPI() {
@@ -196,10 +188,7 @@ async function listUpcomingEvents() {
   }
   // Flatten to string to display
   const output = events.reduce(
-    (str, event) =>
-      `${str}${event.summary} (${
-        event.start?.dateTime || event.start?.date
-      })\n`,
+    (str, event) => `${str}${event.summary} (${event.start?.dateTime || event.start?.date})\n`,
     "Events:\n"
   );
   console.log(output);

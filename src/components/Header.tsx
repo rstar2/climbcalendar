@@ -1,69 +1,67 @@
-import { Link, LinkProps } from "@tanstack/react-router";
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
-  useDisclosure,
-  HStack,
-  VStack,
+  Box,
+  BoxProps,
   Button,
   Link as ChakraLink,
-  Text,
   Divider,
-  useTheme,
-  useColorMode,
-  IconButton,
-  Spacer,
   Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
   DrawerBody,
-  Show,
-  Stack,
-  Heading,
+  DrawerCloseButton,
+  DrawerContent,
   DrawerFooter,
-  Box,
+  DrawerHeader,
+  DrawerOverlay,
+  HStack,
+  Heading,
+  IconButton,
+  Show,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+  useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Link, LinkProps } from "@tanstack/react-router";
 
-import {
-  useAuthAdmin,
-  useAuthLoginWithGoogle,
-  useAuthLogout,
-  useAuthUser,
-} from "../cache/auth";
+import { THIS_YEAR } from "../utils/date";
+import { useAuthAdmin, useAuthLoginWithGoogle, useAuthLogout, useAuthUser } from "../cache/auth";
 
-import { GoogleIcon } from "./ProviderIcons";
 import Copyright from "./Copyright";
+import { GoogleIcon } from "./ProviderIcons";
 
-export default function Header() {
+export default function Header(props: BoxProps) {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   // get the default/global background and set it as solid color to the header,
   // because it's sticky and when scroll-down it seems "transparent",
   // this is "normal" (expected) because only the body has set this background-color and all other
   // divs/elements inherit it implicitly
-  const theme = useTheme();
-  const { colorMode, toggleColorMode } = useColorMode();
+  //   const theme = useTheme();
 
   return (
     <VStack
-      mb={2}
-      position="sticky"
-      top={0}
-      //   make it above some FullCalendar elements so more than 2,
-      zIndex={3}
-      bg={theme.styles.global.body.bg}
+      {...props}
+
+      //   position="sticky"
+      //   top={0}
+      //   //   make it above some FullCalendar elements so more than 2,
+      //   zIndex={3}
+      //   bg={theme.styles.global.body.bg}
     >
-      <HStack w="100%" mt={2} gap="2">
+      <HStack width="full" mt={2} gap="2">
         <Show below="sm">
-          <DrawerLogin />
+          <HeaderDrawer />
         </Show>
 
-        <Heading size={["md", "xl"]}>Climbing Calendar</Heading>
+        <Heading size={["md", "xl"]}>Competition Calendar {THIS_YEAR}</Heading>
 
         <Show above="sm">
           {/* vertical Divider must have height */}
           <Divider orientation="vertical" h={10} />
           <Box flexGrow={1}>
-            <NavLinks />
+            <HeaderLinks />
           </Box>
         </Show>
         <Show below="sm">
@@ -75,6 +73,7 @@ export default function Header() {
         {/* <GoogleApiAuth /> */}
 
         <IconButton
+          size={["sm", "md"]}
           onClick={() => toggleColorMode()}
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
           aria-label="Toggle dark mode"
@@ -85,23 +84,15 @@ export default function Header() {
   );
 }
 
-function HeaderLink({
-  linkProps,
-  label,
-}: {
-  linkProps: LinkProps;
-  label: string;
-}) {
+function HeaderLink({ linkProps, label }: { linkProps: LinkProps; label: string }) {
   return (
     <ChakraLink as="div">
-      <Link {...linkProps}>
-        {({ isActive }) => (isActive ? <Text as="b">{label}</Text> : label)}
-      </Link>
+      <Link {...linkProps}>{({ isActive }) => (isActive ? <Text as="b">{label}</Text> : label)}</Link>
     </ChakraLink>
   );
 }
 
-function DrawerLogin() {
+function HeaderDrawer() {
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   return (
@@ -114,7 +105,7 @@ function DrawerLogin() {
           <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
 
           <DrawerBody>
-            <NavLinks onCloseDrawer={onClose} />
+            <HeaderLinks onCloseDrawer={onClose} />
           </DrawerBody>
 
           <DrawerFooter justifyContent="center">
@@ -126,10 +117,10 @@ function DrawerLogin() {
   );
 }
 
-type NavLinksProps = {
+type HeaderLinksProps = {
   onCloseDrawer?: () => void;
 };
-function NavLinks({ onCloseDrawer }: NavLinksProps) {
+function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
   // ------------------ Firebase auth ------------------
 
   const authUser = useAuthUser();
@@ -152,14 +143,8 @@ function NavLinks({ onCloseDrawer }: NavLinksProps) {
       {isAdmin && (
         <>
           {/* close the Drawer on navigation/click */}
-          <HeaderLink
-            linkProps={{ to: "/", onClick: onCloseDrawer }}
-            label="Home"
-          />
-          <HeaderLink
-            linkProps={{ to: "/add", onClick: onCloseDrawer }}
-            label="Add"
-          />
+          <HeaderLink linkProps={{ to: "/", onClick: onCloseDrawer }} label="Home" />
+          <HeaderLink linkProps={{ to: "/add", onClick: onCloseDrawer }} label="Add" />
         </>
       )}
 

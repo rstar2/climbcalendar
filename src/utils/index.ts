@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export function mapObject<T = any>(
-  obj: Record<string, any>,
-  mapFn: (key: string, value: any) => T
-): Record<string, T> {
+export function mapObject<T = any>(obj: Record<string, any>, mapFn: (key: string, value: any) => T): Record<string, T> {
   const result = Object.keys(obj).reduce(function (result, key) {
     result[key] = mapFn(key, obj[key]);
     return result;
@@ -13,10 +10,7 @@ export function mapObject<T = any>(
 }
 
 export function arrayRange(start: number, stop: number, step = 1) {
-  return Array.from(
-    { length: (stop - start) / step + 1 },
-    (_value, index) => start + index * step
-  );
+  return Array.from({ length: (stop - start) / step + 1 }, (_value, index) => start + index * step);
 }
 
 export function enumKeys<O extends object, K extends keyof O>(obj: O): K[] {
@@ -27,10 +21,7 @@ export function enumValues<O extends Record<string, string>>(obj: O): string[] {
   return Object.values(obj);
 }
 
-export function enumForEach<O extends object, K extends keyof O>(
-  obj: O,
-  callback: (item: O[K]) => void
-): void {
+export function enumForEach<O extends object, K extends keyof O>(obj: O, callback: (item: O[K]) => void): void {
   for (const key of enumKeys(obj)) {
     callback(obj[key as K]);
   }

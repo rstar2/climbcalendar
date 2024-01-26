@@ -26,9 +26,5 @@ export default function CompetitionAdd() {
 
   const competitionAddFn = useCompetitionAdd();
 
-  return (
-    <CompetitionAddEdit onAction={competitionAddFn}/>
-  );
+  return <CompetitionAddEdit onAction={competitionAddFn} />;
 }
-
-

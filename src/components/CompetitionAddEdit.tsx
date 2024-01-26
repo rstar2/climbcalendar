@@ -36,11 +36,7 @@ type CompetitionAddEditProps = {
   onAction(competition: CompetitionNew): void;
   isFullWidth?: boolean;
 };
-export default function CompetitionAddEdit({
-  competition,
-  onAction,
-  isFullWidth = false,
-}: CompetitionAddEditProps) {
+export default function CompetitionAddEdit({ competition, onAction, isFullWidth = false }: CompetitionAddEditProps) {
   return (
     <Flex align="center" justify="center">
       <Box
@@ -77,12 +73,9 @@ export default function CompetitionAddEdit({
               if (error instanceof ZodError) {
                 // return error.formErrors.fieldErrors;
                 // get the first error
-                return mapObject(
-                  error.formErrors.fieldErrors,
-                  (_key, value) => {
-                    return Array.isArray(value) ? value[0] : value;
-                  }
-                );
+                return mapObject(error.formErrors.fieldErrors, (_key, value) => {
+                  return Array.isArray(value) ? value[0] : value;
+                });
               }
             }
           }}
@@ -123,9 +116,7 @@ export default function CompetitionAddEdit({
                       <SingleDatepicker
                         name="date"
                         date={field.value}
-                        onDateChange={(val) =>
-                          form.setFieldValue(field.name, val)
-                        }
+                        onDateChange={(val) => form.setFieldValue(field.name, val)}
                       />
                       <FormErrorMessage>{meta.error}</FormErrorMessage>
                     </FormControl>
@@ -153,22 +144,9 @@ export default function CompetitionAddEdit({
                         }}
                         mb={2}
                       >
-                        {arrayRange(
-                          DATE_DURATION_MIN,
-                          DATE_DURATION_MAX,
-                          1
-                        ).map((mark) => (
-                          <SliderMark
-                            key={mark}
-                            value={mark}
-                            mt="2"
-                            fontSize="sm"
-                          >
-                            <Text
-                              as={mark === field.value ? "b" : "span"}
-                              color="blue.200"
-                              fontSize="2xs"
-                            >
+                        {arrayRange(DATE_DURATION_MIN, DATE_DURATION_MAX, 1).map((mark) => (
+                          <SliderMark key={mark} value={mark} mt="2" fontSize="sm">
+                            <Text as={mark === field.value ? "b" : "span"} color="blue.200" fontSize="2xs">
                               {mark}
                             </Text>
                           </SliderMark>
@@ -192,10 +170,7 @@ export default function CompetitionAddEdit({
                         useBasicStyles
                         isMulti
                         options={TYPE_OPTIONS}
-                        value={TYPE_OPTIONS.filter(
-                          (option) =>
-                            field.value?.includes(option.value) || false
-                        )}
+                        value={TYPE_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
                           form.setFieldValue(field.name, values);
@@ -220,10 +195,7 @@ export default function CompetitionAddEdit({
                         isMulti
                         closeMenuOnSelect={false}
                         options={CATEGORY_OPTIONS}
-                        value={CATEGORY_OPTIONS.filter(
-                          (option) =>
-                            field.value?.includes(option.value) || false
-                        )}
+                        value={CATEGORY_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
                           form.setFieldValue(field.name, values);
@@ -248,9 +220,7 @@ export default function CompetitionAddEdit({
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <Checkbox
                         isChecked={field.value}
-                        onChange={(e) =>
-                          form.setFieldValue(field.name, e.target.checked)
-                        }
+                        onChange={(e) => form.setFieldValue(field.name, e.target.checked)}
                       >
                         Balkan
                       </Checkbox>
@@ -264,9 +234,7 @@ export default function CompetitionAddEdit({
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <Checkbox
                         isChecked={field.value}
-                        onChange={(e) =>
-                          form.setFieldValue(field.name, e.target.checked)
-                        }
+                        onChange={(e) => form.setFieldValue(field.name, e.target.checked)}
                       >
                         International
                       </Checkbox>
@@ -282,9 +250,7 @@ export default function CompetitionAddEdit({
                   colorScheme="blue"
                   isDisabled={
                     // when creating let at least on touched field, on edit not such need
-                    isSubmitting ||
-                    !isValid ||
-                    (!competition && !Object.keys(touched).length)
+                    isSubmitting || !isValid || (!competition && !Object.keys(touched).length)
                   }
                 >
                   {competition ? "Edit Competition" : "Add Competition"}

@@ -1,15 +1,12 @@
-import { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Checkbox, Stack } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
 import { getColorCompetitionType } from "../utils/styles";
-import {
-  CATEGORY_OPTIONS,
-  CompetitionCategory,
-  CompetitionType,
-  TYPE_OPTIONS,
-} from "../types";
+import { CATEGORY_OPTIONS, CompetitionCategory, CompetitionType, TYPE_OPTIONS } from "../types";
+import { useSetState } from "react-use";
+import { useCompetitions } from "../cache/competitions";
 
 const TYPE_OPTIONS_WITH_NO_OPTION = [
   {
@@ -35,7 +32,7 @@ type CompetitionFilter = Partial<{
   category: CompetitionCategory;
 }>;
 
-export const initialCompetitionFilter: CompetitionFilter = {
+const initialCompetitionFilter: CompetitionFilter = {
   balkan: undefined,
   international: undefined,
   bg: undefined,
@@ -49,15 +46,12 @@ const radios: Radio[] = [
   { name: "international", label: "International" },
 ];
 
-type FormFilterCompetitionProps = {
+type FormFilterCompetitionsProps = {
   filter: CompetitionFilter;
   setFilter: (v: CompetitionFilter) => void;
 };
 
-export default function FormFilterCompetition({
-  filter,
-  setFilter,
-}: FormFilterCompetitionProps) {
+export default function FormFilterCompetitions({ filter, setFilter }: FormFilterCompetitionsProps) {
   return (
     <Formik<CompetitionFilter>
       initialValues={filter}
@@ -91,9 +85,7 @@ export default function FormFilterCompetition({
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
                 isSearchable={false}
                 options={TYPE_OPTIONS_WITH_NO_OPTION}
-                value={TYPE_OPTIONS_WITH_NO_OPTION.find(
-                  (option) => field.value === option.value
-                )}
+                value={TYPE_OPTIONS_WITH_NO_OPTION.find((option) => field.value === option.value)}
                 onChange={(option) => {
                   form.setFieldValue(field.name, option!.value);
                 }}
@@ -116,9 +108,7 @@ export default function FormFilterCompetition({
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
                 isSearchable={false}
                 options={CATEGORY_OPTIONS_WITH_NO_OPTION}
-                value={CATEGORY_OPTIONS_WITH_NO_OPTION.find(
-                  (option) => field.value === option.value
-                )}
+                value={CATEGORY_OPTIONS_WITH_NO_OPTION.find((option) => field.value === option.value)}
                 onChange={(option) => {
                   form.setFieldValue(field.name, option!.value);
                 }}
@@ -136,6 +126,43 @@ export default function FormFilterCompetition({
   );
 }
 
+export function useFormFilterCompetitions() {
+  const competitions = useCompetitions();
+
+  const [filter, setFilter] = useSetState(initialCompetitionFilter);
+  const competitionsFiltered = useMemo(() => {
+    let compsFiltered = competitions ?? [];
+
+    // use bg/balkan/international flags as only filters for "checked", e.g. unchecked means ANY
+    if (filter.bg) {
+      compsFiltered = compsFiltered.filter((comp) => !comp.balkan && !comp.international);
+    }
+
+    if (filter.balkan) {
+      compsFiltered = compsFiltered.filter((comp) => !!comp.balkan);
+    }
+
+    if (filter.international) {
+      compsFiltered = compsFiltered.filter((comp) => !!comp.international);
+    }
+
+    if (filter.type !== undefined) {
+      compsFiltered = compsFiltered.filter((comp) => comp.type.includes(filter.type!));
+    }
+
+    if (filter.category !== undefined) {
+      compsFiltered = compsFiltered.filter((comp) => comp.category.includes(filter.category!));
+    }
+    return compsFiltered;
+  }, [competitions, filter]);
+
+  return {
+    competitionsFiltered,
+    filter,
+    setFilter,
+  };
+}
+
 function FormAutoSubmit() {
   const formik = useFormikContext();
   useEffect(() => {
@@ -150,10 +177,14 @@ type CheckboxRadioGroupProps = {
   radios: Radio[];
 };
 /**
- * Make it act like radio-group that support unchecked/empty state. 
+ * Make it act like radio-group that support unchecked/empty state.
  */
 function CheckboxRadioGroup({ radios }: CheckboxRadioGroupProps) {
-  return radios.map((radio) => <CheckboxRadio radio={radio} radios={radios} />);
+  return radios.map((radio) => (
+    <React.Fragment key={radio.name}>
+      <CheckboxRadio radio={radio} radios={radios} />
+    </React.Fragment>
+  ));
 }
 
 type CheckboxRadioProps = {
@@ -161,9 +192,11 @@ type CheckboxRadioProps = {
   radios: Radio[];
 };
 function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
-     {/* <Field as={Checkbox} name={radio.name}>
+  {
+    /* <Field as={Checkbox} name={radio.name}>
               {radio.label}
-            </Field>*/}
+            </Field>*/
+  }
   return (
     <Field name={radio.name}>
       {({ field, form }: FieldProps) => (
@@ -174,8 +207,7 @@ function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
             form.setFieldValue(field.name, isChecked);
             if (isChecked) {
               radios.forEach((aRadio) => {
-                aRadio.name !== radio.name &&
-                  form.setFieldValue(aRadio.name, false);
+                aRadio.name !== radio.name && form.setFieldValue(aRadio.name, false);
               });
             }
           }}

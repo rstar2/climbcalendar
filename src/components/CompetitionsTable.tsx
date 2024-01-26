@@ -1,12 +1,4 @@
-import {
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-} from "@chakra-ui/react";
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
 import { Competition } from "../types";
 import { formatDate } from "../utils/date";
 import { getColor } from "../utils/styles";
@@ -21,9 +13,7 @@ type CompetitionsTableProps = {
   onEdit(id: string): void;
 };
 
-export default function CompetitionsTable({
-  competitions,
-}: CompetitionsTableProps) {
+export default function CompetitionsTable({ competitions }: CompetitionsTableProps) {
   const sortedCompetitions = [...competitions].sort((c1, c2) => {
     if (c1.date === c2.date) return 0;
     return c1.date < c2.date ? -1 : 1;

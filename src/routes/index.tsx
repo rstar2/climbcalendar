@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  RouterProvider as RouterProvider_,
-  Router,
-  Route,
-  RootRoute,
-  redirect,
-} from "@tanstack/react-router";
+import { RouterProvider as RouterProvider_, Router, Route, RootRoute, redirect } from "@tanstack/react-router";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import Root from "./Root";
@@ -20,7 +14,7 @@ import { isAuth } from "../cache/auth";
 // This is the recommended way to load the "@tanstack/router-devtools" only in production,
 // Note this is much better in contrast to "react-query" where its "@tanstack/react-query-devtools"
 // are loaded always just in production are not used/shown in the UI
-const TanStackRouterDevtools = 
+const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
     ? () => null // Render nothing in production
     : React.lazy(() =>
@@ -75,6 +69,4 @@ declare module "@tanstack/react-router" {
 /**
  * The router provider component.
  */
-export const RouterProvider: React.FC = () => (
-  <RouterProvider_ router={router}></RouterProvider_>
-);
+export const RouterProvider: React.FC = () => <RouterProvider_ router={router}></RouterProvider_>;

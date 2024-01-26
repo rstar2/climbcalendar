@@ -27,9 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 // note that the Print s still accessible form the browser's context menu
 window.addEventListener("keydown", function (e) {
   if ((e.ctrlKey || e.metaKey) && e.key == "p") {
-    alert(
-      "Please use the Print PDF button below for a better rendering on the document"
-    );
+    alert("Please use the Print PDF button below for a better rendering on the document");
     e.preventDefault();
     e.stopImmediatePropagation();
   }

@@ -16,10 +16,7 @@ type DialogCompetitionDeleteConfirmProps = {
   onConfirm: (confirmed: boolean) => void;
 };
 
-export default function DialogCompetitionDeleteConfirm({
-  id,
-  onConfirm,
-}: DialogCompetitionDeleteConfirmProps) {
+export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: DialogCompetitionDeleteConfirmProps) {
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!id,
     onClose: () => onConfirm(false),
@@ -40,9 +37,7 @@ export default function DialogCompetitionDeleteConfirm({
 
         <AlertDialogCloseButton />
 
-        <AlertDialogBody>
-          Are you sure? You can't undo this action afterwards.
-        </AlertDialogBody>
+        <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
         <AlertDialogFooter>
           <Button ref={cancelDeleteRef} onClick={() => onConfirm(false)}>

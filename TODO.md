@@ -16,8 +16,8 @@
 - [x] Make balkan/international checkboxes act like radio-buttons (but allow none to be checked)
 - [x] Currently FullScreen event-click happens only on the first day of the event, but if it's longer then clicking on the other days don't call this event-handler ( I think the theres's other divs that absorb the click-event)
 - [x] Make `Copyright` component be shown better - always at the normally at the bottom as last element if there is vertical scrollbar, and as fixed at the bottom otherwise
-- [ ] Make the competition filter be mre mobile friendly - 2 combos in a row
-- [ ] Add a margin at the bottom but still make the whole page scrollable
+- [x] Make the competition filter be more mobile friendly - open it as a drawer for instance
+- [x] Add a margin at the bottom - make only the "competitions view" scrollable, not the whole page
 
 ## Features
 

@@ -26,13 +26,9 @@ initializeApp();
  * https://firebase.google.com/docs/auth/admin/custom-claims
  */
 export const authUserCreated = user().onCreate(async (user) => {
-  logger.log(
-    `AuthUser created: ${user.email} (${user.uid}), verified: ${user.emailVerified}`
-  );
+  logger.log(`AuthUser created: ${user.email} (${user.uid}), verified: ${user.emailVerified}`);
 
-  const admins = (
-    await getFirestore().collection("admins").listDocuments()
-  ).map((docRef) => docRef.id);
+  const admins = (await getFirestore().collection("admins").listDocuments()).map((docRef) => docRef.id);
 
   // add ADMIN role to some special accounts
   if (user.emailVerified && user.email && admins.includes(user.email)) {
@@ -60,9 +56,7 @@ export const makeAdminsHttp = onRequest({ cors: true }, async (req, res) => {
 });
 
 async function makeAdminsImpl() {
-  const admins = (
-    await getFirestore().collection("admins").listDocuments()
-  ).map((docRef) => docRef.id);
+  const admins = (await getFirestore().collection("admins").listDocuments()).map((docRef) => docRef.id);
 
   logger.log(`admins: ${admins.join()}`);
 
@@ -78,7 +72,7 @@ async function makeAdminsImpl() {
       // if user doesn't have this claim then add it
       const customClaims = user.customClaims ?? {};
       if (customClaims.role !== "admin") {
-        await getAuth().setCustomUserClaims(user.uid, {...customClaims, ...customClaimsAdmin});
+        await getAuth().setCustomUserClaims(user.uid, { ...customClaims, ...customClaimsAdmin });
         logger.log(`Set ADMIN role to: ${user.uid}`);
         newAdmins++;
       }

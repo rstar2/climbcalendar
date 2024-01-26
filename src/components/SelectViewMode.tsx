@@ -13,6 +13,16 @@ export default function SelectViewMode() {
   const viewModeChange = useViewModeChange();
   return (
     <Select
+      size={["sm", "md"]}
+      chakraStyles={{
+        menu: (provided) => ({
+          ...provided,
+
+          // make it above the FullCalendar as some of its elements have z-index:1
+          zIndex: 3,
+        }),
+      }}
+      isSearchable={false}
       options={VIEW_MODE_OPTIONS}
       value={VIEW_MODE_OPTIONS.find((option) => option.value === viewMode)}
       onChange={(option) => viewModeChange(option!.value)}

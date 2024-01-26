@@ -8,9 +8,7 @@ import firebase, { parseDocs } from "../firebase";
 import { queryClient } from "./index";
 import { useAuthUser, isAuthAdmin } from "./auth";
 
-const competitionsCol = firebase.collection(
-  import.meta.env.VITE_FIREBASE_COLL_COMPETITIONS!
-);
+const competitionsCol = firebase.collection(import.meta.env.VITE_FIREBASE_COLL_COMPETITIONS!);
 
 firebase.onSnapshot(competitionsCol, (snapshot: QuerySnapshot) => {
   const competitions = parseDocs(snapshot) as Competition[];
@@ -74,8 +72,7 @@ export function useCompetitionDelete() {
   const mutation = useMutation({
     mutationFn: async (competitionId: string) => {
       const isAdmin = await isAuthAdmin();
-      if (!isAdmin)
-        throw new Error("Sorry, only admin can delete competitions");
+      if (!isAdmin) throw new Error("Sorry, only admin can delete competitions");
       return firebase.deleteDoc(competitionsCol, competitionId);
     },
     // meta is used for success/failed notification on mutation result
@@ -92,20 +89,19 @@ export function useCompetitionDelete() {
  * Mutation for "editing" a Competition.
  */
 export function useCompetitionEdit() {
-    const mutation = useMutation({
-      mutationFn: async ({id: competitionId, competition} : {id: string, competition: CompetitionNew}) => {
-        const isAdmin = await isAuthAdmin();
-        if (!isAdmin)
-          throw new Error("Sorry, only admin can delete competitions");
-        
-        return firebase.updateDoc(competitionsCol, competitionId, competition);
-      },
-      // meta is used for success/failed notification on mutation result
-      meta: {
-        action: ["Competition", "Edit"],
-      },
-    });
-  
-    // if needed can return the whole mutation, like loading, and error state
-    return mutation.mutateAsync;
-  }
+  const mutation = useMutation({
+    mutationFn: async ({ id: competitionId, competition }: { id: string; competition: CompetitionNew }) => {
+      const isAdmin = await isAuthAdmin();
+      if (!isAdmin) throw new Error("Sorry, only admin can delete competitions");
+
+      return firebase.updateDoc(competitionsCol, competitionId, competition);
+    },
+    // meta is used for success/failed notification on mutation result
+    meta: {
+      action: ["Competition", "Edit"],
+    },
+  });
+
+  // if needed can return the whole mutation, like loading, and error state
+  return mutation.mutateAsync;
+}

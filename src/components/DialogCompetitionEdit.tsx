@@ -17,10 +17,7 @@ type DialogCompetitionEditProps = {
   competition?: Competition;
   onConfirm: (competitionNew?: CompetitionNew) => void;
 };
-export default function DialogCompetitionEdit({
-  competition,
-  onConfirm,
-}: DialogCompetitionEditProps) {
+export default function DialogCompetitionEdit({ competition, onConfirm }: DialogCompetitionEditProps) {
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!competition,
     onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
@@ -41,12 +38,7 @@ export default function DialogCompetitionEdit({
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit
-            competition={competition}
-            onAction={onConfirm}
-            isFullWidth
-          />
-          ;
+          <CompetitionAddEdit competition={competition} onAction={onConfirm} isFullWidth />;
         </ModalBody>
 
         <ModalFooter>

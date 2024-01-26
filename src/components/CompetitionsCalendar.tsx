@@ -27,31 +27,21 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import multiMonthYearPlugin from "@fullcalendar/multimonth";
 import interactionPlugin from "@fullcalendar/interaction";
 
-import {
-  CompetitionCategory,
-  type Competition,
-  CompetitionType,
-} from "../types";
+import { CompetitionCategory, type Competition, CompetitionType } from "../types";
 
 import "./Calendar.css";
 import { getColor, getColorCompetitionType } from "../utils/styles";
 import { useAuthAdmin } from "../cache/auth";
 import { fcDate, formatDate } from "../utils/date";
 
-function mapCompetition(
-  competition: Competition,
-  mainType?: CompetitionType,
-  _mainCategory?: CompetitionCategory
-) {
+function mapCompetition(competition: Competition, mainType?: CompetitionType, _mainCategory?: CompetitionCategory) {
   return {
     id: competition.id,
     title: competition.name,
     start: fcDate(competition),
     end: fcDate(competition, true),
     // color or backgroundColor use the same purpose
-    color: mainType
-      ? getColorCompetitionType(mainType)
-      : getColor(competition, "type"),
+    color: mainType ? getColorCompetitionType(mainType) : getColor(competition, "type"),
     display: "background",
     extraProps: {
       competition,
@@ -106,16 +96,8 @@ export default function CompetitionsCalendar({
       // start the week on Monday
       firstDay={1}
       // render-hook for rendering the event's content
-      eventContent={(eventInfo) => (
-        <CalendarEvent
-          eventInfo={eventInfo}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      )}
-      events={competitions.map((comp) =>
-        mapCompetition(comp, mainType, mainCategory)
-      )}
+      eventContent={(eventInfo) => <CalendarEvent eventInfo={eventInfo} onEdit={onEdit} onDelete={onDelete} />}
+      events={competitions.map((comp) => mapCompetition(comp, mainType, mainCategory))}
       // callback only for events click
       // eventClick={(info) => alert("Clicked on: " + info.event.id)}
       eventDisplay="background"
@@ -137,11 +119,7 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
     competition: Competition;
   };
 
-  const {
-    onOpen: onOpenPopover,
-    onClose: onClosePopover,
-    isOpen: inOpenPopover,
-  } = useDisclosure();
+  const { onOpen: onOpenPopover, onClose: onClosePopover, isOpen: inOpenPopover } = useDisclosure();
 
   const handleDelete = () => {
     // close and call parent
@@ -155,20 +133,9 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
   };
 
   return (
-    <Popover
-      isOpen={inOpenPopover}
-      onOpen={onOpenPopover}
-      onClose={onClosePopover}
-    >
+    <Popover isOpen={inOpenPopover} onOpen={onOpenPopover} onClose={onClosePopover}>
       <PopoverTrigger>
-        <Flex
-          align="center"
-          justify="center"
-          width="100%"
-          height="100%"
-          px={2}
-          fontSize="xs"
-        >
+        <Flex align="center" justify="center" width="100%" height="100%" px={2} fontSize="xs">
           <Tooltip label={eventInfo.event.title}>
             <Text noOfLines={3}>{eventInfo.event.title}</Text>
           </Tooltip>

@@ -1,7 +1,9 @@
-/* html, body, #root {
-    height: 100%;
-    overflow: hidden;
-} */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
 
 .logo {
   height: 6em;
@@ -18,7 +20,7 @@
   /* visibility: hidden; */
   opacity: 0;
 }
-*:hover:has(>.showOnHoverParent) .showOnHoverParent {
+*:hover:has(> .showOnHoverParent) .showOnHoverParent {
   /* visibility: visible; */
   opacity: 1;
   transition: opacity ease-in 500ms;
