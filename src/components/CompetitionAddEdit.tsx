@@ -19,17 +19,13 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import { arrayRange, mapObject } from "../utils";
-import {
-  CompetitionNew,
-  CompetitionNewSchema,
-  DATE_DURATION_MIN,
-  DATE_DURATION_MAX,
-  TYPE_OPTIONS,
-  CATEGORY_OPTIONS,
-  Competition,
-} from "../types";
+import { CompetitionNew, CompetitionNewSchema, DATE_DURATION_MIN, DATE_DURATION_MAX, Competition } from "../types";
+import useOptionsCompetitionType from "../hooks/useOptionsCompetitionType";
+import useOptionsCompetitionCategory from "../hooks/useOptionsCompetitionCategory";
+import useOptionsCompetitionLocation from "../hooks/useOptionsCompetitionLocation";
 
 type CompetitionAddEditProps = {
   /**
@@ -50,6 +46,12 @@ export default function CompetitionAddEdit({
   onAction,
   isFullWidth = false,
 }: CompetitionAddEditProps) {
+  const { t } = useTranslation();
+
+  const optionsType = useOptionsCompetitionType();
+  const optionsCategory = useOptionsCompetitionCategory();
+  const optionsLocation = useOptionsCompetitionLocation();
+
   return (
     <Flex align="center" justify="center">
       <Box
@@ -112,12 +114,12 @@ export default function CompetitionAddEdit({
             <Form>
               <VStack spacing={4} align="flex-start">
                 <FormControl isInvalid={!!errors.name && touched.name}>
-                  <FormLabel htmlFor="name">Name</FormLabel>
-                  <Field as={Input} name="name" variant="filled" />
+                  <FormLabel htmlFor="name">{t("name")}</FormLabel>
+                  <Field as={Input} name="name"variant="filled" />
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
 
-                <Field name="date">
+                <Field name="date" key="date">
                   {({ field, form, meta }: FieldProps) => (
                     <FormControl
                       isInvalid={!!meta.error && meta.touched}
@@ -127,7 +129,7 @@ export default function CompetitionAddEdit({
                         field.onBlur(e);
                       }}
                     >
-                      <FormLabel>Date</FormLabel>
+                      <FormLabel>{t("date")}</FormLabel>
                       <SingleDatepicker
                         name="date"
                         date={field.value}
@@ -141,9 +143,8 @@ export default function CompetitionAddEdit({
                 <Field name="dateDuration">
                   {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <FormLabel>Duration</FormLabel>
+                      <FormLabel>{t("duration")}</FormLabel>
                       <Slider
-                        name="dateDuration"
                         min={DATE_DURATION_MIN}
                         max={DATE_DURATION_MAX}
                         step={1}
@@ -179,14 +180,14 @@ export default function CompetitionAddEdit({
                 <Field name="type">
                   {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <FormLabel>Types</FormLabel>
+                      <FormLabel>{t("type")}</FormLabel>
                       <Select
-                        name="type"
                         useBasicStyles
                         isMulti
                         isSearchable={false}
-                        options={TYPE_OPTIONS}
-                        value={TYPE_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}
+                        placeholder={t("select.placeholder")}
+                        options={optionsType}
+                        value={optionsType.filter((option) => field.value?.includes(option.value) || false)}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
                           form.setFieldValue(field.name, values);
@@ -205,14 +206,15 @@ export default function CompetitionAddEdit({
                 <Field name="category">
                   {({ field, form, meta }: FieldProps) => (
                     <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <FormLabel>Categories</FormLabel>
+                      <FormLabel>{t("category")}</FormLabel>
                       <Select
                         useBasicStyles
                         isMulti
                         isSearchable={false}
                         closeMenuOnSelect={false}
-                        options={CATEGORY_OPTIONS}
-                        value={CATEGORY_OPTIONS.filter((option) => field.value?.includes(option.value) || false)}
+                        placeholder={t("select.placeholder")}
+                        options={optionsCategory}
+                        value={optionsCategory.filter((option) => field.value?.includes(option.value) || false)}
                         onChange={(options) => {
                           const values = options.map((option) => option.value);
                           form.setFieldValue(field.name, values);
@@ -228,37 +230,25 @@ export default function CompetitionAddEdit({
                   )}
                 </Field>
 
-                {/* there's problem with formikHelpert.resetForm()  - it doesn't reset the chakra-ui Checkbox*/}
-                {/* <Field as={Checkbox} name="balkan">
+                {optionsLocation.map((option) => (
+                  /* there's problem with formikHelper.resetForm()  - it doesn't reset the chakra-ui Checkbox*/
+                  /* <Field as={Checkbox} name="balkan">
                       Balkan
-                    </Field> */}
-                <Field name="balkan">
-                  {({ field, form, meta }: FieldProps) => (
-                    <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <Checkbox
-                        isChecked={field.value}
-                        onChange={(e) => form.setFieldValue(field.name, e.target.checked)}
-                      >
-                        Balkan
-                      </Checkbox>
-                      <FormErrorMessage>{meta.error}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-
-                <Field name="international">
-                  {({ field, form, meta }: FieldProps) => (
-                    <FormControl isInvalid={!!meta.error && meta.touched}>
-                      <Checkbox
-                        isChecked={field.value}
-                        onChange={(e) => form.setFieldValue(field.name, e.target.checked)}
-                      >
-                        International
-                      </Checkbox>
-                      <FormErrorMessage>{meta.error}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
+                    </Field> */
+                  <Field name={option.value} key={option.value}>
+                    {({ field, form, meta }: FieldProps) => (
+                      <FormControl isInvalid={!!meta.error && meta.touched}>
+                        <Checkbox
+                          isChecked={field.value}
+                          onChange={(e) => form.setFieldValue(field.name, e.target.checked)}
+                        >
+                          {option.label}
+                        </Checkbox>
+                        <FormErrorMessage>{meta.error}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                ))}
 
                 <Button
                   type="submit"
@@ -270,7 +260,7 @@ export default function CompetitionAddEdit({
                     isSubmitting || !isValid || (!competition && !Object.keys(touched).length)
                   }
                 >
-                  {competition ? "Edit Competition" : "Add Competition"}
+                  {t(`action.${competition ? "edit" : "add"}`)}
                 </Button>
               </VStack>
             </Form>

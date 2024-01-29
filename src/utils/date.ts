@@ -16,20 +16,26 @@ export function fcDate(competition: Competition, end = false): string | undefine
   return format(add(competition.date, { days: competition.dateDuration }), fcDateFormat);
 }
 
-export function formatDate(competition: Date): string;
-export function formatDate(competition: Competition, end?: boolean): string;
-export function formatDate(dateOrCompetition: Date | Competition, end = false): string {
+export function formatDate(competition: Date, locale?: string): string;
+export function formatDate(competition: Competition, locale?: string, end?: boolean): string;
+export function formatDate(dateOrCompetition: Date | Competition, locale?: string, end = false): string {
   if (dateOrCompetition instanceof Date) return formatDate_(dateOrCompetition);
 
-  if (!end) return formatDate_(dateOrCompetition.date);
+  if (!end) return formatDate_(dateOrCompetition.date, locale);
 
-  return formatDate_(
-    add(dateOrCompetition.date, {
-      days: dateOrCompetition.dateDuration - 1,
-    })
-  );
+  const dateEnd = add(dateOrCompetition.date, {
+    days: dateOrCompetition.dateDuration - 1,
+  });
+  return formatDate_(dateEnd, locale);
 }
 
-const formatDate_ = (date: Date) => date.toDateString();
+const options: Intl.DateTimeFormatOptions = {
+  // no need to show the year it's always current one 2024
+  //   year: "numeric",
+  month: "long",
+  day: "numeric",
+  weekday: "long",
+};
+const formatDate_ = (date: Date, locale?: string) => date.toLocaleDateString(locale, options);
 
 export const THIS_YEAR = new Date().getFullYear();

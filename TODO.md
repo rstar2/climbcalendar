@@ -26,7 +26,7 @@
 - [x] Print - only of the competitions view - add custom "Print" button
 - [x] Multiple months on mobile when shown as single-month-calendar - use height="auto"
 - [x] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date
-- [ ] Localization to BG (+dates)
+- [x] Localization to BG (+dates/fullcalendar/formik-errors)
 - [x] Login with Facebook (works but with warn on the Facebook Login popup as the created Facebook oauth app is not "verified")
 - [ ] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
 

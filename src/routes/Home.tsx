@@ -15,6 +15,7 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
+import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
 import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
@@ -29,6 +30,7 @@ import SelectViewMode from "../components/SelectViewMode";
 
 export default function Home() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const viewMode = useViewMode();
 
@@ -75,7 +77,7 @@ export default function Home() {
               color={theme.__cssMap["colors.chakra-body-text"].value}
             />
           ) : (
-            <Heading size="md">{competitionsFiltered.length} competitions</Heading>
+            <Heading size="md">{t("competitions", { count: competitionsFiltered.length })}</Heading>
           )}
 
           <SelectViewMode />

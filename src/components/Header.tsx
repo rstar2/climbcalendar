@@ -1,3 +1,4 @@
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
   Box,
   BoxProps,
@@ -13,6 +14,7 @@ import {
   DrawerOverlay,
   HStack,
   Heading,
+  Icon,
   IconButton,
   Show,
   Spacer,
@@ -21,20 +23,21 @@ import {
   VStack,
   useColorMode,
   useDisclosure,
-  Icon,
 } from "@chakra-ui/react";
-import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { PiPrinterThin } from "react-icons/pi";
 import { Link, LinkProps } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { PiPrinterThin } from "react-icons/pi";
 
-import { THIS_YEAR } from "../utils/date";
 import { useAuthAdmin, useAuthLoginWithPopup, useAuthLogout, useAuthUser } from "../cache/auth";
+import { THIS_YEAR } from "../utils/date";
 
+import { printElement } from "../utils/print";
 import Copyright from "./Copyright";
 import { FacebookIcon, GoogleIcon } from "./ProviderIcons";
-import { printElement } from "../utils/print";
+import SelectLanguage from "./SelectLanguage";
 
 export default function Header(props: BoxProps) {
+  const { t } = useTranslation();
   const { colorMode, toggleColorMode } = useColorMode();
 
   // get the default/global background and set it as solid color to the header,
@@ -58,7 +61,9 @@ export default function Header(props: BoxProps) {
           <HeaderDrawer />
         </Show>
 
-        <Heading size={["md", "xl"]}>Competition Calendar {THIS_YEAR}</Heading>
+        <Heading size={["md", "xl"]} sx={{ textWrap: "balance" }}>
+          {t("title", { year: THIS_YEAR })}
+        </Heading>
 
         <Show above="sm">
           {/* vertical Divider must have height */}
@@ -80,17 +85,18 @@ export default function Header(props: BoxProps) {
           onClick={() => toggleColorMode()}
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
           aria-label="Toggle dark mode"
-        ></IconButton>
+        />
         <IconButton
           size={["sm", "md"]}
           onClick={() => {
             const elPrintable = document.querySelector(".printable") as HTMLElement;
             if (!elPrintable) return;
-            printElement("Climbing Calendar", elPrintable);
+            printElement(t("title", { year: THIS_YEAR }), elPrintable);
           }}
           icon={<Icon as={PiPrinterThin} />}
           aria-label="Toggle dark mode"
-        ></IconButton>
+        />
+        <SelectLanguage />
       </HStack>
       <Divider />
     </VStack>
@@ -134,6 +140,8 @@ type HeaderLinksProps = {
   onCloseDrawer?: () => void;
 };
 function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
+  const { t } = useTranslation();
+
   // ------------------ Firebase auth ------------------
 
   const authUser = useAuthUser();
@@ -156,8 +164,8 @@ function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
       {isAdmin && (
         <>
           {/* close the Drawer on navigation/click */}
-          <HeaderLink linkProps={{ to: "/", onClick: onCloseDrawer }} label="Home" />
-          <HeaderLink linkProps={{ to: "/add", onClick: onCloseDrawer }} label="Add" />
+          <HeaderLink linkProps={{ to: "/", onClick: onCloseDrawer }} label={t("nav.home")} />
+          <HeaderLink linkProps={{ to: "/add", onClick: onCloseDrawer }} label={t("nav.add")} />
         </>
       )}
 
@@ -167,14 +175,14 @@ function HeaderLinks({ onCloseDrawer }: HeaderLinksProps) {
         (!authUser.user ? (
           <>
             <Button leftIcon={<GoogleIcon />} onClick={() => loginWithPopup("google")}>
-              Login With Google
+              {t("action.login")}
             </Button>
             <Button leftIcon={<FacebookIcon />} onClick={() => loginWithPopup("facebook")}>
-              Login With Facebook
+              {t("action.login")}
             </Button>
           </>
         ) : (
-          <Button onClick={() => logout()}>Logout</Button>
+          <Button onClick={() => logout()}>{t("action.logout")}</Button>
         ))}
     </Stack>
   );

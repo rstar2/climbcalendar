@@ -5,24 +5,12 @@ import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
 import { getColorCompetitionType } from "../utils/styles";
-import { CATEGORY_OPTIONS, CompetitionCategory, CompetitionType, TYPE_OPTIONS } from "../types";
+import { CompetitionCategory, CompetitionType, RadioOption } from "../types";
+
 import { useCompetitions } from "../cache/competitions";
-
-const TYPE_OPTIONS_WITH_NO_OPTION = [
-  {
-    value: undefined,
-    label: "Any",
-  },
-  ...TYPE_OPTIONS,
-];
-
-const CATEGORY_OPTIONS_WITH_NO_OPTION = [
-  {
-    value: undefined,
-    label: "Any",
-  },
-  ...CATEGORY_OPTIONS,
-];
+import useOptionsCompetitionType from "../hooks/useOptionsCompetitionType";
+import useOptionsCompetitionCategory from "../hooks/useOptionsCompetitionCategory";
+import useOptionsCompetitionLocation from "../hooks/useOptionsCompetitionLocation";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;
@@ -40,18 +28,16 @@ const initialCompetitionFilter: CompetitionFilter = {
   category: undefined,
 };
 
-const radios: Radio[] = [
-  { name: "bg", label: "BG" },
-  { name: "balkan", label: "Balkan" },
-  { name: "international", label: "International" },
-];
-
 type FormFilterCompetitionsProps = {
   filter: CompetitionFilter;
   setFilter: (v: CompetitionFilter) => void;
 };
 
 export default function FormFilterCompetitions({ filter, setFilter }: FormFilterCompetitionsProps) {
+  const optionsType = useOptionsCompetitionType(true);
+  const optionsCategory = useOptionsCompetitionCategory(true);
+  const radiosLocation = useOptionsCompetitionLocation(true);
+
   return (
     <Formik<CompetitionFilter>
       initialValues={filter}
@@ -84,8 +70,8 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
                 }}
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
                 isSearchable={false}
-                options={TYPE_OPTIONS_WITH_NO_OPTION}
-                value={TYPE_OPTIONS_WITH_NO_OPTION.find((option) => field.value === option.value)}
+                options={optionsType}
+                value={optionsType.find((option) => field.value === option.value)}
                 onChange={(option) => {
                   form.setFieldValue(field.name, option!.value);
                 }}
@@ -107,8 +93,8 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
                 }}
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
                 isSearchable={false}
-                options={CATEGORY_OPTIONS_WITH_NO_OPTION}
-                value={CATEGORY_OPTIONS_WITH_NO_OPTION.find((option) => field.value === option.value)}
+                options={optionsCategory}
+                value={optionsCategory.find((option) => field.value === option.value)}
                 onChange={(option) => {
                   form.setFieldValue(field.name, option!.value);
                 }}
@@ -116,7 +102,7 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
             )}
           </Field>
 
-          <CheckboxRadioGroup radios={radios} />
+          <CheckboxRadioGroup radios={radiosLocation} />
         </Stack>
 
         {/* headless component that wraps the auto-submit functionality */}
@@ -194,24 +180,23 @@ function FormAutoSubmit() {
   return null;
 }
 
-type Radio = { name: string; label: string };
 type CheckboxRadioGroupProps = {
-  radios: Radio[];
+  radios: RadioOption[];
 };
 /**
  * Make it act like radio-group that support unchecked/empty state.
  */
 function CheckboxRadioGroup({ radios }: CheckboxRadioGroupProps) {
   return radios.map((radio) => (
-    <React.Fragment key={radio.name}>
+    <React.Fragment key={radio.value}>
       <CheckboxRadio radio={radio} radios={radios} />
     </React.Fragment>
   ));
 }
 
 type CheckboxRadioProps = {
-  radio: Radio;
-  radios: Radio[];
+  radio: RadioOption;
+  radios: RadioOption[];
 };
 function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
   {
@@ -220,7 +205,7 @@ function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
             </Field>*/
   }
   return (
-    <Field name={radio.name}>
+    <Field name={radio.value}>
       {({ field, form }: FieldProps) => (
         <Checkbox
           isChecked={field.value}
@@ -229,7 +214,7 @@ function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
             form.setFieldValue(field.name, isChecked);
             if (isChecked) {
               radios.forEach((aRadio) => {
-                aRadio.name !== radio.name && form.setFieldValue(aRadio.name, false);
+                aRadio.value !== radio.value && form.setFieldValue(aRadio.value, false);
               });
             }
           }}

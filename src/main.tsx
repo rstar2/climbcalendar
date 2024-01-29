@@ -19,7 +19,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CacheProvider>
       <ChakraProvider resetCSS theme={theme}>
-        <RouterProvider />
+        <React.Suspense fallback="...">
+          <RouterProvider />
+        </React.Suspense>
       </ChakraProvider>
     </CacheProvider>
   </React.StrictMode>

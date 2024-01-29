@@ -1,0 +1,71 @@
+{
+  "title": "Climbing Competitions {{year}}",
+  "loading": "Loading ...",
+  "info": "Info",
+  "any": "Any",
+  "name": "Name",
+  "date": "Date",
+  "dateEnd": "Date End",
+  "type": "Type",
+  "category": "Category",
+  "duration": "Duration",
+
+  "nav": {
+    "home": "Home",
+    "add": "Add"
+  },
+
+  "action": {
+    "login": "Login",
+    "logout": "Logout",
+    "close": "Close",
+    "delete": "Delete",
+    "add": "Add",
+    "edit": "Edit",
+    "print": "Print",
+    "language": "Language"
+  },
+
+  "select": {
+    "placeholder": "Select ..."
+  },
+
+  "message": {
+    "competitionAdd": "Add Competition",
+    "competitionEdit": "Edit Competition",
+    "competitionDelete": "Delete Competition",
+    "competitionAddConfirm": "Add a new competition on {{date}}?",
+    "competitionDeleteConfirm": "Are you sure? You can't undo this action afterwards."
+  },
+
+  "competitions_zero": "No Competitions",
+  "competitions_one": "1 Competition",
+  "competitions_other": "{{count}} Competitions",
+
+  "viewMode": {
+    "list": "list",
+    "table": "table",
+    "calendar": "calendar"
+  },
+
+  "competition": {
+    "type": {
+      "Boulder": "Boulder",
+      "Lead": "Lead",
+      "Speed": "Speed"
+    },
+    "category": {
+      "U8": "U8",
+      "U10": "U10",
+      "U12": "U12",
+      "U14": "U14",
+      "YouthA": "YouthA",
+      "YouthB": "YouthB"
+    },
+    "location": {
+      "bg": "BG",
+      "balkan": "Balkan",
+      "international": "International"
+    }
+  }
+}

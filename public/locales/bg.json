@@ -1,0 +1,71 @@
+{
+  "title": "Катерачни състезания {{year}}",
+  "loading": "Зареждане ...",
+  "info": "Информация",
+  "any": "Всички",
+  "name": "Име",
+  "date": "Дата",
+  "dateEnd": "Дата край",
+  "type": "Тип",
+  "category": "Категория",
+  "duration": "Продължителност",
+
+  "nav": {
+    "home": "Начало",
+    "add": "Добавяне"
+  },
+
+  "action": {
+    "login": "Вход",
+    "logout": "Изход",
+    "close": "Затвори",
+    "delete": "Изтрий",
+    "add": "Добави",
+    "edit": "Редактирай",
+    "print": "Принт",
+    "language": "Език"
+  },
+
+  "select": {
+    "placeholder": "Избери ..."
+  },
+
+  "message": {
+    "competitionAdd": "Добави състезание",
+    "competitionEdit": "Редактирай състезание",
+    "competitionDelete": "Изтрий състезание",
+    "competitionAddConfirm": "Добави ново състезание на {{date}}?",
+    "competitionDeleteConfirm": "Сигурни ли сте, операцията е неотменима после."
+  },
+
+  "competitions_zero": "Няма състезания",
+  "competitions_one": "1 състезание",
+  "competitions_other": "{{count}} състезания",
+
+  "viewMode": {
+    "list": "лист",
+    "table": "таблица",
+    "calendar": "календар"
+  },
+
+  "competition": {
+    "type": {
+      "Boulder": "Боулдър",
+      "Lead": "Трудност",
+      "Speed": "Скорост"
+    },
+    "category": {
+      "U8": "1гр",
+      "U10": "2гр",
+      "U12": "3гр",
+      "U14": "4гр",
+      "YouthA": "5гр",
+      "YouthB": "6гр"
+    },
+    "location": {
+      "bg": "БГ",
+      "balkan": "Балканско",
+      "international": "Международно"
+    }
+  }
+}

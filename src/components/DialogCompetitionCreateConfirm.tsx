@@ -10,6 +10,8 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+
 import { formatDate } from "../utils/date";
 
 type DialogCompetitionCreateConfirmProps = {
@@ -18,6 +20,7 @@ type DialogCompetitionCreateConfirmProps = {
 };
 
 export default function DialogCompetitionCreateConfirm({ date, onConfirm }: DialogCompetitionCreateConfirmProps) {
+  const { t, i18n } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!date,
     onClose: () => onConfirm(false),
@@ -34,18 +37,22 @@ export default function DialogCompetitionCreateConfirm({ date, onConfirm }: Dial
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>Create Competition</AlertDialogHeader>
+        <AlertDialogHeader>{t("message.competitionAdd")}</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
-        {date && <AlertDialogBody>Create a new competition on date: {formatDate(date)}?</AlertDialogBody>}
+        {date && (
+          <AlertDialogBody>
+            {t("message.competitionAddConfirm", { date: formatDate(date, i18n.language) })}
+          </AlertDialogBody>
+        )}
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>
-            Cancel
+            {t("action.close")}
           </Button>
           <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
-            Create
+            {t("action.add")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

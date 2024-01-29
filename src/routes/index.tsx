@@ -6,6 +6,7 @@ import Root from "./Root";
 import Home from "./Home";
 import CompetitionAdd from "./CompetitionAdd";
 import { isAuth } from "../cache/auth";
+import i18nUtil from "../i18n";
 
 // Vite (and Webpack) process the "process.env.NODE_ENV"
 // by actually replacing it completely with value of the real NODE_ENV env-variable,
@@ -57,7 +58,7 @@ const adminRoute = new Route({
 const routeTree = rootRoute.addChildren([homeRoute, adminRoute]);
 const router = new Router({
   routeTree,
-  defaultPendingComponent: () => <div>Loading...</div>,
+  defaultPendingComponent: () => <div>{i18nUtil.t("loading")}</div>,
 });
 
 declare module "@tanstack/react-router" {

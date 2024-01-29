@@ -1,5 +1,6 @@
 import { List, ListItem, ListIcon, HStack, Text, Spacer, IconButton } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
 import { formatDate } from "../utils/date";
@@ -17,7 +18,8 @@ type CompetitionsListProps = {
 };
 
 export default function CompetitionsList({ competitions, onEdit, onDelete }: CompetitionsListProps) {
-  const isAuthAdmin = useAuthAdmin();
+    const { i18n } = useTranslation();
+    const isAuthAdmin = useAuthAdmin();
 
   const sortedCompetitions = [...competitions].sort((c1, c2) => {
     if (c1.date === c2.date) return 0;
@@ -32,7 +34,7 @@ export default function CompetitionsList({ competitions, onEdit, onDelete }: Com
             <HStack>
               <ListIcon as={CheckIcon} color={getColor(competition)} />
               <Text>
-                {competition.name} - {formatDate(competition)}
+                {competition.name} - {formatDate(competition, i18n.language)}
               </Text>
 
               {isAuthAdmin && (

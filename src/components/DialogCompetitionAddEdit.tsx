@@ -9,6 +9,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import CompetitionAddEdit from "./CompetitionAddEdit";
 import { Competition, CompetitionNew } from "../types";
@@ -29,6 +30,7 @@ type DialogCompetitionAddEditProps = {
   onConfirm: (competitionNew?: CompetitionNew) => void;
 };
 export default function DialogCompetitionAddEdit({ date, competition, onConfirm }: DialogCompetitionAddEditProps) {
+  const { t } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!competition || !!date,
     onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
@@ -45,7 +47,7 @@ export default function DialogCompetitionAddEdit({ date, competition, onConfirm 
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{competition ? "Edit" : "Add"} Competition</ModalHeader>
+        <ModalHeader>{t(`message.${competition ? "competitionEdit" : "competitionAdd"}`)}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -53,7 +55,7 @@ export default function DialogCompetitionAddEdit({ date, competition, onConfirm 
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onClose}>{t("action.close")}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

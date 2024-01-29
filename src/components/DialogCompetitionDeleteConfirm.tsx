@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 type DialogCompetitionDeleteConfirmProps = {
   id?: string;
@@ -17,6 +18,7 @@ type DialogCompetitionDeleteConfirmProps = {
 };
 
 export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: DialogCompetitionDeleteConfirmProps) {
+  const { t } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
     isOpen: !!id,
     onClose: () => onConfirm(false),
@@ -33,18 +35,18 @@ export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: Dialog
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>Delete Competition</AlertDialogHeader>
+        <AlertDialogHeader>{t("message.competitionDelete")}</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
-        <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+        <AlertDialogBody>{t("message.competitionDeleteConfirm")}</AlertDialogBody>
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>
-            Cancel
+            {t("action.close")}
           </Button>
           <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
-            Delete
+            {t("action.delete")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

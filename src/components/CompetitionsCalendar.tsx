@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -23,10 +23,34 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import FullCalendar from "@fullcalendar/react";
-import type { EventContentArg } from "@fullcalendar/core";
+import type { EventContentArg, LocaleInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import multiMonthYearPlugin from "@fullcalendar/multimonth";
 import interactionPlugin from "@fullcalendar/interaction";
+
+// import bgLocale from "@fullcalendar/core/locales/bg";
+// import plLocale from "@fullcalendar/core/locales/pl";
+// these are just JSON with very little localized strings
+// The real localization is the native JS Date formatting.
+// The "code" field is important, and all the rest is not used here, so no need to import them
+// {
+//     code: 'bg',
+//     buttonText: {
+//         prev: 'назад',
+//         next: 'напред',
+//         today: 'днес',
+//         year: 'година',
+//         month: 'Месец',
+//         week: 'Седмица',
+//         day: 'Ден',
+//         list: 'График',
+//     },
+//     allDayText: 'Цял ден',
+//     moreLinkText(n) {
+//         return '+още ' + n;
+//     },
+//     noEventsText: 'Няма събития за показване',
+// }
 
 import { CompetitionCategory, type Competition, CompetitionType } from "../types";
 
@@ -37,6 +61,7 @@ import { useAuthAdmin } from "../cache/auth";
 import { useCompetitionAdd } from "../cache/competitions";
 import DialogCompetitionCreateConfirm from "./DialogCompetitionCreateConfirm";
 import DialogCompetitionAddEdit from "./DialogCompetitionAddEdit";
+import { useTranslation } from "react-i18next";
 
 function mapCompetition(competition: Competition, mainType?: CompetitionType, _mainCategory?: CompetitionCategory) {
   return {
@@ -89,6 +114,22 @@ export default function CompetitionsCalendar({
 
   const [competitionAdd, setCompetitionAdd] = useState<Date | undefined>();
 
+  const [locale, setLocale] = useState<LocaleInput | undefined>();
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    // let loc: LocaleInput | undefined;
+    // switch (i18n.language) {
+    //   case "bg":
+    //     loc = bgLocale;
+    //     break;
+    //   case "pl":
+    //     loc = plLocale;
+    //     break;
+    // }
+    const loc: LocaleInput = { code: i18n.language };
+    setLocale(loc);
+  }, [i18n.language]);
+
   return (
     <>
       <FullCalendar
@@ -116,12 +157,16 @@ export default function CompetitionsCalendar({
         // eventClick={(info) => alert("Clicked on: " + info.event.id)}
         eventDisplay="background"
         displayEventTime={true}
+        // TODO: Fix - if it's also an event then first Info dialog is shown and then this one
         // this callback for any date clicked
-        dateClick={(info) => {
-          if (isAdmin) {
-            setCompetitionCreateConfirm(info.date);
-          }
-        }}
+        // dateClick={(info) => {
+        //   if (isAdmin) {
+        //     setCompetitionCreateConfirm(info.date);
+        //   }
+        // }}
+
+        // locales={[enLocale, bgLocale, plLocale]}
+        locale={locale}
       />
 
       <DialogCompetitionCreateConfirm
@@ -150,6 +195,7 @@ type CalendarEventProps = {
   eventInfo: EventContentArg;
 } & Pick<CompetitionsCalendarProps, "onEdit" | "onDelete">;
 function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
+  const { t, i18n } = useTranslation();
   const isAuthAdmin = useAuthAdmin();
 
   const { competition } = eventInfo.event.extendedProps.extraProps as {
@@ -181,7 +227,7 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
       <Portal>
         <PopoverContent>
           <PopoverArrow />
-          <PopoverHeader>Info</PopoverHeader>
+          <PopoverHeader>{t("info")}</PopoverHeader>
           <PopoverCloseButton />
           <PopoverBody>
             <Card variant="outline">
@@ -190,38 +236,38 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
                   <Table size="sm">
                     <Tbody>
                       <Tr>
-                        <Td fontWeight={"bold"}>Name</Td>
+                        <Td fontWeight={"bold"}>{t("name")}</Td>
                         <Td>{competition.name}</Td>
                       </Tr>
                       <Tr>
-                        <Td fontWeight={"bold"}>Date</Td>
-                        <Td>{formatDate(competition)}</Td>
+                        <Td fontWeight={"bold"}>{t("date")}</Td>
+                        <Td>{formatDate(competition, i18n.language)}</Td>
                       </Tr>
                       {competition.dateDuration > 1 && (
                         <Tr>
-                          <Td fontWeight={"bold"}>Date End</Td>
-                          <Td>{formatDate(competition, true)}</Td>
+                          <Td fontWeight={"bold"}>{t("dateEnd")}</Td>
+                          <Td>{formatDate(competition, i18n.language, true)}</Td>
                         </Tr>
                       )}
                       <Tr>
-                        <Td fontWeight={"bold"}>Type</Td>
-                        <Td>{competition.type.join(", ")}</Td>
+                        <Td fontWeight={"bold"}>{t("type")}</Td>
+                        <Td>{competition.type.map((typ) => t(`competition.type.${typ}`)).join(", ")}</Td>
                       </Tr>
                       <Tr>
-                        <Td fontWeight={"bold"}>Category</Td>
-                        <Td>{competition.category.join(", ")}</Td>
+                        <Td fontWeight={"bold"}>{t("category")}</Td>
+                        <Td>{competition.category.map((cat) => t(`competition.category.${cat}`)).join(", ")}</Td>
                       </Tr>
                       {competition.balkan && (
                         <Tr>
                           <Td colSpan={2} fontWeight={"bold"}>
-                            Balkan competition
+                            {t("competition.location.balkan")}
                           </Td>
                         </Tr>
                       )}
                       {competition.international && (
                         <Tr>
                           <Td colSpan={2} fontWeight={"bold"}>
-                            International competition
+                            {t("competition.location.international")}
                           </Td>
                         </Tr>
                       )}
@@ -234,10 +280,10 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
           {isAuthAdmin && (
             <PopoverFooter display="flex" justifyContent="flex-end">
               <Button mr={2} onClick={handleEdit}>
-                Edit
+                {t("action.edit")}
               </Button>
               <Button colorScheme="red" onClick={handleDelete}>
-                Delete
+                {t("action.delete")}
               </Button>
             </PopoverFooter>
           )}

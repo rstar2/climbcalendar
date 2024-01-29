@@ -1,28 +1,16 @@
 import { z } from "zod";
-import { enumValues } from "../utils";
 
 export enum CompetitionType {
   Boulder = "Boulder",
   Lead = "Lead",
   Speed = "Speed",
 }
-
 export const CompetitionTypeSchema = z.nativeEnum(CompetitionType);
 
-export const CompetitionCategorySchema = z.enum(["U8", "U10", "U12", "U14", "YouthA", "YouthB"]);
+const CompetitionCategory = ["U8", "U10", "U12", "U14", "YouthA", "YouthB"] as const;
+export const CompetitionCategorySchema = z.enum(CompetitionCategory);
 
 export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
-
-// export type Competition = {
-//   id: string;
-//   name: string;
-//   type: CompetitionType | CompetitionType[];
-//   date: Date;
-//   category: Category[];
-//   dateDuration?: number;
-//   balkan?: boolean;
-//   international?: boolean;
-// };
 
 export const DATE_DURATION_MIN = 1;
 export const DATE_DURATION_MAX = 7;
@@ -45,20 +33,20 @@ export type CompetitionNew = z.infer<typeof CompetitionNewSchema>;
 export type Competition = CompetitionNew & {
   id: string;
 };
-
-export const TYPE_OPTIONS = enumValues(CompetitionTypeSchema.enum).map((val) => ({
-  value: val,
-  label: val,
-}));
-
-export const CATEGORY_OPTIONS = enumValues(CompetitionCategorySchema.enum).map((val) => ({
-  value: val,
-  label: val,
-}));
+// export type Competition = {
+//   id: string;
+//   name: string;
+//   type: CompetitionType | CompetitionType[];
+//   date: Date;
+//   category: Category[];
+//   dateDuration?: number;
+//   balkan?: boolean;
+//   international?: boolean;
+// };
 
 // const example: Competition = {
 //   id: "123456789",
-//   name: "Bonsist",
+//   name: "Bons",
 //   type: [CompetitionType.Boulder],
 //   date: new Date(),
 //   category: ["U12", "YouthA"],
@@ -68,3 +56,9 @@ export type Func = () => void;
 
 export const ViewModes = ["calendar", "table", "list"] as const;
 export type ViewMode = (typeof ViewModes)[number];
+
+export type SelectOption = {
+  value?: string;
+  label: string;
+};
+export type RadioOption = Required<SelectOption>;
