@@ -7,14 +7,15 @@ import { CiViewTable } from "react-icons/ci";
 import { CiCircleList } from "react-icons/ci";
 
 import { useViewMode, useViewModeChange } from "../cache/ui";
-import { ViewModes } from "../types";
+import { ViewMode, ViewModes } from "../types";
 import { missingHandling } from "../utils";
-import i18nUtil from "../i18n";
 
 // Make sure this is defined outside of the component which returns your select
 // or you'll run into rendering issues
 const selectComponents = {
+  // @ts-expect-error ( )
   Option: ({ children, ...props }) => (
+    // @ts-expect-error ( )
     <chakraComponents.Option {...props}>
       {props.data.icon} {children}
     </chakraComponents.Option>
@@ -66,7 +67,7 @@ export default function SelectViewMode() {
       isSearchable={false}
       options={options}
       value={value}
-      onChange={(option) => viewModeChange(option!.value)}
+      onChange={(option) => viewModeChange(option!.value as ViewMode)}
       components={selectComponents}
     />
   );

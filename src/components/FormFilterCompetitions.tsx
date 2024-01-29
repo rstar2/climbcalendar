@@ -118,7 +118,8 @@ export function useFormFilterCompetitions() {
   // load the stored value from localStorage
   const [storedFilterStr, storeFilterStr] = useLocalStorage("competitionFilter");
 
-  const [filter, setFilter] = useSetState(() => {
+  // @ts-expect-error (the useSetState.d.ts don't specify that it allows initialization function)
+  const [filter, setFilter] = useSetState<CompetitionFilter>(() => {
     let storedFilter;
     if (storedFilterStr) {
       try {
@@ -127,7 +128,7 @@ export function useFormFilterCompetitions() {
         // do nothing
       }
     }
-    return { ...initialCompetitionFilter, ...storedFilter };
+    return { ...initialCompetitionFilter, ...storedFilter } as CompetitionFilter;
   });
   const setFilterMemo = useCallback<(_: CompetitionFilter) => void>(
     (aFilter) => {

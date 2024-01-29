@@ -153,7 +153,7 @@ export function printBodyIFrame(title: string, body: string, opts?: PrintOptions
     win.onafterprint = closePrint;
 
     const images = doc.querySelectorAll("img");
-    images.forEach((image) => {
+    images.forEach((_image) => {
       // Moreover ensure proper scale when it's a single image in the body
       // Alternative of object-fit to fit image to content
       // https://stackoverflow.com/questions/15685666/changing-image-sizes-proportionally-using-css

@@ -61,7 +61,7 @@ export default function Header(props: BoxProps) {
           <HeaderDrawer />
         </Show>
 
-        <Heading size={["md", "xl"]} sx={{ textWrap: "balance" }}>
+        <Heading size={["md", "xl"]} sx={{ textWrap: "balance", whiteSpace: "unset" }}>
           {t("title", { year: THIS_YEAR })}
         </Heading>
 

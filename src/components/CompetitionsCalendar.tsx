@@ -157,14 +157,13 @@ export default function CompetitionsCalendar({
         // eventClick={(info) => alert("Clicked on: " + info.event.id)}
         eventDisplay="background"
         displayEventTime={true}
-        // TODO: Fix - if it's also an event then first Info dialog is shown and then this one
         // this callback for any date clicked
-        // dateClick={(info) => {
-        //   if (isAdmin) {
-        //     setCompetitionCreateConfirm(info.date);
-        //   }
-        // }}
-
+        dateClick={(_info) => {
+          if (isAdmin) {
+            // TODO: Fix - if it's also an event then first Info dialog is shown and then this one
+            // setCompetitionCreateConfirm(info.date);
+          }
+        }}
         // locales={[enLocale, bgLocale, plLocale]}
         locale={locale}
       />
