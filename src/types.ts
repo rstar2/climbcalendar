@@ -1,4 +1,14 @@
 import { z } from "zod";
+import { makeZodI18nMap } from "zod-i18n-map";
+
+// integrate with i18n
+z.setErrorMap(
+  makeZodI18nMap({
+    // search first in the "zod" namespace, and if nt there use the default one "translation"
+    // so this will allow the errors to be in the same en.json file together with all other keys 
+    ns: ["zod", "translation"],
+  })
+);
 
 export enum CompetitionType {
   Boulder = "Boulder",
@@ -14,13 +24,14 @@ export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
 
 export const DATE_DURATION_MIN = 1;
 export const DATE_DURATION_MAX = 7;
+
+/**
+ * NOTE: Localization of the errors is also applied
+ */
 export const CompetitionNewSchema = z.object({
-  name: z.string({ invalid_type_error: "Not a string" }).min(1, "Name is required").min(3, "Name is too short"),
-  date: z.date({ invalid_type_error: "Not a date" }),
-  dateDuration: z.coerce
-    .number({ invalid_type_error: "Not a number" })
-    .min(DATE_DURATION_MIN, `Min allowed is ${DATE_DURATION_MIN}`)
-    .max(DATE_DURATION_MAX, `Max allowed is ${DATE_DURATION_MAX}`),
+  name: z.string().min(3).max(100),
+  date: z.date(),
+  dateDuration: z.coerce.number().min(DATE_DURATION_MIN).max(DATE_DURATION_MAX),
   balkan: z.boolean().optional(),
   international: z.boolean().optional(),
   //type: z.union([CompetitionTypeSchema, CompetitionTypeSchema.array().nonempty()]),

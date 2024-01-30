@@ -17,9 +17,9 @@ i18n
     // resources: {
     //   "en": {
     //     // only a single namespace
-    //     translation: {
-    //        "title": "Climbing Competitions",
-    //     }
+    //     // translation: {
+    //     //    "title": "Climbing Competitions",
+    //     // },
     //   },
     // },
     //lng: englishLang, // if you're using a language detector, do not define the lng option
@@ -34,12 +34,25 @@ i18n
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
     },
 
+
+    load: 'languageOnly',
+
     // configure the Backend plugin
     backend: {
       // for all available options read the backend's repository readme file
       loadPath: "/locales/{{lng}}.json",
+      namespace: "translation"
     },
+
+    debug: true
   });
+
+// i18n.addResourceBundle("en", "zod", {
+//     errors: {
+//         invalid_type_received_undefined: "Required",
+//         invalid_type_received_undefined_with_path: "{{path}} is required",
+//     },
+// }, true);
 
 type LanguageDict = { [key: string]: string | LanguageDict };
 

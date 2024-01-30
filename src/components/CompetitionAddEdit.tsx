@@ -85,11 +85,23 @@ export default function CompetitionAddEdit({
           }
           validate={(values) => {
             try {
-              CompetitionNewSchema.parse(values);
+              let valuesToCheck = values;
+              // always fallback empty strings "" to undefined, so Zod to return the proper "required_error"
+              // currently it's only "name" as a string type
+              if (!valuesToCheck.name) {
+                valuesToCheck = { ...values };
+                valuesToCheck.name = undefined;
+              }
+              
+              CompetitionNewSchema.parse(valuesToCheck);
             } catch (error) {
               if (error instanceof ZodError) {
                 // return error.formErrors.fieldErrors;
                 // get the first error
+
+                // NOTE: the ZOD errors will be already localized but
+                // if something very special is needed
+                // (like only for specific path/name) they can be customized here
                 return mapObject(error.formErrors.fieldErrors, (_key, value) => {
                   return Array.isArray(value) ? value[0] : value;
                 });
@@ -115,7 +127,7 @@ export default function CompetitionAddEdit({
               <VStack spacing={4} align="flex-start">
                 <FormControl isInvalid={!!errors.name && touched.name}>
                   <FormLabel htmlFor="name">{t("name")}</FormLabel>
-                  <Field as={Input} name="name"variant="filled" />
+                  <Field as={Input} name="name" variant="filled" />
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
 

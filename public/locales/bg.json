@@ -31,11 +31,17 @@
   },
 
   "message": {
-    "competitionAdd": "Добави състезание",
-    "competitionEdit": "Редактирай състезание",
-    "competitionDelete": "Изтрий състезание",
-    "competitionAddConfirm": "Добави ново състезание на {{date}}?",
-    "competitionDeleteConfirm": "Сигурни ли сте, операцията е неотменима после."
+    "competitionAdd": {
+      "title": "Добави състезание",
+      "confirm": "Добави ново състезание на {{date}}?"
+    },
+    "competitionEdit": {
+      "title": "Редактирай състезание"
+    },
+    "competitionDelete": {
+      "title": "Изтрий състезание",
+      "confirm": "Сигурни ли сте, операцията е неотменима после."
+    }
   },
 
   "competitions_zero": "Няма състезания",
@@ -66,6 +72,21 @@
       "bg": "БГ",
       "balkan": "Балканско",
       "international": "Международно"
+    }
+  },
+
+  "errors": {
+    "invalid_type_received_undefined": "Задължително",
+    "invalid_type": "Навалидно",
+    "too_small": {
+        "string": {
+            "inclusive": "По-малко от {{minimum}} символа"
+        }
+    },
+    "too_big": {
+        "string": {
+            "inclusive": "Повече от {{maximum}} символа"
+        }
     }
   }
 }

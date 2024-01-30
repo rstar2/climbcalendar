@@ -1,4 +1,4 @@
-import { CompetitionNew } from "./../types/index";
+import { CompetitionNew } from "../types";
 import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { type QuerySnapshot } from "firebase/firestore";

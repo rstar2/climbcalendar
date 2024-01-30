@@ -18,9 +18,9 @@
 - [x] Make `Copyright` component be shown better - always at the normally at the bottom as last element if there is vertical scrollbar, and as fixed at the bottom otherwise
 - [x] Make the competition filter be more mobile friendly - open it as a drawer for instance
 - [x] Add a margin at the bottom - make only the "competitions view" scrollable, not the whole page
+- [x] Localize the errors for the Formik forms, e.g the Zod errors
 - [ ] Make the Mobile Landscape case look better - hide some elements (header,etc...) or just make the whole page scrollable, not just the competitions-view?
 - [ ] Allow Landscape mode for the PWA version
-- [ ] Localize the errors for the Formik forms.
 
 ## Features
 

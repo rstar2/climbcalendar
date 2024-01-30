@@ -31,11 +31,17 @@
   },
 
   "message": {
-    "competitionAdd": "Add Competition",
-    "competitionEdit": "Edit Competition",
-    "competitionDelete": "Delete Competition",
-    "competitionAddConfirm": "Add a new competition on {{date}}?",
-    "competitionDeleteConfirm": "Are you sure? You can't undo this action afterwards."
+    "competitionAdd": {
+      "title": "Add Competition",
+      "confirm": "Add a new competition on {{date}}?"
+    },
+    "competitionEdit": {
+      "title": "Edit Competition"
+    },
+    "competitionDelete": {
+      "title": "Delete Competition",
+      "confirm": "Are you sure? You can't undo this action afterwards."
+    }
   },
 
   "competitions_zero": "No Competitions",
@@ -67,5 +73,26 @@
       "balkan": "Balkan",
       "international": "International"
     }
+  },
+
+  "errors": {
+    "invalid_type_received_undefined": "Required",
+    "invalid_type_received_undefined_with_path": "{{path}} is required",
+    "invalid_type": "Expected {{expected}}, received {{received}}",
+    "invalid_type_with_path": "{{path}} is expected to be {{expected}}, but received {{received}}",
+    "too_small": {
+        "string": {
+            "inclusive": "{{path}} is less than {{minimum}} characters"
+        }
+    },
+    "too_big": {
+        "string": {
+            "inclusive": "{{path}} is more than {{maximum}} characters"
+        }
+    }
+  },
+  "types": {
+    "string": "string",
+    "date": "date"
   }
 }
