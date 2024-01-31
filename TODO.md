@@ -21,7 +21,7 @@
 - [x] Localize the errors for the Formik forms, e.g the Zod errors
 - [x] Make the Mobile Landscape case look better - just make the whole page scrollable, not just the competitions-view
 - [x] Allow Landscape mode for the PWA version
-- [ ] Localize the initial "loading..." fallback in the Router - use a caching layer for `i18n`
+- [x] Localize the initial "loading..." fallback in the Router - use a caching layer for `i18n`
 
 ## Features
 
