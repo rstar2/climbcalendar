@@ -44,7 +44,7 @@ i18n
       namespace: "translation"
     },
 
-    debug: true
+    // debug: true
   });
 
 // i18n.addResourceBundle("en", "zod", {

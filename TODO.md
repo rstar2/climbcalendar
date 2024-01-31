@@ -19,8 +19,9 @@
 - [x] Make the competition filter be more mobile friendly - open it as a drawer for instance
 - [x] Add a margin at the bottom - make only the "competitions view" scrollable, not the whole page
 - [x] Localize the errors for the Formik forms, e.g the Zod errors
-- [ ] Make the Mobile Landscape case look better - hide some elements (header,etc...) or just make the whole page scrollable, not just the competitions-view?
-- [ ] Allow Landscape mode for the PWA version
+- [x] Make the Mobile Landscape case look better - just make the whole page scrollable, not just the competitions-view
+- [x] Allow Landscape mode for the PWA version
+- [ ] Localize the initial "loading..." fallback in the Router - use a caching layer for `i18n`
 
 ## Features
 

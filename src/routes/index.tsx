@@ -6,7 +6,7 @@ import Root from "./Root";
 import Home from "./Home";
 import CompetitionAdd from "./CompetitionAdd";
 import { isAuth } from "../cache/auth";
-import i18nUtil from "../i18n";
+import { useTranslation } from "react-i18next";
 
 // Vite (and Webpack) process the "process.env.NODE_ENV"
 // by actually replacing it completely with value of the real NODE_ENV env-variable,
@@ -58,8 +58,22 @@ const adminRoute = new Route({
 const routeTree = rootRoute.addChildren([homeRoute, adminRoute]);
 const router = new Router({
   routeTree,
-  defaultPendingComponent: () => <div>{i18nUtil.t("loading")}</div>,
+  // this is actually the React.Suspense.fallback component
+  defaultPendingComponent: DefaultPendingComponent,
 });
+
+function DefaultPendingComponent() {
+  // NOTE: do not trigger Suspense from this component
+  const { t, i18n } = useTranslation(undefined, { useSuspense: false });
+  // it will show the default "..." and when translation is loaded it will shown the localized string,
+  // but just for a "sec" (when the translation is loaded and "t" is "updated" by the hook and so component rerenders,
+  // but after that the this DefaultPendingComponent si just replaced by the router)
+  // so the only solution is to cache this "loading" key per language and
+  // then next time to show the real localized value.
+  // Still on the very first time it's impossible and must fallback to the "..." default.
+  const loading = i18n.exists("loading") ? t("loading") : "...";
+  return <div> {loading} </div>;
+}
 
 declare module "@tanstack/react-router" {
   interface Register {
