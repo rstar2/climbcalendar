@@ -35,11 +35,11 @@ export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: Dialog
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>{t("message.competitionDelete")}</AlertDialogHeader>
+        <AlertDialogHeader>{t("message.competitionDelete.title")}</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
-        <AlertDialogBody>{t("message.competitionDeleteConfirm")}</AlertDialogBody>
+        <AlertDialogBody>{t("message.competitionDelete.confirm")}</AlertDialogBody>
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>

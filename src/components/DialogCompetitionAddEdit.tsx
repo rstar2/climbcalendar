@@ -47,7 +47,7 @@ export default function DialogCompetitionAddEdit({ date, competition, onConfirm 
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t(`message.${competition ? "competitionEdit" : "competitionAdd"}`)}</ModalHeader>
+        <ModalHeader>{t(`message.${competition ? "competitionEdit" : "competitionAdd"}.title`)}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

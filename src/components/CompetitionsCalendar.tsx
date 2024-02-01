@@ -158,12 +158,18 @@ export default function CompetitionsCalendar({
         eventDisplay="background"
         displayEventTime={true}
         // this callback for any date clicked
-        dateClick={(_info) => {
-          if (isAdmin) {
-            // TODO: Fix - if it's also an event then first Info dialog is shown and then this one
-            // setCompetitionCreateConfirm(info.date);
-          }
-        }}
+        dateClick={
+          isAdmin
+            ? (info) => {
+                // if this same event is already "handled" as click over
+                // the <CalendarEvent> popup trigger then skip it
+                // @ts-expect-error (__handledAsInfoEvent is added as custom prop to the event)
+                if (info.jsEvent.__handledAsInfoEvent) return;
+
+                setCompetitionCreateConfirm(info.date);
+              }
+            : undefined
+        }
         // locales={[enLocale, bgLocale, plLocale]}
         locale={locale}
       />
@@ -204,12 +210,12 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
   const { onOpen: onOpenPopover, onClose: onClosePopover, isOpen: inOpenPopover } = useDisclosure();
 
   const handleDelete = () => {
-    // close and call parent
+    // close and call parent - no need for popups, but anyway
     onClosePopover();
     onDelete(competition.id);
   };
   const handleEdit = () => {
-    // close and call parent
+    // close and call parent - no need for popups, but anyway
     onClosePopover();
     onEdit(competition.id);
   };
@@ -217,7 +223,20 @@ function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarEventProps) {
   return (
     <Popover isOpen={inOpenPopover} onOpen={onOpenPopover} onClose={onClosePopover}>
       <PopoverTrigger>
-        <Flex align="center" justify="center" width="100%" height="100%" px={2} fontSize="xs">
+        <Flex
+          align="center"
+          justify="center"
+          width="100%"
+          height="100%"
+          px={2}
+          fontSize="xs"
+          onMouseUp={(e) => {
+            // listen here are this native JS "MouseUp" event is also the trigger of the FullCalendar.dateClick()
+            // so add some custom flag to the native JS event and in FullCalendar.dateClick() filter these events
+            // @ts-expect-error (__handledAsInfoEvent is added as custom prop to the event)
+            e.nativeEvent.__handledAsInfoEvent = true;
+          }}
+        >
           <Tooltip label={eventInfo.event.title}>
             <Text noOfLines={3}>{eventInfo.event.title}</Text>
           </Tooltip>

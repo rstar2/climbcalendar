@@ -37,13 +37,13 @@ export default function DialogCompetitionCreateConfirm({ date, onConfirm }: Dial
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>{t("message.competitionAdd")}</AlertDialogHeader>
+        <AlertDialogHeader>{t("message.competitionAdd.title")}</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
         {date && (
           <AlertDialogBody>
-            {t("message.competitionAddConfirm", { date: formatDate(date, i18n.language) })}
+            {t("message.competitionAdd.confirm", { date: formatDate(date, i18n.language) })}
           </AlertDialogBody>
         )}
 
