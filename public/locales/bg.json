@@ -33,7 +33,7 @@
   "message": {
     "competitionAdd": {
       "title": "Добави състезание",
-      "confirm": "Добави ново състезание на {{date}}?"
+      "confirm": "Добави ново състезание за {{date}}?"
     },
     "competitionEdit": {
       "title": "Редактирай състезание"

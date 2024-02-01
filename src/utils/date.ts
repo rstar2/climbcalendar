@@ -19,7 +19,7 @@ export function fcDate(competition: Competition, end = false): string | undefine
 export function formatDate(competition: Date, locale?: string): string;
 export function formatDate(competition: Competition, locale?: string, end?: boolean): string;
 export function formatDate(dateOrCompetition: Date | Competition, locale?: string, end = false): string {
-  if (dateOrCompetition instanceof Date) return formatDate_(dateOrCompetition);
+  if (dateOrCompetition instanceof Date) return formatDate_(dateOrCompetition, locale);
 
   if (!end) return formatDate_(dateOrCompetition.date, locale);
 

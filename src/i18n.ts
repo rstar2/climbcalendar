@@ -58,7 +58,7 @@ i18n
           defaultVersion: "v1",
           // language versions - when the localization is changed in a language xxx.json
           // then increase the language's version 
-          versions: { xxx: "v2", },
+          versions: { bg: "v2", },
         },
         {
           /* options for secondary HTTP backend */
