@@ -9,15 +9,17 @@ import Copyright from "../components/Copyright";
 export default function Root() {
   // this will have affect only on mobiles where the orientation can really be changed
   const orientation = useOrientation();
+
   return (
     <Container
       display="flex"
       flexDirection="column"
       maxW="90%"
-      // when in portrait lock t to the parent height, so that the scrollable area will be the <Outlet/>
-      // but otherwise leave the whole page scrollable
+      // when in portrait and small-devices lock it to the parent height,
+      // so that the scrollable area will be the <Outlet/>,
+      // otherwise leave the whole page scrollable
       // (because the Container is not with constrained height, so its children are not)
-      height={orientation.type.startsWith("landscape") ? undefined : "full"}
+      height={{ base: orientation.type.startsWith("landscape") ? undefined : "full", md: "full" }}
     >
       <Header mb={2} flexShrink={0} />
 
@@ -25,7 +27,7 @@ export default function Root() {
         <Outlet />
       </Box>
 
-      <Copyright flexShrink={0} textAlign="center" mb={4} display={["none", "block"]} />
+      <Copyright flexShrink={0} textAlign="center" mb={4} display={["none", "none", "block"]} />
     </Container>
   );
 }

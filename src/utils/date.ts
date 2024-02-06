@@ -11,7 +11,7 @@ export function fcDate(eventWithDate: EventWithDate, end: true): string | undefi
 export function fcDate(eventWithDate: EventWithDate, end = false): string | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((eventWithDate as any).category) eventWithDate.date.setHours(7);
-  else eventWithDate.date.setHours(19);
+  else eventWithDate.date.setHours(22);
 
   // must return string of the format "2024-04-15"
   if (!end) return format(eventWithDate.date, fcDateFormat);

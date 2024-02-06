@@ -57,7 +57,7 @@ export default function Header(props: BoxProps) {
       //   bg={theme.styles.global.body.bg}
     >
       <HStack width="full" mt={2} gap="2">
-        <Show below="sm">
+        <Show below="md">
           <HeaderDrawer />
         </Show>
 
@@ -65,14 +65,14 @@ export default function Header(props: BoxProps) {
           {t("title", { year: THIS_YEAR })}
         </Heading>
 
-        <Show above="sm">
+        <Show above="md">
           {/* vertical Divider must have height */}
           <Divider orientation="vertical" h={10} />
           <Box flexGrow={1}>
             <HeaderLinks />
           </Box>
         </Show>
-        <Show below="sm">
+        <Show below="md">
           <Spacer />
         </Show>
 
@@ -128,7 +128,7 @@ function HeaderDrawer() {
           </DrawerBody>
 
           <DrawerFooter justifyContent="center">
-            <Copyright display={["block", "none"]} />
+            <Copyright />
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

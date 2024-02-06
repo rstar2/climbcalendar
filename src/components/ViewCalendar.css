@@ -27,3 +27,7 @@
 .fc .fc-bg-event {
   opacity: unset;
 }
+
+.fc .fc-daygrid-body-balanced .fc-daygrid-day-events {
+  bottom: 4px;
+}
