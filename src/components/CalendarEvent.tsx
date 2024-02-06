@@ -45,17 +45,18 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
     competition?: Competition;
     userEvent?: UserEvent;
   };
-  assertDefined(competition || userEvent);
+  const event = competition || userEvent;
+  assertDefined(event);
 
   const handleDelete = () => {
     // close and call parent - no need for popups, but anyway
     onClosePopover();
-    onDelete((competition || userEvent)!.id, !!competition);
+    onDelete(event.id, !!competition);
   };
   const handleEdit = () => {
     // close and call parent - no need for popups, but anyway
     onClosePopover();
-    onEdit((competition || userEvent)!.id, !!competition);
+    onEdit(event.id, !!competition);
   };
 
   return (
@@ -93,16 +94,16 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
                     <Tbody>
                       <Tr>
                         <Td fontWeight={"bold"}>{t("name")}</Td>
-                        <Td>{competition?.name || userEvent?.name}</Td>
+                        <Td>{event.name}</Td>
                       </Tr>
                       <Tr>
                         <Td fontWeight={"bold"}>{t("date")}</Td>
-                        <Td>{formatDate(competition || userEvent, i18n.language)}</Td>
+                        <Td>{formatDate(event, i18n.language)}</Td>
                       </Tr>
-                      {(competition?.dateDuration || userEvent?.dateDuration) > 1 && (
+                      {event.dateDuration > 1 && (
                         <Tr>
                           <Td fontWeight={"bold"}>{t("dateEnd")}</Td>
-                          <Td>{formatDate(competition || userEvent, i18n.language, true)}</Td>
+                          <Td>{formatDate(event, i18n.language, true)}</Td>
                         </Tr>
                       )}
                       {competition && (
