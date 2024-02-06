@@ -1,6 +1,6 @@
 import { missingHandling, enumForEach } from "../utils";
 
-import { type Competition, CompetitionCategory, CompetitionType, CompetitionCategorySchema } from "../types";
+import { type Competition, CompetitionCategory, CompetitionType, CompetitionCategorySchema, UserEvent } from "../types";
 
 export const colorMapType = (() => {
   const map = new Map<CompetitionType, string>();
@@ -73,4 +73,12 @@ export function getColorCompetitionType(type: CompetitionType) {
 
 export function getColorCompetitionCategory(category: CompetitionCategory) {
   return colorMapCategory.get(category);
+}
+
+export function getColorUserEvent(userEvent: UserEvent): string {
+  // could differentiate on type
+  switch (userEvent.type) {
+    default:
+      return "grey";
+  }
 }

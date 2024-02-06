@@ -5,7 +5,7 @@ import { makeZodI18nMap } from "zod-i18n-map";
 z.setErrorMap(
   makeZodI18nMap({
     // search first in the "zod" namespace, and if nt there use the default one "translation"
-    // so this will allow the errors to be in the same en.json file together with all other keys 
+    // so this will allow the errors to be in the same en.json file together with all other keys
     ns: ["zod", "translation"],
   })
 );
@@ -23,7 +23,8 @@ export const CompetitionCategorySchema = z.enum(CompetitionCategory);
 export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;
 
 export const DATE_DURATION_MIN = 1;
-export const DATE_DURATION_MAX = 7;
+export const DATE_DURATION_MAX_COMPETITION = 7;
+export const DATE_DURATION_MAX_USER_EVENT = 20;
 
 /**
  * NOTE: Localization of the errors is also applied
@@ -31,7 +32,7 @@ export const DATE_DURATION_MAX = 7;
 export const CompetitionNewSchema = z.object({
   name: z.string().min(3).max(100),
   date: z.date(),
-  dateDuration: z.coerce.number().min(DATE_DURATION_MIN).max(DATE_DURATION_MAX),
+  dateDuration: z.coerce.number().min(DATE_DURATION_MIN).max(DATE_DURATION_MAX_COMPETITION),
   balkan: z.boolean().optional(),
   international: z.boolean().optional(),
   //type: z.union([CompetitionTypeSchema, CompetitionTypeSchema.array().nonempty()]),
@@ -73,3 +74,25 @@ export type SelectOption = {
   label: string;
 };
 export type RadioOption = Required<SelectOption>;
+
+/**
+ * NOTE: Localization of the errors is also applied
+ */
+export const UserEventNewSchema = z.object({
+  name: z.string().min(3).max(100),
+  date: z.date(),
+  dateDuration: z.coerce.number().min(DATE_DURATION_MIN).max(DATE_DURATION_MAX_USER_EVENT),
+  type: z.string().optional(),
+});
+
+export type UserEventNew = z.infer<typeof UserEventNewSchema>;
+// export type UserEventNew = {
+//     name: string;
+//     date: Date;
+//     dateDuration: number;
+//     type?: string;
+// }
+
+export type UserEvent = UserEventNew & {
+  id: string;
+};

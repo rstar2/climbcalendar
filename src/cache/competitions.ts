@@ -1,12 +1,12 @@
-import { CompetitionNew } from "../types";
 import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { type QuerySnapshot } from "firebase/firestore";
 
-import type { Competition } from "../types";
-import firebase, { parseDocs } from "../firebase";
 import { queryClient } from "./index";
+import type { Competition, CompetitionNew } from "../types";
+import firebase, { parseDocs } from "../firebase";
 import { useAuthUser, isAuthAdmin } from "./auth";
+import { prune } from "../utils";
 
 const competitionsCol = firebase.collection(import.meta.env.VITE_FIREBASE_COLL_COMPETITIONS!);
 
@@ -46,14 +46,14 @@ export function useCompetitions() {
 }
 
 /**
- * Mutation for "incrementing" an Activity.
+ * Mutation for "adding" a Competition.
  */
 export function useCompetitionAdd() {
   const mutation = useMutation({
     mutationFn: async (competitionNew: CompetitionNew) => {
       const isAdmin = await isAuthAdmin();
       if (!isAdmin) throw new Error("Sorry, only admin can add competitions");
-      return firebase.addDoc(competitionsCol, competitionNew);
+      return firebase.addDoc(competitionsCol, prune(competitionNew));
     },
     // meta is used for success/failed notification on mutation result
     meta: {

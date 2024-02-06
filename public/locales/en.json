@@ -9,6 +9,7 @@
   "type": "Type",
   "category": "Category",
   "duration": "Duration",
+  "userEvent": "Custom Event",
 
   "nav": {
     "home": "Home",
@@ -41,6 +42,17 @@
     "competitionDelete": {
       "title": "Delete Competition",
       "confirm": "Are you sure? You can't undo this action afterwards."
+    },
+    "userEventAdd": {
+      "title": "Add Custom Event",
+      "confirm": "Add a new custom event on {{date}}?"
+    },
+    "userEventEdit": {
+      "title": "Edit Custom Event"
+    },
+    "userEventDelete": {
+      "title": "Delete Custom Event",
+      "confirm": "Are you sure? You can't undo this action afterwards."
     }
   },
 
@@ -55,6 +67,7 @@
   },
 
   "competition": {
+    "title": "Competition",
     "type": {
       "Boulder": "Boulder",
       "Lead": "Lead",
@@ -81,14 +94,14 @@
     "invalid_type": "Expected {{expected}}, received {{received}}",
     "invalid_type_with_path": "{{path}} is expected to be {{expected}}, but received {{received}}",
     "too_small": {
-        "string": {
-            "inclusive": "{{path}} is less than {{minimum}} characters"
-        }
+      "string": {
+        "inclusive": "{{path}} is less than {{minimum}} characters"
+      }
     },
     "too_big": {
-        "string": {
-            "inclusive": "{{path}} is more than {{maximum}} characters"
-        }
+      "string": {
+        "inclusive": "{{path}} is more than {{maximum}} characters"
+      }
     }
   },
   "types": {

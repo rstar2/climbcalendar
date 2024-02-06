@@ -30,3 +30,19 @@ export function enumForEach<O extends object, K extends keyof O>(obj: O, callbac
 export function missingHandling(value: never): never {
   throw new Error(`Not handled value ${value}`);
 }
+
+export function assertDefined<T>(value: T): asserts value is Exclude<T, null | undefined> {
+  if (!isDefined(value)) throw new Error(`${value} is not defined`);
+}
+
+export function isDefined<T>(value: T): boolean {
+  return value !== null && value !== undefined;
+}
+
+export function prune(obj: Record<any, any>): Record<any, Exclude<any, undefined | null>> {
+  return Object.keys(obj).reduce((res, key) => {
+    const value = obj[key];
+    if (isDefined(value)) res[key] = value;
+    return res;
+  }, {} as Record<any, Exclude<any, undefined | null>>);
+}

@@ -21,11 +21,17 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-import { arrayRange, mapObject } from "../utils";
-import { CompetitionNew, CompetitionNewSchema, DATE_DURATION_MIN, DATE_DURATION_MAX, Competition } from "../types";
-import useOptionsCompetitionType from "../hooks/useOptionsCompetitionType";
-import useOptionsCompetitionCategory from "../hooks/useOptionsCompetitionCategory";
-import useOptionsCompetitionLocation from "../hooks/useOptionsCompetitionLocation";
+import { arrayRange, mapObject } from "../../utils";
+import {
+  CompetitionNew,
+  CompetitionNewSchema,
+  DATE_DURATION_MIN,
+  DATE_DURATION_MAX_COMPETITION,
+  Competition,
+} from "../../types";
+import useOptionsCompetitionType from "../../hooks/useOptionsCompetitionType";
+import useOptionsCompetitionCategory from "../../hooks/useOptionsCompetitionCategory";
+import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLocation";
 
 type CompetitionAddEditProps = {
   /**
@@ -72,7 +78,9 @@ export default function CompetitionAddEdit({
         <Formik<Partial<CompetitionNew>>
           initialValues={
             competition
-              ? { ...competition, date }
+              ? date
+                ? { ...competition, date }
+                : competition
               : {
                   name: "",
                   date: date,
@@ -92,7 +100,7 @@ export default function CompetitionAddEdit({
                 valuesToCheck = { ...values };
                 valuesToCheck.name = undefined;
               }
-              
+
               CompetitionNewSchema.parse(valuesToCheck);
             } catch (error) {
               if (error instanceof ZodError) {
@@ -158,7 +166,7 @@ export default function CompetitionAddEdit({
                       <FormLabel>{t("duration")}</FormLabel>
                       <Slider
                         min={DATE_DURATION_MIN}
-                        max={DATE_DURATION_MAX}
+                        max={DATE_DURATION_MAX_COMPETITION}
                         step={1}
                         value={field.value}
                         // this will not work as Slider.onChange is not same as input.onChange where event is received
@@ -172,7 +180,7 @@ export default function CompetitionAddEdit({
                         }}
                         mb={2}
                       >
-                        {arrayRange(DATE_DURATION_MIN, DATE_DURATION_MAX, 1).map((mark) => (
+                        {arrayRange(DATE_DURATION_MIN, DATE_DURATION_MAX_COMPETITION, 1).map((mark) => (
                           <SliderMark key={mark} value={mark} mt="2" fontSize="sm">
                             <Text as={mark === field.value ? "b" : "span"} color="blue.200" fontSize="2xs">
                               {mark}

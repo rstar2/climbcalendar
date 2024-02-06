@@ -4,13 +4,13 @@ import { Checkbox, Stack } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
-import { getColorCompetitionType } from "../utils/styles";
-import { CompetitionCategory, CompetitionType, RadioOption } from "../types";
+import { getColorCompetitionType } from "../../utils/styles";
+import { CompetitionCategory, CompetitionType, RadioOption } from "../../types";
 
-import { useCompetitions } from "../cache/competitions";
-import useOptionsCompetitionType from "../hooks/useOptionsCompetitionType";
-import useOptionsCompetitionCategory from "../hooks/useOptionsCompetitionCategory";
-import useOptionsCompetitionLocation from "../hooks/useOptionsCompetitionLocation";
+import { useCompetitions } from "../../cache/competitions";
+import useOptionsCompetitionType from "../../hooks/useOptionsCompetitionType";
+import useOptionsCompetitionCategory from "../../hooks/useOptionsCompetitionCategory";
+import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLocation";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;

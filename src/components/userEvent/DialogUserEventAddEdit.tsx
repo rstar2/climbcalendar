@@ -11,28 +11,28 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-import CompetitionAddEdit from "./CompetitionAddEdit";
-import { Competition, CompetitionNew } from "../types";
+import UserEventAddEdit from "./UserEventAddEdit";
+import { UserEvent, UserEventNew } from "../../types";
 
-type DialogCompetitionAddEditProps = {
+type DialogUserEventAddEditProps = {
   /**
-   * Valid when editing a Competition
+   * Valid when editing a UserEvent
    */
-  competition?: Competition;
+  userEvent?: UserEvent;
   /**
-   * Valid when adding a Competition with predefined date
+   * Valid when adding a UserEvent with predefined date
    */
   date?: Date;
 
   /**
    * Confirmation callback
    */
-  onConfirm: (competitionNew?: CompetitionNew) => void;
+  onConfirm: (userEventNew?: UserEventNew) => void;
 };
-export default function DialogCompetitionAddEdit({ date, competition, onConfirm }: DialogCompetitionAddEditProps) {
+export default function DialogUserEventAddEdit({ date, userEvent, onConfirm }: DialogUserEventAddEditProps) {
   const { t } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
-    isOpen: !!competition || !!date,
+    isOpen: !!userEvent || !!date,
     onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
   });
 
@@ -47,11 +47,11 @@ export default function DialogCompetitionAddEdit({ date, competition, onConfirm 
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t(`message.${competition ? "competitionEdit" : "competitionAdd"}.title`)}</ModalHeader>
+        <ModalHeader>{t(`message.${userEvent ? "userEventEdit" : "userEventAdd"}.title`)}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit competition={competition} date={date} onAction={onConfirm} isFullWidth />
+          <UserEventAddEdit userEvent={userEvent} date={date} onAction={onConfirm} isFullWidth />
         </ModalBody>
 
         <ModalFooter>

@@ -7,7 +7,7 @@ import { formatDate } from "../utils/date";
 import { getColor } from "../utils/styles";
 import { useAuthAdmin } from "../cache/auth";
 
-type CompetitionsListProps = {
+type ViewListProps = {
   /**
    * The competitions to show
    */
@@ -17,9 +17,9 @@ type CompetitionsListProps = {
   onEdit(id: string): void;
 };
 
-export default function CompetitionsList({ competitions, onEdit, onDelete }: CompetitionsListProps) {
-    const { i18n } = useTranslation();
-    const isAuthAdmin = useAuthAdmin();
+export default function ViewList({ competitions, onEdit, onDelete }: ViewListProps) {
+  const { i18n } = useTranslation();
+  const isAuthAdmin = useAuthAdmin();
 
   const sortedCompetitions = [...competitions].sort((c1, c2) => {
     if (c1.date === c2.date) return 0;

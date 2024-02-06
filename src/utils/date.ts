@@ -1,30 +1,40 @@
 import { format, add } from "date-fns";
-import { Competition } from "../types";
 
 const fcDateFormat = "yyyy-MM-dd";
 
-export function fcDate(competition: Competition): string;
-export function fcDate(competition: Competition, end: true): string | undefined;
-export function fcDate(competition: Competition, end = false): string | undefined {
-  competition.date.setHours(12);
+type EventWithDate = {
+  date: Date;
+  dateDuration?: number;
+};
+export function fcDate(eventWithDate: EventWithDate): string;
+export function fcDate(eventWithDate: EventWithDate, end: true): string | undefined;
+export function fcDate(eventWithDate: EventWithDate, end = false): string | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((eventWithDate as any).category) eventWithDate.date.setHours(7);
+  else eventWithDate.date.setHours(19);
+
   // must return string of the format "2024-04-15"
-  if (!end) return format(competition.date, fcDateFormat);
+  if (!end) return format(eventWithDate.date, fcDateFormat);
 
   // single day - so no "end" date
-  if (competition.dateDuration <= 1) return undefined;
+  if (!eventWithDate.dateDuration || eventWithDate.dateDuration <= 1) return undefined;
 
-  return format(add(competition.date, { days: competition.dateDuration }), fcDateFormat);
+  return format(add(eventWithDate.date, { days: eventWithDate.dateDuration }), fcDateFormat);
 }
 
-export function formatDate(competition: Date, locale?: string): string;
-export function formatDate(competition: Competition, locale?: string, end?: boolean): string;
-export function formatDate(dateOrCompetition: Date | Competition, locale?: string, end = false): string {
-  if (dateOrCompetition instanceof Date) return formatDate_(dateOrCompetition, locale);
+export function formatDate(date: Date, locale?: string): string;
+export function formatDate(eventWithDate: EventWithDate, locale?: string, end?: boolean): string;
+export function formatDate(dateOrEventWithDate: Date | EventWithDate, locale?: string, end = false): string {
+  if (dateOrEventWithDate instanceof Date) return formatDate_(dateOrEventWithDate, locale);
 
-  if (!end) return formatDate_(dateOrCompetition.date, locale);
+  if (!end) return formatDate_(dateOrEventWithDate.date, locale);
 
-  const dateEnd = add(dateOrCompetition.date, {
-    days: dateOrCompetition.dateDuration - 1,
+  // single day - so no "end" date
+  if (!dateOrEventWithDate.dateDuration || dateOrEventWithDate.dateDuration <= 1)
+    return formatDate_(dateOrEventWithDate.date, locale);
+
+  const dateEnd = add(dateOrEventWithDate.date, {
+    days: dateOrEventWithDate.dateDuration - 1,
   });
   return formatDate_(dateEnd, locale);
 }

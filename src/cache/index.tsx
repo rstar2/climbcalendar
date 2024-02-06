@@ -30,6 +30,7 @@ export const queryClient = new QueryClient({
     onSettled(_data, error, query) {
       const { meta } = query;
 
+      if (error) console.error("Failed query: ", error);
       showNotification(meta as CacheMeta, error);
       // if (queryKey[0] === "admin")
 
@@ -44,6 +45,8 @@ export const queryClient = new QueryClient({
 
     // one combined callback
     onSettled(_data, error, _variables, _context, mutation) {
+      if (error) console.error("Failed mutation: ", error);
+
       const { meta } = mutation;
 
       // show success notification - only for mutations with meta key

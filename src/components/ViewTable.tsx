@@ -5,7 +5,7 @@ import { Competition } from "../types";
 import { formatDate } from "../utils/date";
 import { getColorCompetitionType } from "../utils/styles";
 
-type CompetitionsTableProps = {
+type ViewTableProps = {
   /**
    * The competitions to show
    */
@@ -15,7 +15,7 @@ type CompetitionsTableProps = {
   onEdit(id: string): void;
 };
 
-export default function CompetitionsTable({ competitions }: CompetitionsTableProps) {
+export default function ViewTable({ competitions }: ViewTableProps) {
   const { t, i18n } = useTranslation();
 
   const sortedCompetitions = [...competitions].sort((c1, c2) => {

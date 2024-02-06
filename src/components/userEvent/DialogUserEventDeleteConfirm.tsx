@@ -12,17 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-import { formatDate } from "../utils/date";
-
-type DialogCompetitionCreateConfirmProps = {
-  date?: Date;
+type DialogUserEventDeleteConfirmProps = {
+  id?: string;
   onConfirm: (confirmed: boolean) => void;
 };
 
-export default function DialogCompetitionCreateConfirm({ date, onConfirm }: DialogCompetitionCreateConfirmProps) {
-  const { t, i18n } = useTranslation();
+export default function DialogUserEventDeleteConfirm({ id, onConfirm }: DialogUserEventDeleteConfirmProps) {
+  const { t } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
-    isOpen: !!date,
+    isOpen: !!id,
     onClose: () => onConfirm(false),
   });
   const cancelRef = useRef<ElementRef<"button">>(null);
@@ -37,22 +35,18 @@ export default function DialogCompetitionCreateConfirm({ date, onConfirm }: Dial
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader>{t("message.competitionAdd.title")}</AlertDialogHeader>
+        <AlertDialogHeader>{t("message.userEventDelete.title")}</AlertDialogHeader>
 
         <AlertDialogCloseButton />
 
-        {date && (
-          <AlertDialogBody>
-            {t("message.competitionAdd.confirm", { date: formatDate(date, i18n.language) })}
-          </AlertDialogBody>
-        )}
+        <AlertDialogBody>{t("message.userEventDelete.confirm")}</AlertDialogBody>
 
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={() => onConfirm(false)}>
             {t("action.close")}
           </Button>
           <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
-            {t("action.add")}
+            {t("action.delete")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -31,7 +31,12 @@
 - [x] For Admins only - Click on an empty date from the calendar to trigger "Add" route with the preselected date
 - [x] Localization to BG (+dates/fullcalendar/formik-errors)
 - [x] Login with Facebook (works but with warn on the Facebook Login popup as the created Facebook oauth app is not "verified")
-- [ ] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
+- [x] Custom events per user - any auth user to be able to add his own ones and combine them in the calendar view. Useful for planning trips and etc...
+  - [x] Firestore rules
+  - [x] Get own ones for the authorized user
+  - [x] Render in the calendar
+  - [x] Add/Edit/Delete such user-events
+- [ ] Check the `react-big-calendar`, how it works - DX and most importantly the performance as `FullCalendar` is not very fast
 
 ## Optional (if requested)
 

@@ -20,12 +20,12 @@ import { useTranslation } from "react-i18next";
 import { Competition } from "../types";
 import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
 import { useViewMode } from "../cache/ui";
-import CompetitionsCalendar from "../components/CompetitionsCalendar";
-import CompetitionsList from "../components/CompetitionsList";
-import CompetitionsTable from "../components/CompetitionsTable";
-import DialogCompetitionDeleteConfirm from "../components/DialogCompetitionDeleteConfirm";
-import DialogCompetitionAddEdit from "../components/DialogCompetitionAddEdit";
-import FormFilterCompetitions, { useFormFilterCompetitions } from "../components/FormFilterCompetitions";
+import CompetitionsCalendar from "../components/ViewCalendar";
+import CompetitionsList from "../components/ViewList";
+import CompetitionsTable from "../components/ViewTable";
+import DialogCompetitionDeleteConfirm from "../components/competition/DialogCompetitionDeleteConfirm";
+import DialogCompetitionAddEdit from "../components/competition/DialogCompetitionAddEdit";
+import FormFilterCompetitions, { useFormFilterCompetitions } from "../components/competition/FormFilterCompetitions";
 import SelectViewMode from "../components/SelectViewMode";
 
 export default function Home() {

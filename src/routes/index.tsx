@@ -4,7 +4,7 @@ import { RouterProvider as RouterProvider_, Router, Route, RootRoute, redirect }
 
 import Root from "./Root";
 import Home from "./Home";
-import CompetitionAdd from "./CompetitionAdd";
+import Add from "./Add";
 import { isAuth } from "../cache/auth";
 import { useTranslation } from "react-i18next";
 
@@ -52,7 +52,7 @@ const adminRoute = new Route({
       throw redirect({ to: "/" });
     }
   },
-  component: CompetitionAdd,
+  component: Add,
 });
 
 const routeTree = rootRoute.addChildren([homeRoute, adminRoute]);
