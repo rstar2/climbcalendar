@@ -17,7 +17,6 @@ import {
   Tbody,
   Td,
   Text,
-  Tooltip,
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -28,6 +27,7 @@ import { useAuthAdmin } from "../cache/auth";
 import { formatDate } from "../utils/date";
 import { Competition, UserEvent } from "../types";
 import { assertDefined } from "../utils";
+import TooltipMobile from "./TooltipMobile";
 
 type CalendarEventProps = {
   eventInfo: EventContentArg;
@@ -76,9 +76,9 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
             e.nativeEvent.__handledAsInfoEvent = true;
           }}
         >
-          <Tooltip label={eventInfo.event.title}>
+          <TooltipMobile label={eventInfo.event.title}>
             <Text noOfLines={3}>{eventInfo.event.title}</Text>
-          </Tooltip>
+          </TooltipMobile>
         </Flex>
       </PopoverTrigger>
       <Portal>

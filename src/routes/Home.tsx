@@ -20,9 +20,10 @@ import { useTranslation } from "react-i18next";
 import { Competition } from "../types";
 import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
 import { useViewMode } from "../cache/ui";
-import CompetitionsCalendar from "../components/ViewCalendar";
-import CompetitionsList from "../components/ViewList";
-import CompetitionsTable from "../components/ViewTable";
+import ViewCalendar from "../components/ViewCalendar";
+// import ViewCalendar from "../components/ViewCalendar-RBC";
+import ViewList from "../components/ViewList";
+import ViewTable from "../components/ViewTable";
 import DialogCompetitionDeleteConfirm from "../components/competition/DialogCompetitionDeleteConfirm";
 import DialogCompetitionAddEdit from "../components/competition/DialogCompetitionAddEdit";
 import FormFilterCompetitions, { useFormFilterCompetitions } from "../components/competition/FormFilterCompetitions";
@@ -85,7 +86,7 @@ export default function Home() {
 
         <Box className="printable" flexGrow={1} overflow="auto" width="full">
           {viewMode === "calendar" && (
-            <CompetitionsCalendar
+            <ViewCalendar
               competitions={competitionsFiltered}
               mainType={filter.type}
               mainCategory={filter.category}
@@ -94,14 +95,14 @@ export default function Home() {
             />
           )}
           {viewMode === "list" && (
-            <CompetitionsList
+            <ViewList
               competitions={competitionsFiltered}
               onEdit={handleEditCompetition}
               onDelete={setCompetitionIdDelete}
             />
           )}
           {viewMode === "table" && (
-            <CompetitionsTable
+            <ViewTable
               competitions={competitionsFiltered}
               onEdit={handleEditCompetition}
               onDelete={setCompetitionIdDelete}
