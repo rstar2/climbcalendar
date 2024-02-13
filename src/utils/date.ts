@@ -1,4 +1,4 @@
-import { format, add } from "date-fns";
+import { format, add, compareAsc } from "date-fns";
 
 const fcDateFormat = "yyyy-MM-dd";
 
@@ -47,5 +47,15 @@ const options: Intl.DateTimeFormatOptions = {
   weekday: "long",
 };
 const formatDate_ = (date: Date, locale?: string) => date.toLocaleDateString(locale, options);
+
+export function isDatePassed(eventWithDate: EventWithDate): boolean {
+  const date = eventWithDate.dateDuration
+    ? add(eventWithDate.date, {
+        days: eventWithDate.dateDuration - 1,
+      })
+    : eventWithDate.date;
+
+  return compareAsc(new Date(), date) === 1;
+}
 
 export const THIS_YEAR = new Date().getFullYear();

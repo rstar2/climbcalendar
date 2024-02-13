@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import type { EventContentArg } from "@fullcalendar/core";
 
 import { useAuthAdmin } from "../cache/auth";
-import { formatDate } from "../utils/date";
+import { formatDate, isDatePassed } from "../utils/date";
 import { Competition, UserEvent } from "../types";
 import { assertDefined } from "../utils";
 import TooltipMobile from "./TooltipMobile";
@@ -41,9 +41,10 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
   const { onOpen: onOpenPopover, onClose: onClosePopover, isOpen: inOpenPopover } = useDisclosure();
 
   // either competition or userEvent is valid
-  const { competition, userEvent } = eventInfo.event.extendedProps.extraProps as {
+  const { competition, userEvent, color } = eventInfo.event.extendedProps.extraProps as {
     competition?: Competition;
     userEvent?: UserEvent;
+    color: string;
   };
   const event = competition || userEvent;
   assertDefined(event);
@@ -58,6 +59,7 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
     onClosePopover();
     onEdit(event.id, !!competition);
   };
+  const isPassed = isDatePassed(event);
 
   return (
     <Popover isOpen={inOpenPopover} onOpen={onOpenPopover} onClose={onClosePopover}>
@@ -69,6 +71,8 @@ export default function CalendarEvent({ eventInfo, onDelete, onEdit }: CalendarE
           height="100%"
           px={2}
           fontSize="xs"
+          backgroundColor={color}
+          filter={isPassed ? "opacity(50%)" : undefined}
           onMouseUp={(e) => {
             // listen here are this native JS "MouseUp" event is also the trigger of the FullCalendar.dateClick()
             // so add some custom flag to the native JS event and in FullCalendar.dateClick() filter these events

@@ -43,6 +43,9 @@ export const colorMapCategory = (() => {
       case CompetitionCategorySchema.enum.U14:
         color = "green";
         break;
+      case CompetitionCategorySchema.enum.U16:
+        color = "darkgreen";
+        break;
       case CompetitionCategorySchema.enum.YouthA:
         color = "brown";
         break;

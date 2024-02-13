@@ -54,10 +54,12 @@ function mapCompetition(
     start: fcDate(competition),
     end: fcDate(competition, true),
     // color or backgroundColor use the same purpose
-    color: mainType ? getColorCompetitionType(mainType) : getColor(competition, "type"),
+    //color: "red",
+    //backgroundColor: "red",
     display: "background",
     extraProps: {
       competition,
+      color: mainType ? getColorCompetitionType(mainType) : getColor(competition, "type"),
     },
   };
 }
@@ -67,11 +69,10 @@ function mapUserEvent(userEvent: UserEvent): EventInput {
     title: userEvent.name,
     start: fcDate(userEvent),
     end: fcDate(userEvent, true),
-    // color or backgroundColor use the same purpose
-    color: getColorUserEvent(userEvent),
     extraProps: {
       isUserEvent: true,
       userEvent,
+      color: getColorUserEvent(userEvent),
     },
   };
 }
