@@ -66,7 +66,7 @@ export type Competition = CompetitionNew & {
 
 export type Func = () => void;
 
-export const ViewModes = ["calendar", "table", "list"] as const;
+export const ViewModes = ["calendar", "table", "list", "calendar2"] as const;
 export type ViewMode = (typeof ViewModes)[number];
 
 export type SelectOption = {

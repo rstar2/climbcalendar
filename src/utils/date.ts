@@ -58,4 +58,5 @@ export function isDatePassed(eventWithDate: EventWithDate): boolean {
   return compareAsc(new Date(), date) === 1;
 }
 
-export const THIS_YEAR = new Date().getFullYear();
+export const TODAY = new Date();
+export const THIS_YEAR = TODAY.getFullYear();

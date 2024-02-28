@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Select, chakraComponents } from "chakra-react-select";
+import { chakraComponents } from "chakra-react-select";
 import { Icon } from "@chakra-ui/react";
 import { IoCalendarOutline } from "react-icons/io5";
 import { CiViewTable } from "react-icons/ci";
@@ -9,6 +9,7 @@ import { CiCircleList } from "react-icons/ci";
 import { useViewMode, useViewModeChange } from "../cache/ui";
 import { ViewMode, ViewModes } from "../types";
 import { missingHandling } from "../utils";
+import { Select } from "./Select";
 
 // Make sure this is defined outside of the component which returns your select
 // or you'll run into rendering issues
@@ -35,6 +36,7 @@ export default function SelectViewMode() {
       const iconsProps = { mr: 2 };
       switch (viewMode) {
         case "calendar":
+        case "calendar2":
           icon = <Icon as={IoCalendarOutline} {...iconsProps} />;
           break;
         case "list":
@@ -56,14 +58,6 @@ export default function SelectViewMode() {
   return (
     <Select
       size={["sm", "md"]}
-      chakraStyles={{
-        menu: (provided) => ({
-          ...provided,
-
-          // make it above the FullCalendar as some of its elements have z-index:1
-          zIndex: 3,
-        }),
-      }}
       isSearchable={false}
       options={options}
       value={value}

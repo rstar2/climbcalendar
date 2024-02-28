@@ -21,10 +21,13 @@ export default function SelectLanguage() {
         />
         <MenuList minW={"unset"} w={width}>
           {i18nUtil.allowedLanguages.map((lng) => (
-            <MenuItem justifyContent="center"
+            <MenuItem
+              justifyContent="center"
               key={lng}
               onClick={() => i18nUtil.changeLanguage(lng)}
-              bgColor={lng === i18nUtil.currentLanguage ? "var(--chakra-colors-brand-400)" : undefined}
+              // just to demo how both ways for the color work - with CSS-variables and with theme color
+              // bgColor={lng === i18nUtil.currentLanguage ? "var(--chakra-colors-brand-400)" : undefined}
+              bgColor={lng === i18nUtil.currentLanguage ? "brand.400" : undefined}
               _hover={{
                 bgColor: "brand.600",
               }}

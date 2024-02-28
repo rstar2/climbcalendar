@@ -21,7 +21,7 @@ import { Competition } from "../types";
 import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
 import { useViewMode } from "../cache/ui";
 import ViewCalendar from "../components/ViewCalendar";
-// import ViewCalendar from "../components/ViewCalendar-RBC";
+import ViewCalendar2 from "../components/ViewCalendar2";
 import ViewList from "../components/ViewList";
 import ViewTable from "../components/ViewTable";
 import DialogCompetitionDeleteConfirm from "../components/competition/DialogCompetitionDeleteConfirm";
@@ -87,6 +87,15 @@ export default function Home() {
         <Box className="printable" flexGrow={1} overflow="auto" width="full">
           {viewMode === "calendar" && (
             <ViewCalendar
+              competitions={competitionsFiltered}
+              mainType={filter.type}
+              mainCategory={filter.category}
+              onEdit={handleEditCompetition}
+              onDelete={setCompetitionIdDelete}
+            />
+          )}
+          {viewMode === "calendar2" && (
+            <ViewCalendar2
               competitions={competitionsFiltered}
               mainType={filter.type}
               mainCategory={filter.category}

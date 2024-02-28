@@ -63,7 +63,8 @@
   "viewMode": {
     "list": "лист",
     "table": "таблица",
-    "calendar": "календар"
+    "calendar": "календар",
+    "calendar2": "календар (2)"
   },
 
   "competition": {

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useLocalStorage, useSetState } from "react-use";
 import { Checkbox, Stack } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
 
 import { getColorCompetitionType } from "../../utils/styles";
@@ -11,6 +10,7 @@ import { useCompetitions } from "../../cache/competitions";
 import useOptionsCompetitionType from "../../hooks/useOptionsCompetitionType";
 import useOptionsCompetitionCategory from "../../hooks/useOptionsCompetitionCategory";
 import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLocation";
+import { Select } from "../Select";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;
@@ -53,19 +53,10 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
             {({ field, form }: FieldProps) => (
               <Select
                 // useful for testing CSS styles in order to make it always open
-                // menuIsOpen
-                useBasicStyles
                 chakraStyles={{
-                  option: (provided, state) => ({
-                    ...provided,
+                  option: (_provided, state) => ({
                     // @ts-expect-error (state.value actually exists, same as getValue())
                     color: getColorCompetitionType(state.value),
-                  }),
-                  menu: (provided) => ({
-                    ...provided,
-
-                    // make it above the FullCalendar as some of its elements have z-index:1
-                    zIndex: 3,
                   }),
                 }}
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
@@ -82,15 +73,6 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
           <Field name="category">
             {({ field, form }: FieldProps) => (
               <Select
-                useBasicStyles
-                chakraStyles={{
-                  menu: (provided) => ({
-                    ...provided,
-
-                    // make it above the FullCalendar as some of its elements have z-index:1
-                    zIndex: 3,
-                  }),
-                }}
                 // this will make the input as readonly and so on mobiles the keyboard will not be opened
                 isSearchable={false}
                 options={optionsCategory}

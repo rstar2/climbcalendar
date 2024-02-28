@@ -1,4 +1,3 @@
-import { Select } from "chakra-react-select";
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import { Formik, Form, Field, type FieldProps } from "formik";
 import { ZodError } from "zod";
@@ -32,6 +31,8 @@ import {
 import useOptionsCompetitionType from "../../hooks/useOptionsCompetitionType";
 import useOptionsCompetitionCategory from "../../hooks/useOptionsCompetitionCategory";
 import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLocation";
+
+import { Select } from "../Select";
 
 type CompetitionAddEditProps = {
   /**
@@ -202,7 +203,6 @@ export default function CompetitionAddEdit({
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>{t("type")}</FormLabel>
                       <Select
-                        useBasicStyles
                         isMulti
                         isSearchable={false}
                         placeholder={t("select.placeholder")}
@@ -228,7 +228,6 @@ export default function CompetitionAddEdit({
                     <FormControl isInvalid={!!meta.error && meta.touched}>
                       <FormLabel>{t("category")}</FormLabel>
                       <Select
-                        useBasicStyles
                         isMulti
                         isSearchable={false}
                         closeMenuOnSelect={false}
