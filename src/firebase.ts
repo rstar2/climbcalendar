@@ -77,11 +77,11 @@ class Firebase {
 
   async signInWithFacebook(): Promise<void> {
     // just try to sign-in - no matter the result is Promise<UserCredential>
-    return void signInWithPopup(this.auth, this.authGoogleProvider);
+    await signInWithPopup(this.auth, this.authGoogleProvider);
   }
   async signInWithPopup(provider: AuthPopupProvider = "google"): Promise<void> {
     // just try to sign-in - no matter the result is Promise<UserCredential>
-    return void signInWithPopup(this.auth, provider === "google" ? this.authGoogleProvider : this.authFacebookProvider);
+    await signInWithPopup(this.auth, provider === "google" ? this.authGoogleProvider : this.authFacebookProvider);
     //   .then((result) => {
     //     // This gives you a Google Access Token. You can use it to access the Google API.
     //     const credential = GoogleAuthProvider.credentialFromResult(result)!;
