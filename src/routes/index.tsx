@@ -1,12 +1,11 @@
 import React from "react";
 import { RouterProvider as RouterProvider_, Router, Route, RootRoute, redirect } from "@tanstack/react-router";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-
+import { useTranslation } from "react-i18next";
 import Root from "./Root";
 import Home from "./Home";
 import Add from "./Add";
 import { isAuth } from "../cache/auth";
-import { useTranslation } from "react-i18next";
 
 // Vite (and Webpack) process the "process.env.NODE_ENV"
 // by actually replacing it completely with value of the real NODE_ENV env-variable,

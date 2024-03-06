@@ -11,7 +11,7 @@ export const queryClient = new QueryClient({
 
       // Specifying a longer staleTime means queries will not refetch their data as often
       // Infinity will mean that queries never get stale (always stay fresh),
-      // so they are not re-fetched id there's data in the cache for the same key
+      // so they are not re-fetched if there's data in the cache for the same key
       //staleTime: Infinity,
 
       refetchOnWindowFocus: true,
@@ -93,7 +93,9 @@ const showNotification = (meta: CacheMeta, error?: Error | null) => {
  */
 export const CacheProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
   <QueryClientProvider client={queryClient}>
+    <>
     {children}
     <ReactQueryDevtools initialIsOpen={false} />
+    </>
   </QueryClientProvider>
 );

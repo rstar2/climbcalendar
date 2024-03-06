@@ -99,11 +99,3 @@ export function useAuthLogout() {
   // if needed can return the whole mutation, like loading, and error state
   return mutation.mutateAsync;
 }
-
-/**
- * Set the Google credentials to be reused by Firebase
- * Just re-export 'firebase.setGoogleCredential()'
- */
-export function setGoogleCredential(idToken?: string, accessToken?: string) {
-  firebase.setGoogleCredential(idToken, accessToken);
-}
