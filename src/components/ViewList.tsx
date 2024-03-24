@@ -3,7 +3,7 @@ import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
-import { formatDate } from "../utils/date";
+import { formatDate, isDatePassed } from "../utils/date";
 import { getColor } from "../utils/styles";
 import { useAuthAdmin } from "../cache/auth";
 
@@ -30,7 +30,7 @@ export default function ViewList({ competitions, onEdit, onDelete }: ViewListPro
     <List mt={6}>
       {sortedCompetitions.map((competition) => {
         return (
-          <ListItem key={competition.id}>
+          <ListItem key={competition.id} filter={isDatePassed(competition) ? "opacity(50%)" : undefined}>
             <HStack>
               <ListIcon as={CheckIcon} color={getColor(competition)} />
               <Text>

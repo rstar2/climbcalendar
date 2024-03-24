@@ -2,7 +2,7 @@ import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Tfoot } from "@c
 import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
-import { formatDate } from "../utils/date";
+import { formatDate, isDatePassed } from "../utils/date";
 import { getColorCompetitionType } from "../utils/styles";
 
 type ViewTableProps = {
@@ -38,7 +38,7 @@ export default function ViewTable({ competitions }: ViewTableProps) {
           <Tbody>
             {sortedCompetitions.map((competition) => {
               return (
-                <Tr key={competition.id}>
+                <Tr key={competition.id} filter={isDatePassed(competition) ? "opacity(50%)" : undefined}>
                   <Td>{competition.name}</Td>
                   <Td>{formatDates(competition, i18n.language)}</Td>
                   <Td>
