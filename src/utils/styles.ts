@@ -31,19 +31,19 @@ export const colorMapCategory = (() => {
     let color: string;
 
     switch (category) {
-      case CompetitionCategorySchema.enum.U8:
+      case CompetitionCategorySchema.enum.U9:
         color = "red";
         break;
-      case CompetitionCategorySchema.enum.U10:
+      case CompetitionCategorySchema.enum.U11:
         color = "yellow";
         break;
-      case CompetitionCategorySchema.enum.U12:
+      case CompetitionCategorySchema.enum.U13:
         color = "blue";
         break;
-      case CompetitionCategorySchema.enum.U14:
+      case CompetitionCategorySchema.enum.U15:
         color = "green";
         break;
-      case CompetitionCategorySchema.enum.U16:
+      case CompetitionCategorySchema.enum.U17:
         color = "darkgreen";
         break;
       case CompetitionCategorySchema.enum.YouthA:

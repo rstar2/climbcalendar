@@ -55,7 +55,7 @@ i18n
           // expiration
           expirationTime: 365 * 24 * 60 * 60 * 1000, // 365 days
           // Version applied to all languages, can be overridden using the option `versions`
-          defaultVersion: "v6",
+          defaultVersion: "v7",
           // language versions - when the localization is changed in a language xxx.json
           // then increase the language's version 
           //versions: { bg: "v4.1", },

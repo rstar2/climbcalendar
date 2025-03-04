@@ -17,7 +17,7 @@ export enum CompetitionType {
 }
 export const CompetitionTypeSchema = z.nativeEnum(CompetitionType);
 
-const CompetitionCategory = ["U8", "U10", "U12", "U14", "U16", "YouthA", "YouthB"] as const;
+const CompetitionCategory = ["U9", "U11", "U13", "U15", "U17", "YouthA", "YouthB"] as const;
 export const CompetitionCategorySchema = z.enum(CompetitionCategory);
 
 export type CompetitionCategory = z.infer<typeof CompetitionCategorySchema>;

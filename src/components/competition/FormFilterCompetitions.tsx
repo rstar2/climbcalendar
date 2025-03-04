@@ -94,11 +94,54 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
   );
 }
 
+function useLocalStorageCompetitionFilter() {
+  // eslint-disable-next-line prefer-const
+  let [storedFilterStr, storeFilterStr] = useLocalStorage<string>("competitionFilter");
+
+  try {
+    const filter = JSON.parse(storedFilterStr as string);
+
+    let toFix = false;
+    switch (filter.category) {
+      case "U8":
+        filter.category = "U9";
+        toFix = true;
+        break;
+      case "U10":
+        filter.category = "U11";
+        toFix = true;
+        break;
+      case "U12":
+        filter.category = "U13";
+        toFix = true;
+        break;
+      case "U14":
+        filter.category = "U15";
+        toFix = true;
+        break;
+      case "U16":
+        filter.category = "U17";
+        toFix = true;
+        break;
+    }
+
+    if (toFix) {
+      console.log("Fix the category filter");
+      storedFilterStr = JSON.stringify(filter);
+      storeFilterStr(storedFilterStr);
+    }
+  } catch {
+    // do nothing
+  }
+
+  return [storedFilterStr, storeFilterStr] as const;
+}
+
 export function useFormFilterCompetitions() {
   const competitions = useCompetitions();
 
   // load the stored value from localStorage
-  const [storedFilterStr, storeFilterStr] = useLocalStorage("competitionFilter");
+  const [storedFilterStr, storeFilterStr] = useLocalStorageCompetitionFilter();
 
   // @ts-expect-error (the useSetState.d.ts don't specify that it allows initialization function)
   const [filter, setFilter] = useSetState<CompetitionFilter>(() => {
@@ -157,8 +200,8 @@ export function useFormFilterCompetitions() {
 function FormAutoSubmit() {
   const formik = useFormikContext();
   useEffect(() => {
-    formik.submitForm();
-  }, [formik.values]); // formik is stable
+    if (formik.dirty) formik.submitForm();
+  }, [formik.values, formik.dirty]); // formik is stable
 
   return null;
 }
