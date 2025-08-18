@@ -29,6 +29,11 @@ Configure a "better" looking firebase hosting site
 
 ```npm run deploy```
 
+## Localization
+
+When the localization is changed in `/locales/{{ lng }}.json` then update the `version` in `i18n.ts`.
+because the localization is first loaded/stored in `localStorage`.
+
 ## PWA support
 
 ### Use the recommended Vite plugin for PWA - https://vite-pwa-org.netlify.app
