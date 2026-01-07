@@ -39,10 +39,13 @@ export default function Home() {
   const editCompetition = useCompetitionEdit();
   const deleteCompetition = useCompetitionDelete();
 
+  const onlyFromThisYearView = viewMode === "calendar" || viewMode === "calendar2";
   // useFormFilterCompetitions works together with FormFilterCompetition
-  // TODO: can think of another solution with context or render-props as now both are necessary
-  const { competitionsFiltered, filter, setFilter } = useFormFilterCompetitions();
-  const formFilterCompetition = <FormFilterCompetitions filter={filter} setFilter={setFilter} />;
+  // TODO: think of another solution with context or render-props as now both are necessary
+  const { competitionsFiltered, filter, setFilter } = useFormFilterCompetitions(onlyFromThisYearView);
+  const formFilterCompetition = (
+    <FormFilterCompetitions filter={filter} setFilter={setFilter} onlyFromThisYearView={onlyFromThisYearView} />
+  );
 
   // controls the Edit dialog
   const [competitionEdit, setCompetitionEdit] = useState<Competition | undefined>();

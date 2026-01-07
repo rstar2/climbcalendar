@@ -38,15 +38,21 @@ export function formatDate(dateOrEventWithDate: Date | EventWithDate, locale?: s
   });
   return formatDate_(dateEnd, locale);
 }
-
-const options: Intl.DateTimeFormatOptions = {
-  // no need to show the year it's always current one 2024
-  //   year: "numeric",
+const optionsCurrentYear: Intl.DateTimeFormatOptions = {
+  // no need to show the year it's always current one
+  // year: "numeric",
   month: "long",
   day: "numeric",
   weekday: "long",
 };
-const formatDate_ = (date: Date, locale?: string) => date.toLocaleDateString(locale, options);
+const options: Intl.DateTimeFormatOptions = {
+  ...optionsCurrentYear,
+  year: "numeric",
+};
+function formatDate_(date: Date, locale?: string) {
+  const dateOptions = date.getFullYear() === THIS_YEAR ? optionsCurrentYear : options;
+  return date.toLocaleDateString(locale, dateOptions);
+}
 
 export function isDatePassed(eventWithDate: EventWithDate): boolean {
   const date = eventWithDate.dateDuration

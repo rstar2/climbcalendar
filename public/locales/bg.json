@@ -87,7 +87,8 @@
       "bg": "БГ",
       "balkan": "Балканско",
       "international": "Международно"
-    }
+    },
+    "onlyFromThisYear": "Само от тази година"
   },
 
   "errors": {

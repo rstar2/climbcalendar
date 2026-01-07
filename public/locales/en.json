@@ -87,7 +87,8 @@
       "bg": "BG",
       "balkan": "Balkan",
       "international": "International"
-    }
+    },
+    "onlyFromThisYear": "Only from this year"
   },
 
   "errors": {

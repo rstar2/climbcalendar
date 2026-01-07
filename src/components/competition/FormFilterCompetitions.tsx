@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { useLocalStorage, useSetState } from "react-use";
 import { Checkbox, Stack } from "@chakra-ui/react";
 import { Formik, Form, Field, type FieldProps, useFormikContext } from "formik";
+import { useTranslation } from "react-i18next";
 
 import { getColorCompetitionType } from "../../utils/styles";
 import { CompetitionCategory, CompetitionType, RadioOption } from "../../types";
@@ -11,6 +12,7 @@ import useOptionsCompetitionType from "../../hooks/useOptionsCompetitionType";
 import useOptionsCompetitionCategory from "../../hooks/useOptionsCompetitionCategory";
 import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLocation";
 import { Select } from "../Select";
+import { THIS_YEAR } from "../../utils/date";
 
 type CompetitionFilter = Partial<{
   balkan: boolean;
@@ -18,6 +20,7 @@ type CompetitionFilter = Partial<{
   bg: boolean;
   type: CompetitionType;
   category: CompetitionCategory;
+  onlyFromThisYear: boolean;
 }>;
 
 const initialCompetitionFilter: CompetitionFilter = {
@@ -26,14 +29,17 @@ const initialCompetitionFilter: CompetitionFilter = {
   bg: undefined,
   type: undefined,
   category: undefined,
+  onlyFromThisYear: undefined,
 };
 
 type FormFilterCompetitionsProps = {
   filter: CompetitionFilter;
   setFilter: (v: CompetitionFilter) => void;
+  onlyFromThisYearView?: boolean;
 };
 
-export default function FormFilterCompetitions({ filter, setFilter }: FormFilterCompetitionsProps) {
+export default function FormFilterCompetitions({ filter, setFilter, onlyFromThisYearView = false }: FormFilterCompetitionsProps) {
+  const { t } = useTranslation();
   const optionsType = useOptionsCompetitionType(true);
   const optionsCategory = useOptionsCompetitionCategory(true);
   const radiosLocation = useOptionsCompetitionLocation(true);
@@ -84,7 +90,22 @@ export default function FormFilterCompetitions({ filter, setFilter }: FormFilter
             )}
           </Field>
 
-          <CheckboxRadioGroup radios={radiosLocation} />
+          <FieldCheckboxRadioGroup radios={radiosLocation} />
+
+          <Field name="onlyFromThisYear">
+            {({ field, form }: FieldProps) => (
+              <Checkbox
+                isChecked={field.value || onlyFromThisYearView}
+                disabled={onlyFromThisYearView}
+                onChange={(e) => {
+                  const isChecked = e.target.checked;
+                  form.setFieldValue(field.name, isChecked);
+                }}
+              >
+                {t("competition.onlyFromThisYear")}
+              </Checkbox>
+            )}
+          </Field>
         </Stack>
 
         {/* headless component that wraps the auto-submit functionality */}
@@ -137,7 +158,7 @@ function useLocalStorageCompetitionFilter() {
   return [storedFilterStr, storeFilterStr] as const;
 }
 
-export function useFormFilterCompetitions() {
+export function useFormFilterCompetitions(onlyFromThisYearView = false) {
   const competitions = useCompetitions();
 
   // load the stored value from localStorage
@@ -163,7 +184,7 @@ export function useFormFilterCompetitions() {
     },
     [setFilter, storeFilterStr]
   );
-
+  const onlyFromThisYear = filter.onlyFromThisYear || onlyFromThisYearView;
   const competitionsFiltered = useMemo(() => {
     let compsFiltered = competitions ?? [];
 
@@ -187,8 +208,12 @@ export function useFormFilterCompetitions() {
     if (filter.category !== undefined) {
       compsFiltered = compsFiltered.filter((comp) => comp.category.includes(filter.category!));
     }
+
+    if (onlyFromThisYear) {
+      compsFiltered = compsFiltered.filter((comp) => comp.date.getFullYear() == THIS_YEAR);
+    }
     return compsFiltered;
-  }, [competitions, filter]);
+  }, [competitions, filter, onlyFromThisYear]);
 
   return {
     competitionsFiltered,
@@ -212,10 +237,10 @@ type CheckboxRadioGroupProps = {
 /**
  * Make it act like radio-group that support unchecked/empty state.
  */
-function CheckboxRadioGroup({ radios }: CheckboxRadioGroupProps) {
+function FieldCheckboxRadioGroup({ radios }: CheckboxRadioGroupProps) {
   return radios.map((radio) => (
     <React.Fragment key={radio.value}>
-      <CheckboxRadio radio={radio} radios={radios} />
+      <FieldCheckboxRadio radio={radio} radios={radios} />
     </React.Fragment>
   ));
 }
@@ -224,7 +249,7 @@ type CheckboxRadioProps = {
   radio: RadioOption;
   radios: RadioOption[];
 };
-function CheckboxRadio({ radio, radios }: CheckboxRadioProps) {
+function FieldCheckboxRadio({ radio, radios }: CheckboxRadioProps) {
   {
     /* <Field as={Checkbox} name={radio.name}>
               {radio.label}
