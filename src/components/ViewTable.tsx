@@ -1,9 +1,11 @@
-import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Tfoot } from "@chakra-ui/react";
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Tfoot, IconButton } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
 import { formatDate, isDatePassed } from "../utils/date";
 import { getColorCompetitionType } from "../utils/styles";
+import { useAuthAdmin } from "../cache/auth";
 
 type ViewTableProps = {
   /**
@@ -15,8 +17,10 @@ type ViewTableProps = {
   onEdit(id: string): void;
 };
 
-export default function ViewTable({ competitions }: ViewTableProps) {
+export default function ViewTable({ competitions, onEdit, onDelete }: ViewTableProps) {
   const { t, i18n } = useTranslation();
+
+  const isAuthAdmin = useAuthAdmin();
 
   const sortedCompetitions = [...competitions].sort((c1, c2) => {
     if (c1.date === c2.date) return 0;
@@ -33,6 +37,7 @@ export default function ViewTable({ competitions }: ViewTableProps) {
               <Th>{t("date")}</Th>
               <Th>{t("type")}</Th>
               <Th>{t("category")}</Th>
+              {isAuthAdmin && <Th/>}
             </Tr>
           </Thead>
           <Tbody>
@@ -52,6 +57,24 @@ export default function ViewTable({ competitions }: ViewTableProps) {
                     })}
                   </Td>
                   <Td>{competition.category.map((cat) => t(`competition.category.${cat}`)).join(", ")}</Td>
+                  {isAuthAdmin && (
+                    <Td>
+                      <IconButton
+                        size="sm"
+                        aria-label="edit"
+                        icon={<EditIcon />}
+                        mr={2}
+                        onClick={() => onEdit(competition.id)}
+                      />
+                      <IconButton
+                        size="sm"
+                        aria-label="delete"
+                        icon={<DeleteIcon />}
+                        color="red"
+                        onClick={() => onDelete(competition.id)}
+                      />
+                    </Td>
+                  )}
                 </Tr>
               );
             })}
@@ -62,6 +85,7 @@ export default function ViewTable({ competitions }: ViewTableProps) {
               <Th>{t("date")}</Th>
               <Th>{t("type")}</Th>
               <Th>{t("category")}</Th>
+              {isAuthAdmin && <Th/>}
             </Tr>
           </Tfoot>
         </Table>

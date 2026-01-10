@@ -34,30 +34,26 @@ import useOptionsCompetitionLocation from "../../hooks/useOptionsCompetitionLoca
 
 import { Select } from "../Select";
 
-type CompetitionAddEditProps = {
+export type CompetitionAddEditProps = {
   /**
-   * Competition fields to use
+   * Valid when adding or editing a Competition
+   * - when Competition is provided, it's editing
+   * - when Date is provided, it's adding with predefined date
+   * - when true is provided, it's adding without predefined date
    */
-  competition?: Competition;
-  /**
-   * Predefined date - will overwrite the date of the competition if such is passed
-   */
-  date?: Date;
+  data?: Competition | Date | true;
 
   onAction(competition: CompetitionNew): void;
   isFullWidth?: boolean;
 };
-export default function CompetitionAddEdit({
-  competition,
-  date,
-  onAction,
-  isFullWidth = false,
-}: CompetitionAddEditProps) {
+export default function CompetitionAddEdit({ data, onAction, isFullWidth = false }: CompetitionAddEditProps) {
   const { t } = useTranslation();
 
   const optionsType = useOptionsCompetitionType();
   const optionsCategory = useOptionsCompetitionCategory();
   const optionsLocation = useOptionsCompetitionLocation();
+
+  const isAdding = data instanceof Date || data === true;
 
   return (
     <Flex align="center" justify="center">
@@ -78,19 +74,17 @@ export default function CompetitionAddEdit({
       >
         <Formik<Partial<CompetitionNew>>
           initialValues={
-            competition
-              ? date
-                ? { ...competition, date }
-                : competition
-              : {
+            isAdding
+              ? {
                   name: "",
-                  date: date,
+                  date: data instanceof Date ? data : undefined,
                   dateDuration: 2,
                   balkan: false,
                   international: false,
                   type: undefined,
                   category: undefined,
                 }
+              : data ?? {}
           }
           validate={(values) => {
             try {
@@ -276,10 +270,10 @@ export default function CompetitionAddEdit({
                   colorScheme="blue"
                   isDisabled={
                     // when creating let at least on touched field, on edit not such need
-                    isSubmitting || !isValid || (!competition && !Object.keys(touched).length)
+                    isSubmitting || !isValid || (isAdding && !Object.keys(touched).length)
                   }
                 >
-                  {t(`action.${competition ? "edit" : "add"}`)}
+                  {t(`action.${isAdding ? "add" : "edit"}`)}
                 </Button>
               </VStack>
             </Form>

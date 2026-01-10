@@ -18,8 +18,9 @@ import { BeatLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 
 import { Competition } from "../types";
-import { useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
+import { useCompetitionAdd, useCompetitionDelete, useCompetitionEdit, useCompetitions } from "../cache/competitions";
 import { useViewMode } from "../cache/ui";
+import { useAuthAdmin } from "../cache/auth";
 import ViewCalendar from "../components/ViewCalendar";
 import ViewCalendar2 from "../components/ViewCalendar2";
 import ViewList from "../components/ViewList";
@@ -33,9 +34,11 @@ export default function Home() {
   const theme = useTheme();
   const { t } = useTranslation();
 
+  const isAuthAdmin = useAuthAdmin();
   const viewMode = useViewMode();
 
   const competitions = useCompetitions();
+  const addCompetition = useCompetitionAdd();
   const editCompetition = useCompetitionEdit();
   const deleteCompetition = useCompetitionDelete();
 
@@ -47,8 +50,11 @@ export default function Home() {
     <FormFilterCompetitions filter={filter} setFilter={setFilter} onlyFromThisYearView={onlyFromThisYearView} />
   );
 
-  // controls the Edit dialog
-  const [competitionEdit, setCompetitionEdit] = useState<Competition | undefined>();
+  // controls the Add/Edit dialog,
+  // 1. editing when Competition
+  // 2. adding when Date  or true,
+  // 3. closed when undefined
+  const [competitionAddEdit, setCompetitionAddEdit] = useState<Competition | Date | true | undefined>();
 
   // controls the DeleteConfirm dialog
   const [competitionIdDelete, setCompetitionIdDelete] = useState<string | undefined>();
@@ -56,7 +62,7 @@ export default function Home() {
   const handleEditCompetition = (id: string) => {
     // open a new modal and on OK call edit
     const competition = competitions?.find((comp) => comp.id === id);
-    if (competition) setCompetitionEdit(competition);
+    if (competition) setCompetitionAddEdit(competition);
   };
 
   return (
@@ -72,7 +78,7 @@ export default function Home() {
           <MobileDrawer>{formFilterCompetition}</MobileDrawer>
         </Show>
 
-        <HStack mb={2} flexShrink={0} width="full" justifyContent="space-between">
+        <HStack mb={2} flexShrink={0} width="full" gap={2}>
           {/* show loading until competitions is valid */}
           {!competitions ? (
             <BeatLoader
@@ -83,6 +89,14 @@ export default function Home() {
           ) : (
             <Heading size="md">{t("competitions", { count: competitionsFiltered.length })}</Heading>
           )}
+
+          {isAuthAdmin && (
+            <Button size="sm" onClick={() => setCompetitionAddEdit(true)}>
+              {t("action.add")}
+            </Button>
+          )}
+
+          <Spacer/>
 
           <SelectViewMode />
         </HStack>
@@ -95,6 +109,7 @@ export default function Home() {
               mainCategory={filter.category}
               onEdit={handleEditCompetition}
               onDelete={setCompetitionIdDelete}
+              onAddWithDate={setCompetitionAddEdit}
             />
           )}
           {viewMode === "calendar2" && (
@@ -131,14 +146,16 @@ export default function Home() {
         }}
       />
       <DialogCompetitionAddEdit
-        competition={competitionEdit}
+        data={competitionAddEdit}
         onConfirm={(competitionNew) => {
-          setCompetitionEdit(undefined);
-          if (competitionNew)
-            editCompetition({
-              id: competitionEdit!.id,
-              competition: competitionNew,
-            });
+          setCompetitionAddEdit(undefined);
+          if (competitionAddEdit && competitionNew)
+            if (competitionAddEdit instanceof Date || competitionAddEdit === true) addCompetition(competitionNew);
+            else
+              editCompetition({
+                id: competitionAddEdit.id,
+                competition: competitionNew,
+              });
         }}
       />
     </>

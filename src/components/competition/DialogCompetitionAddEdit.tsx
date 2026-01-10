@@ -11,30 +11,31 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-import CompetitionAddEdit from "./CompetitionAddEdit";
+import CompetitionAddEdit, { type CompetitionAddEditProps } from "./CompetitionAddEdit";
 import { Competition, CompetitionNew } from "../../types";
 
-type DialogCompetitionAddEditProps = {
+type DialogCompetitionAddEditProps = Pick<CompetitionAddEditProps, "data"> & {
   /**
-   * Valid when editing a Competition
+   * Valid when adding or editing a Competition
+   * - when Competition is provided, it's editing
+   * - when Date is provided, it's adding with predefined date
+   * - when true is provided, it's adding without predefined date
    */
-  competition?: Competition;
-  /**
-   * Valid when adding a Competition with predefined date
-   */
-  date?: Date;
+  data?: Competition | Date | true;
 
   /**
    * Confirmation callback
    */
   onConfirm: (competitionNew?: CompetitionNew) => void;
 };
-export default function DialogCompetitionAddEdit({ date, competition, onConfirm }: DialogCompetitionAddEditProps) {
+export default function DialogCompetitionAddEdit({ data, onConfirm }: DialogCompetitionAddEditProps) {
   const { t } = useTranslation();
   const { isOpen, onClose } = useDisclosure({
-    isOpen: !!competition || !!date,
+    isOpen: data !== undefined,
     onClose: onConfirm, // will pass undefined e.g. onConfirm(undefined)
   });
+
+  const isAdding = data instanceof Date || data === true;
 
   return (
     <Modal
@@ -47,11 +48,11 @@ export default function DialogCompetitionAddEdit({ date, competition, onConfirm 
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t(`message.${competition ? "competitionEdit" : "competitionAdd"}.title`)}</ModalHeader>
+        <ModalHeader>{t(`message.${isAdding ? "competitionAdd" : "competitionEdit"}.title`)}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <CompetitionAddEdit competition={competition} date={date} onAction={onConfirm} isFullWidth />
+          <CompetitionAddEdit data={data} onAction={onConfirm} isFullWidth />
         </ModalBody>
 
         <ModalFooter>

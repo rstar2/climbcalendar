@@ -42,9 +42,9 @@ export default function DialogCompetitionDeleteConfirm({ id, onConfirm }: Dialog
         <AlertDialogBody>{t("message.competitionDelete.confirm")}</AlertDialogBody>
 
         <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={() => onConfirm(false)}>
+          {/* <Button ref={cancelRef} onClick={() => onConfirm(false)}>
             {t("action.close")}
-          </Button>
+          </Button> */}
           <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
             {t("action.delete")}
           </Button>

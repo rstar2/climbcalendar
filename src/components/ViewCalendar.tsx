@@ -30,14 +30,12 @@ import FullCalendar from "@fullcalendar/react";
 //     noEventsText: 'Няма събития за показване',
 // }
 
+import "./ViewCalendar.css";
 import { CompetitionCategory, CompetitionType, UserEvent, type Competition } from "../types";
 import { useAuthAdmin } from "../cache/auth";
-import { useCompetitionAdd } from "../cache/competitions";
 import { useUserEvents, useUserEventDelete, useUserEventEdit } from "../cache/userEvents";
 import { fcDate } from "../utils/date";
 import { getColor, getColorCompetitionType, getColorUserEvent } from "../utils/styles";
-import "./ViewCalendar.css";
-import DialogCompetitionAddEdit from "./competition/DialogCompetitionAddEdit";
 import DialogCompetitionCreateConfirm from "./competition/DialogCompetitionCreateConfirm";
 import CalendarEvent from "./CalendarEvent";
 import DialogUserEventDeleteConfirm from "./userEvent/DialogUserEventDeleteConfirm";
@@ -95,17 +93,14 @@ type ViewCalendarProps = {
 
   onDelete(id: string): void;
   onEdit(id: string): void;
+  onAddWithDate(date: Date): void;
 };
 
-export default function ViewCalendar({ competitions, mainType, mainCategory, onEdit, onDelete }: ViewCalendarProps) {
+export default function ViewCalendar({ competitions, mainType, mainCategory, onEdit, onDelete, onAddWithDate }: ViewCalendarProps) {
   const isAdmin = useAuthAdmin();
-
-  const addCompetitionFn = useCompetitionAdd();
 
   // controls the CreateConfirm dialog
   const [competitionCreateConfirm, setCompetitionCreateConfirm] = useState<Date | undefined>();
-
-  const [competitionAdd, setCompetitionAdd] = useState<Date | undefined>();
 
   const [locale, setLocale] = useState<LocaleInput | undefined>();
   const { i18n } = useTranslation();
@@ -203,16 +198,7 @@ export default function ViewCalendar({ competitions, mainType, mainCategory, onE
           // close dialog
           setCompetitionCreateConfirm(undefined);
           // open real "add" dialog
-          if (isConfirmed) setCompetitionAdd(competitionCreateConfirm!);
-        }}
-      />
-      <DialogCompetitionAddEdit
-        date={competitionAdd}
-        onConfirm={(competitionNew) => {
-          // close dialog
-          setCompetitionAdd(undefined);
-          // send event
-          if (competitionNew) addCompetitionFn(competitionNew);
+          if (isConfirmed) onAddWithDate(competitionCreateConfirm!);
         }}
       />
 

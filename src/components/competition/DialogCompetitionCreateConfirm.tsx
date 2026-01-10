@@ -48,10 +48,10 @@ export default function DialogCompetitionCreateConfirm({ date, onConfirm }: Dial
         )}
 
         <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={() => onConfirm(false)}>
+          {/* <Button ref={cancelRef} onClick={() => onConfirm(false)}>
             {t("action.close")}
-          </Button>
-          <Button colorScheme="red" onClick={() => onConfirm(true)} ml={3}>
+          </Button> */}
+          <Button onClick={() => onConfirm(true)} ml={3}>
             {t("action.add")}
           </Button>
         </AlertDialogFooter>

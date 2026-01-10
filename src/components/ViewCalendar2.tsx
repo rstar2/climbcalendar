@@ -157,7 +157,7 @@ export default function ViewCalendar({ competitions /* , mainType, mainCategory 
         }}
       />
       <DialogCompetitionAddEdit
-        date={competitionAdd}
+        data={competitionAdd}
         onConfirm={(competitionNew) => {
           // close dialog
           setCompetitionAdd(undefined);
