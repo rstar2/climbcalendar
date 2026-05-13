@@ -13,3 +13,6 @@ dev-dist
 *.local
 .firebase
 firebase-debug.log
+
+
+/.claude/*.local
